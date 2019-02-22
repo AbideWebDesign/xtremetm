@@ -1,0 +1,64 @@
+{
+    "key": "group_5c5c4fd5d4bc7",
+    "title": "Block - Value Bar",
+    "fields": [
+        {
+            "key": "field_5c5c4fe2575ad",
+            "label": "Value List",
+            "name": "value_list",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5c5c4ff4575ae",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add Value Prop",
+            "sub_fields": [
+                {
+                    "key": "field_5c5c4ff4575ae",
+                    "label": "Value List Item",
+                    "name": "value_list_item",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_format",
+                "operator": "==",
+                "value": "aside"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1549554483
+}

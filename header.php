@@ -8,6 +8,9 @@
  *
  * @package xtremetm
  */
+global $woocommerce;
+
+$stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false ));
 
 ?>
 <!doctype html>
@@ -16,8 +19,72 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<?php wp_head(); ?>
 </head>
-
 <body <?php body_class(); ?>>
+	<div id="header-global">
+		<div class="container">
+			<div class="row">
+				<div class="col-auto d-lg-none">
+					
+				</div>
+				<div class="col-auto col-lg-2 align-self-center">
+					<div id="header-logo">
+						<a href="<?php echo home_url(); ?>"><img class="img-fluid" src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm.png'); ?>" /></a>
+					</div>
+				</div>
+				<div class="col-lg-5 d-none d-lg-block">
+					<div id="header-global-stores" class="d-flex flex-row">
+						<div class="flex-fill">
+							<a href="<?php echo home_url('/store/rehv/'); ?>" class="<?php echo (is_store('rehv') ? 'active' : ''); ?>">
+								<?php if(is_store('rehv')): ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-rehz-color.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php else: ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-rehv.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php endif; ?>
+							</a>
+						</div>
+						<div class="flex-fill">
+							<a href="<?php echo home_url('/store/primis/'); ?>" class="<?php echo (is_store('primis') ? 'active' : ''); ?>">
+								<?php if(is_store('primis')): ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-primis-color.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php else: ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-primis.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php endif; ?>
+							</a>
+						</div>
+						<div class="flex-fill">
+							<a href="<?php echo home_url('/store/contract/'); ?>" class="<?php echo (is_store('contract') ? 'active' : ''); ?>">
+								<?php if(is_store('contract')): ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm-alt-color.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php else: ?>
+									<img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm-alt.png'); ?>" class="img-fluid" style="height: 20px" />
+								<?php endif; ?>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto col-lg-auto align-self-center flex-grow-1">
+					
+					<?php 
+						wp_nav_menu( array(
+							'theme_location' => (is_user_logged_in() ? 'top-links-logged-in' : 'top-links'),
+							'menu_class' => 'list-inline d-none d-lg-block',
+							'depth' => 1, 
+							'add_li_class'  => 'list-inline-item'
+							)
+						);
+					?>
+					
+					<div class="d-lg-none">
+						<a class="d-block" href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"><i class="fas fa-2x fa-user"></i></a>
+					</div>
+				</div>
+				<div class="col-auto align-self-center">
+					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo $woocommerce->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>
+					<a class="cart-container d-lg-none" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><span class="d-none d-md-inline-block"><?php echo WC()->cart->get_cart_contents_count() ?></span></a>
+				</div>
+			</div>
+		</div>
+	</div>

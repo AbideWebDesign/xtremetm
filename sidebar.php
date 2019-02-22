@@ -7,9 +7,10 @@
  * @package xtremetm
  */
 
-if ( ! is_active_sidebar( 'sidebar-1' ) ) {
+if ( ! is_active_sidebar( 'store_sidebar' ) ) {
 	return;
 }
 ?>
-
-<?php dynamic_sidebar( 'sidebar-1' ); ?>
+<div id="store-sidebar" class="s">
+	<?php dynamic_sidebar( 'store_sidebar' ); ?>
+</div>

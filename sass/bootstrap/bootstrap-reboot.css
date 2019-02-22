@@ -26,7 +26,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "proxima-nova", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Roboto", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.675;
@@ -108,12 +108,12 @@ sup {
   top: -.5em; }
 
 a {
-  color: #c36714;
+  color: #18386E;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects; }
   a:hover {
-    color: #7e420d;
+    color: #0a182f;
     text-decoration: underline; }
 
 a:not([href]):not([tabindex]) {
