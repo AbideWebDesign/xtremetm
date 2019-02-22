@@ -259,7 +259,34 @@ add_action( 'widgets_init', 'xtremetm_widgets_init' );
 function mytheme_add_woocommerce_support() {
     add_theme_support( 'woocommerce' );
 }
-
+/**
+ * Hide update notifications from all users
+ */
+add_action( 'admin_init', 'xtremetm_hide_update_notifications_users' );
+ 
+function xtremetm_hide_update_notifications_users() {
+    global $menu, $submenu;
+    $user = wp_get_current_user();
+     
+    // ENTER HERE THE ONLY ALLOWED USERNAME
+    $allowed = array( 'abide_admin' );
+     
+    // HIDE WP, PLUGIN, THEME NOTIFICATIONS FOR ALL OTHER USERS
+    if ( $user && isset( $user->user_login ) && ! in_array( $user->user_login, $allowed ) ) {
+        add_filter( 'pre_site_transient_update_core', 'xtremetm_disable_update_notifications' );
+        add_filter( 'pre_site_transient_update_plugins', 'xtremetm_disable_update_notifications' ); 
+        add_filter( 'pre_site_transient_update_themes', 'xtremetm_disable_update_notifications' );
+         
+        // ALSO REMOVE THE RED UPDATE COUNTERS @ SIDEBAR MENU ITEMS
+        $menu[65][0] = 'Plugins up to date';   
+        $submenu['index.php'][10][0] = 'Updates disabled';   
+    }
+}
+ 
+function xtremetm_disable_update_notifications() {
+    global $wp_version;
+    return (object) array( 'last_checked' => time(), 'version_checked' => $wp_version, );
+}
 /**
  * Setup Woocommerce
  */
@@ -687,9 +714,9 @@ function filter_woocommerce_reset_variations_link( $link ) {
     return ''; 
 }; 
 
-add_action( 'wp_footer', 'bbloomer_cart_refresh_update_qty' ); 
+add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
  
-function bbloomer_cart_refresh_update_qty() { 
+function xtremetm_cart_refresh_update_qty() { 
     if (is_cart()) { 
         ?> 
         <script type="text/javascript"> 
