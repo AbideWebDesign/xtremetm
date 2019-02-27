@@ -67,6 +67,32 @@ if ( ! function_exists( 'xtremetm_setup' ) ) :
 			'gallery',
 			'caption',
 		) );
+		
+		function remove_menus(){
+			
+			remove_menu_page( 'edit.php' ); //Posts
+			
+			if(!is_admin()) {
+				remove_menu_page( 'themes.php' ); //Appearance
+				remove_menu_page( 'plugins.php' ); //Plugins
+				remove_menu_page( 'users.php' ); //Users
+				remove_menu_page( 'tools.php' ); //Tools
+			}
+		}
+		add_action( 'admin_menu', 'remove_menus' );
+	
+		function remove_wp_logo( $wp_admin_bar ) {
+			$wp_admin_bar->remove_node( 'wp-logo' );
+		}
+		add_action( 'admin_bar_menu', 'remove_wp_logo', 999 );
+
+		function remove_wp_nodes() {
+		    global $wp_admin_bar;   
+		    $wp_admin_bar->remove_node( 'new-post' );
+		    $wp_admin_bar->remove_menu( 'autoptimize' );
+		    $wp_admin_bar->remove_menu( 'customize' );
+		}
+		add_action( 'admin_bar_menu', 'remove_wp_nodes', 999 );
 
 	}
 endif;
