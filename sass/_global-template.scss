@@ -74,6 +74,12 @@ h3 {
 	border-color: black;
 	color: black;
 }
+.btn-normal {
+	-webkit-transform:skew(0);
+	-moz-transform:skew(0);
+	-o-transform:skew(0);
+	transform:skew(0);	
+}
 /* 
 ** Helpers
 */
@@ -1125,9 +1131,14 @@ h3 {
 					background-color: transparent;
 					border: 1px solid #B3B3B3;
 				}
+				ul.gform_fields li.gfield {
+					padding-right: 0;
+				}
 			}
 			.gform_footer {
+				@extend .col-auto;
 				@extend .align-self-baseline;
+				@extend .p-0;
 				
 				.btn {
 					webkit-transform: none;
@@ -1198,6 +1209,12 @@ body .gform_wrapper form.gf_simple_horizontal div.gform_body ul.top_label li.gfi
 body img.gform_ajax_spinner {
     display: none !important;
 }
+body .gform_wrapper .gform_footer input[type=submit] {
+	border: 1px solid transparent;
+	@extend .btn;
+	@extend .btn-primary;
+	@extend .btn-normal;
+}
 body .gform_wrapper input[type=text], body .gform_wrapper input[type=email], body .gform_wrapper textarea {
     height: 60px;
     line-height: 40px;
@@ -1206,27 +1223,29 @@ body .gform_wrapper input[type=text], body .gform_wrapper input[type=email], bod
     box-shadow: none;
     outline: 0;
     border-radius: 0!important;
-}s
-body #gform_wrapper_1 .gform_footer input.button, body .gform_wrapper .gform_footer input[type=submit] {
-	padding: 0 1em;
-	border: none;
-	height: 60px;
-	line-height: 60px;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
 }
-
-body .gform_wrapper .gform_footer {
-	padding-bottom: 0;
+body #gform_wrapper_1 {
+	.gform_footer {
+		padding: 0;
+		
+		input.button {
+			padding: 0 1em;
+			border: none;
+			height: 60px;
+			line-height: 60px;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
+			border: none;
+			height: 60px;
+			line-height: 60px;
+			padding: 0 2em;
+		}
+	}
 }
 body .gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
 	@extend .form-control;
-}
-body #gform_wrapper_1 input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
-	border: none;
-	height: 60px;
-	line-height: 60px;
-	padding: 0 2em;
 }
 body .gf_simple_horizontal {
 	width: 100%;
@@ -1271,7 +1290,6 @@ body .gform_validation_container {
 	#gform_wrapper_1 .gform_footer input.button, .gform_wrapper .gform_footer input[type=submit] {
 		margin-bottom: 0;
 	}
-
 }
 /* 
 ** Brand Colors
