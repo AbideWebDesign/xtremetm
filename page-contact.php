@@ -12,6 +12,7 @@ get_header();
 	<div id="global-store-container">
 		<div class="container">
 			<div class="box s p-2">
+				<h2 class="mb-1">Customer Service</h2>
 				<?php the_field('contact_content'); ?>
 				<h3 class="mb-1">Phone Number:</h3>
 				<p class="mb-2">Please call <?php the_field('global_phone', 'options'); ?></p>

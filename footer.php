@@ -40,7 +40,7 @@
 									<div><i class="fas fa-envelope"></i> <?php the_field('global_email', 'options'); ?></div>
 								</div>
 								<div class="col-lg-auto">
-									<a href="<?php the_field('global_contact_page', 'options'); ?>" class="btn btn-primary btn-sm"><span>Contact Us <i class="fas fa-chevron-right"></i></span></a>
+									<a href="<?php echo home_url('/contact/'); ?>" class="btn btn-primary btn-sm"><span>Contact Us <i class="fas fa-chevron-right"></i></span></a>
 								</div>
 							</div>
 						</div>						

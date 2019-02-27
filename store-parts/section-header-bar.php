@@ -22,12 +22,14 @@
 				</div>	
 			
 			<?php endif; ?>
-					
-			<div class="col-md-auto align-self-center d-none d-md-block">
-				<?php get_template_part('store-parts/search', 'bar'); ?>
-			</div>
+			
+			<?php if (is_product_category()): ?>		
+				<div class="col-md-auto align-self-center d-none d-md-block">
+					<?php get_template_part('store-parts/search', 'bar'); ?>
+				</div>
+			<?php endif; ?>
 			<div class="col-md-auto d-none d-md-block align-self-center">
-				<div id="header-phone"><?php the_field('global_phone', 'options'); ?></div>
+				<div id="header-phone" class="py-1"><?php the_field('global_phone', 'options'); ?></div>
 			</div>			
 		</div>
 	</div>
