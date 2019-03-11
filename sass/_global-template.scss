@@ -345,6 +345,7 @@ h3 {
 		}
 	}	
 }
+
 /* 
 ** Global Store
 */
@@ -500,6 +501,13 @@ h3 {
 		th {
 			padding-left: 0;
 		}
+	}
+	.woocommerce-error, .woocommerce-info, .woocommerce-message {
+		background-color: white;
+		padding: 4em;
+	}
+	.woocommerce-error::before, .woocommerce-info::before, .woocommerce-message::before {
+		display: none;
 	}
 	.woocommerce-info, .woocommerce-notices-wrapper {
 		font-size: $font-size-sm;

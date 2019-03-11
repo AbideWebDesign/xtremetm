@@ -576,7 +576,7 @@ function xtremetm_close_div() {
    
     echo '</div></div>';
     
-    if (is_product_category() || is_product()) {
+    if (!is_search() && (is_product_category() || is_product())) {
 
 		$post = get_queried_object();
 		$terms = get_the_terms($post->ID, 'product_cat');
@@ -589,7 +589,14 @@ function xtremetm_close_div() {
     	} 	
     	
     	include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
-	} 
+    	
+	} elseif (is_search()) {
+		
+		$store = get_queried_object();
+		
+		include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
+		
+	}
 }
 
 /**

@@ -28,7 +28,7 @@ if (is_product_category()) {
 
 }
 
-if (!is_search() && is_shop() || is_product_category()) {
+if (!is_search() && (is_product_category() || is_shop())) {
 
 	include(locate_template('/store-parts/hero-banner.php', false, false));  
 
@@ -40,7 +40,7 @@ if (is_product_category()) {
 
 }
 
-if (is_shop()) {
+if (is_shop() && !is_product_category()) {
 	
 	include(locate_template('/store-parts/content-home.php', false, false)); 
 	

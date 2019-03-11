@@ -11,5 +11,10 @@
 				$(".form-group").removeClass("sb-search-open");
 			}
 		});
+/*
+		$('.carousel').carousel({
+		  interval: 1500
+		});
+*/
 	});
 })(jQuery);

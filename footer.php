@@ -10,8 +10,6 @@
  */
 
 ?>
-
-<?php wp_footer(); ?>
 		<div id="footer" class="py-3">
 			<div class="container">
 				<div id="footer-divider-wrapper" class="row justify-content-center">
@@ -71,5 +69,6 @@
 				</div>
 			</div>
 		</div>
+		<?php wp_footer(); ?>
 	</body>
 </html>
