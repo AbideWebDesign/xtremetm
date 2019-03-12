@@ -1329,15 +1329,24 @@ body {
 		background-color: transparent;
 	}
 	.shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.shiftnav-active > .shiftnav-target, .shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.shiftnav-in-transition > .shiftnav-target {
-		background-color: #20376d;
+		background-color: #1C1C1C;
 	}
-	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item.current-menu-item > .shiftnav-target {
-		background-color: white;
-		color: #666;
+	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item.current-menu-item > .shiftnav-target, .shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu > li.shiftnav-sub-accordion.current-menu-ancestor:not(.shiftnav-active) > .shiftnav-target {
+		background-color: #F1F1F1;
+		color: black;
 	}
 	.shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-active > .shiftnav-target, .shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-active > .shiftnav-target {
-		background-color: #20376d;
+		background-color: #1C1C1C;
 		color: white;
+	}
+	.shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.dark > .shiftnav-target {
+		background-color: #1C1C1C;
+		color: white;
+		border-bottom-color: #444444;
+	}
+	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-depth-1 > .shiftnav-target {
+		background-color: white !important;
+		color: black !important;
 	}
 }
 /* 
