@@ -10,7 +10,7 @@
 	<div id="global-store-container">
 		<div class="container">
 			<?php if ( WC()->cart->get_cart_contents_count() != 0 ): ?>
-				<div class="row justify-content-end">
+				<div class="row justify-content-center d-md-none">
 					<div class="col-auto mb-1">
 						<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="btn btn-primary">
 							<span><?php esc_html_e( 'Checkout', 'woocommerce' ); ?> <i class="fas fa-chevron-right"></i></span>

@@ -22,7 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-
-<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="btn btn-primary">
-	<span><?php esc_html_e( 'Checkout', 'woocommerce' ); ?> <i class="fas fa-chevron-right"></i></span>
-</a>
+<div class="text-center text-sm-left text-lg-right">
+	<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="btn btn-primary">
+		<span><?php esc_html_e( 'Checkout', 'woocommerce' ); ?> <i class="fas fa-chevron-right"></i></span>
+	</a>
+</div>
