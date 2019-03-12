@@ -12,7 +12,7 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div id="global-store-container">
 		<div class="container">
-			<div class="box s p-2">
+			<div class="box s p-1 p-lg-2">
 				<header class="entry-header">
 					<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 				</header><!-- .entry-header -->

@@ -9,7 +9,7 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div id="global-store-container">
 		<div class="container">
-			<div class="box s p-2">
+			<div class="box s p-1 p-lg-2">
 				<div class="entry-content">
 						
 					<?php the_content(); ?>

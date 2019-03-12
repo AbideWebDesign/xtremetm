@@ -12,17 +12,7 @@
 
 				<?php endif; ?>
 			</div>
-			
-			<?php if(is_cart()): ?>
-			
-				<div class="col-12 d-block d-sm-none text-center mt-1">
-					<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="btn btn-primary">
-						<span><?php esc_html_e( 'Checkout', 'woocommerce' ); ?> <i class="fas fa-chevron-right"></i></span>
-					</a>
-				</div>	
-			
-			<?php endif; ?>
-			
+						
 			<?php if (is_product_category()): ?>		
 				<div class="col-md-auto align-self-center d-none d-md-block">
 					<?php get_template_part('store-parts/search', 'bar'); ?>

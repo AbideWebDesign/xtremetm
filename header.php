@@ -19,17 +19,16 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 	<div id="header-global">
 		<div class="container">
 			<div class="row">
-				<div class="col-auto d-lg-none">
-					
+				<div class="col-auto d-lg-none align-self-center">
+					<a class="shiftnav-toggle shiftnav-toggle-button" data-shiftnav-target="shiftnav-main"><i class="fas fa-bars"></i></a>
 				</div>
-				<div class="col-auto col-lg-2 align-self-center">
+				<div class="col-auto col-lg-2 align-self-center flex-grow-1 flex-md-grow-0 text-center">
 					<div id="header-logo">
 						<a href="<?php echo home_url(); ?>"><img class="img-fluid" src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm.png'); ?>" /></a>
 					</div>
@@ -65,21 +64,23 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 						</div>
 					</div>
 				</div>
-				<div class="col-auto col-lg-auto align-self-center flex-grow-1">
+				<div class="col-auto col-lg-auto align-self-center flex-grow-1 d-none d-md-block">
 					
 					<?php 
 						wp_nav_menu( array(
 							'theme_location' => (is_user_logged_in() ? 'top-links-logged-in' : 'top-links'),
-							'menu_class' => 'list-inline d-none d-lg-block',
+							'menu_class' => 'list-inline d-none d-sm-block',
 							'depth' => 1, 
 							'add_li_class'  => 'list-inline-item'
 							)
 						);
 					?>
 					
-					<div class="d-lg-none">
-						<a class="d-block" href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"><i class="fas fa-2x fa-user"></i></a>
+<!--
+					<div class="d-none d-sm-block d-lg-none text-right">
+						<a class="d-block" href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>">Account</a>
 					</div>
+-->
 				</div>
 				<div class="col-auto align-self-center">
 					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo $woocommerce->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>

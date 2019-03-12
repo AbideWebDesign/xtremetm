@@ -18,7 +18,7 @@
 					</div>
 				</div>
 			<?php endif; ?>
-			<div class="box s p-2">
+			<div class="box s p-1 p-lg-2">
 				<div class="entry-content">
 					<?php the_content(); ?>
 			

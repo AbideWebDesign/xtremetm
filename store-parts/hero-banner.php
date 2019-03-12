@@ -3,8 +3,21 @@
 	<?php $count = 0; ?>
 		
 		<div id="section-hero-banner" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				
+				<?php while(have_rows('banners', $term)): the_row(); ?>
+				
+					<li data-target="#section-hero-banner" data-slide-to="<?php echo $count; ?>" class="<?php echo ($count==0 ? 'active' : ''); ?>"></li>
+					
+					<?php $count ++; ?>
+					
+				<?php endwhile; ?>
+				
+			</ol>
 			<div class="carousel-inner h-100">
 	
+				<?php $count = 0; ?>
+				
 				<?php while(have_rows('banners', $term)): the_row(); ?>
 			
 					<?php $bg_img = wp_get_attachment_image_src(get_sub_field('hero_banner_image'), 'hero banner', false); ?>
