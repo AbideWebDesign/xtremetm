@@ -26,7 +26,7 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 		<div class="container">
 			<div class="row">
 				<div class="col-auto d-lg-none align-self-center">
-					<a class="shiftnav-toggle shiftnav-toggle-button" data-shiftnav-target="shiftnav-main"><i class="fas fa-bars"></i></a>
+					<?php shiftnav_toggle( 'shiftnav-main' , '' , array( 'icon' => 'bars' , 'class' => 'shiftnav-toggle-button') ); ?>
 				</div>
 				<div class="col-auto col-lg-2 align-self-center flex-grow-1 flex-md-grow-0 text-center">
 					<div id="header-logo">

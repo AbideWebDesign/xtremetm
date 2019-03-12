@@ -1313,9 +1313,36 @@ body .gform_validation_container {
 	}
 }
 /* 
-** Brand Colors
+** Plugin: Shiftnav
 */
 
+body {
+	.shiftnav .shiftnav-panel-close {
+		display: none !important;
+	}
+
+	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item > .shiftnav-submenu-activation {
+		border-bottom: none !important;
+	}
+	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item > .shiftnav-submenu-activation.shiftnav-submenu-activation-open {
+		color: black;
+		background-color: transparent;
+	}
+	.shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.shiftnav-active > .shiftnav-target, .shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.shiftnav-in-transition > .shiftnav-target {
+		background-color: #20376d;
+	}
+	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item.current-menu-item > .shiftnav-target {
+		background-color: white;
+		color: #666;
+	}
+	.shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-active > .shiftnav-target, .shiftnav.shiftnav-skin-light ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-active > .shiftnav-target {
+		background-color: #20376d;
+		color: white;
+	}
+}
+/* 
+** Brand Colors
+*/
 .store-rehv {
 	.btn-primary, .button {
 		background-color: $brand-rev-primary !important;

@@ -166,9 +166,11 @@ require_once("bs4Navwalker.php");
  * Add Bootstrap 4 inline list classes
  */
 function bootstrap_inline_list_class($classes, $item, $args) {
-    if( $args->add_li_class ) {
-        $classes[] = $args->add_li_class;
-    }
+	if ( 'shiftnav' != $args->theme_location ) {
+		if( $args->add_li_class  ) {
+		    $classes[] = $args->add_li_class;
+		}
+	}
     return $classes;
 }
 add_filter('nav_menu_css_class', 'bootstrap_inline_list_class', 1, 3);
