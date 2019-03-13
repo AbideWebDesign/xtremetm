@@ -522,7 +522,7 @@
         },
         {
             "key": "field_5c8934fd72594",
-            "label": "Company Section",
+            "label": "Schedule Section",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -538,8 +538,8 @@
         },
         {
             "key": "field_5c89351272595",
-            "label": "Home Company Image",
-            "name": "home_company_image",
+            "label": "Home Schedule Image",
+            "name": "home_schedule_image",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -562,8 +562,8 @@
         },
         {
             "key": "field_5c89353172596",
-            "label": "Home Company Title",
-            "name": "home_company_title",
+            "label": "Home Schedule Title",
+            "name": "home_schedule_title",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -581,8 +581,8 @@
         },
         {
             "key": "field_5c89353972597",
-            "label": "Home Company Description",
-            "name": "home_company_description",
+            "label": "Home Schedule Description",
+            "name": "home_schedule_description",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -600,8 +600,8 @@
         },
         {
             "key": "field_5c89354772598",
-            "label": "Home Company Button Label",
-            "name": "home_company_button_label",
+            "label": "Home Schedule Button Label",
+            "name": "home_schedule_button_label",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -619,8 +619,8 @@
         },
         {
             "key": "field_5c89355372599",
-            "label": "Home Company Button Link",
-            "name": "home_company_button_link",
+            "label": "Home Schedule Button Link",
+            "name": "home_schedule_button_link",
             "type": "page_link",
             "instructions": "",
             "required": 0,
@@ -635,6 +635,83 @@
             "allow_null": 0,
             "allow_archives": 1,
             "multiple": 0
+        },
+        {
+            "key": "field_5c893f2564e2f",
+            "label": "Partners Section",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5c893f3a64e30",
+            "label": "Home Partners",
+            "name": "home_partners",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5c893f4b64e31",
+            "min": 0,
+            "max": 0,
+            "layout": "row",
+            "button_label": "Add Partner",
+            "sub_fields": [
+                {
+                    "key": "field_5c893f5c64e32",
+                    "label": "Home Partner Logo",
+                    "name": "home_partner_logo",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "preview_size": "col-3",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                },
+                {
+                    "key": "field_5c893f4b64e31",
+                    "label": "Home Partner Link",
+                    "name": "home_partner_link",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": ""
+                }
+            ]
         }
     ],
     "location": [
@@ -669,5 +746,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1552496171
+    "modified": 1552498844
 }

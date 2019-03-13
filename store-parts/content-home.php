@@ -70,7 +70,7 @@
 		</div>
 	</div>
 </div>
-<div id="section-company" class="py-3 py-lg-5 bg-light">
+<div id="section-schedule" class="py-3 py-lg-4 bg-light">
 	<div class="container">
 		<div class="row no-gutters">
 			<div class="col-lg-5 align-content-center">
@@ -81,6 +81,26 @@
 				<div class="text-lg mb-2 mb-lg-3"><?php the_field('home_company_description', $term); ?></div>
 				<a href="<?php the_field('home_company_button_link', $term); ?>" class="btn btn-primary d-block d-sm-inline-block text-center text-lg-left"><span><?php the_field('home_company_button_label', $term); ?></span></a>
 			</div>
+		</div>
+	</div>
+</div>
+<div id="section-partners" class="py-3 py-lg-4 ">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h1 class="mb-4">Our Partners</h1>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			
+			<?php while(have_rows('home_partners', $term)): the_row(); ?>
+			
+				<div class="col-sm-2 col-lg-3 mb-1 mb-lg-3 px-lg-2">
+					<a href="<?php the_sub_field('home_partner_link'); ?>" target="_blank"><?php echo wp_get_attachment_image(get_sub_field('home_partner_logo'), 'col-3', false, array('class'=>'img-fluid')); ?></a>
+				</div>
+			
+			<?php endwhile; ?>
+			
 		</div>
 	</div>
 </div>
