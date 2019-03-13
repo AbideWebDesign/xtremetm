@@ -74,12 +74,12 @@
 	<div class="container">
 		<div class="row no-gutters">
 			<div class="col-lg-5 align-content-center">
-				<?php echo wp_get_attachment_image(get_field('home_company_image', $term), 'hero banner', false, array('class'=>'img-full')); ?>
+				<?php echo wp_get_attachment_image(get_field('home_schedule_image', $term), 'hero banner', false, array('class'=>'img-full')); ?>
 			</div>
 			<div class="col-lg-7 bg-white p-1 p-sm-3 p-lg-4">
-				<h1 class="mt-3 mt-lg-0 mb-2 mb-lg-3"><?php the_field('home_company_title', $term); ?></h1>
-				<div class="text-lg mb-2 mb-lg-3"><?php the_field('home_company_description', $term); ?></div>
-				<a href="<?php the_field('home_company_button_link', $term); ?>" class="btn btn-primary d-block d-sm-inline-block text-center text-lg-left"><span><?php the_field('home_company_button_label', $term); ?></span></a>
+				<h1 class="mt-3 mt-lg-0 mb-2 mb-lg-3"><?php the_field('home_schedule_title', $term); ?></h1>
+				<div class="text-lg mb-2 mb-lg-3"><?php the_field('home_schedule_description', $term); ?></div>
+				<a href="<?php the_field('home_schedule_button_link', $term); ?>" class="btn btn-primary d-block d-sm-inline-block text-center text-lg-left"><span><?php the_field('home_schedule_button_label', $term); ?></span></a>
 			</div>
 		</div>
 	</div>
@@ -95,7 +95,7 @@
 			
 			<?php while(have_rows('home_partners', $term)): the_row(); ?>
 			
-				<div class="col-sm-2 col-lg-3 mb-1 mb-lg-3 px-lg-2">
+				<div class="col-sm-2 col-lg-3 mb-1 mb-lg-3 px-lg-2 align-self-center">
 					<a href="<?php the_sub_field('home_partner_link'); ?>" target="_blank"><?php echo wp_get_attachment_image(get_sub_field('home_partner_logo'), 'col-3', false, array('class'=>'img-fluid')); ?></a>
 				</div>
 			
