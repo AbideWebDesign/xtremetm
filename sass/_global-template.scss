@@ -19,14 +19,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	margin-bottom: 0;
 	color: black;
 }
-h1 {
+h1, h2 {
 	font-family: $font-family-alt;
 	text-transform: uppercase;
 }
-h2, h3 {
-	text-transform: uppercase;
-}
 h3 {
+	text-transform: uppercase;
 	font-weight: bold;
 }
 .btn {
@@ -407,6 +405,7 @@ h3 {
 		min-height: 600px;
 	}
 }
+
 /* 
 ** Global Store
 */
@@ -418,7 +417,6 @@ h3 {
 /* 
 ** Component - Hero Banner 
 */
-
 #section-hero-banner {
 	height: 500px;
 	background-color: black;
@@ -523,6 +521,26 @@ h3 {
 	@extend .box;	
 }
 
+/* 
+** Component - Schedule Event
+*/
+.schedule-list-item:nth-child(even) {
+	background-color: $gray-200;
+}
+.schedule-list-date {
+	font-weight: 700;
+	font-size: $font-size-lg;
+}
+.schedule-list-additional {
+	font-size: $font-size-sm;
+	color: $gray-800;
+	border-top: 1px solid $gray-400;
+	padding-top: 1em;
+	
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
 /* 
 ** Plugin - Woocommerce
 */
