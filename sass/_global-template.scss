@@ -113,6 +113,35 @@ h3 {
 .color-brand {
 	color: $brand-xtreme;
 }
+.bg-rehz {
+	background-color: $brand-rev-primary;
+}
+.bg-primis {
+	background-color: $brand-primis-primary;
+}
+.title {
+	color: $brand-xtreme;
+	font-size: 3.0em;
+}
+.subtitle {
+	color: $gray-600;
+	font-family: 'Roboto';
+	text-transform: none;
+	font-weight: 500;
+	line-height: 34px;
+}
+.img-full {
+	width: 100%;
+    height: 100% !important;
+    min-width: 370px;
+    object-fit: cover;
+    font-family: 'object-fit: cover;';
+}
+@media(max-width: 767px) {
+	.img-full {
+		min-width: 100%;
+	}
+}
 /* 
 ** Global Header
 */
@@ -350,7 +379,34 @@ h3 {
 		}
 	}	
 }
-
+/* 
+** Part - Background Image
+*/
+.bg-img {
+	background-size: cover;
+	background-repeat: none;
+	background-position: center center;
+}
+.bg-overlay {
+	position: absolute;
+    background: radial-gradient(rgba(0,0,0,.5),rgba(0,0,0,.2));
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+.bg-img-content {
+	position: relative;
+}
+#section-brands {
+	.bg-overlay {
+		background: linear-gradient(180deg,rgba(0,15,30,0) 0%,rgba(0,15,30,.45) 75%,rgba(0,15,30,.8) 100%);
+	}
+	.bg-img {
+		min-height: 600px;
+	}
+}
 /* 
 ** Global Store
 */
@@ -362,26 +418,12 @@ h3 {
 /* 
 ** Component - Hero Banner 
 */
+
 #section-hero-banner {
 	height: 500px;
 	background-color: black;
-	
-	.bg-img {
-		background-size: cover;
-		background-repeat: none;
-		background-position: center center;
-	}
-	.bg-overlay {
-		position: absolute;
-	    background: radial-gradient(rgba(0,0,0,.5),rgba(0,0,0,.2));
-	    top: 0;
-	    left: 0;
-	    right: 0;
-	    height: 100%;
-	    width: 100%;
-	}
+
 	.bg-img-content {
-		position: relative;
 		
 		h4 {
 			font-size: .9em;
