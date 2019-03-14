@@ -8,6 +8,7 @@
  */
 
 ?>
+<?php get_template_part('store-parts/section', 'header-bar'); ?>
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div id="global-store-container">

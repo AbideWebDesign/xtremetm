@@ -415,6 +415,24 @@ h3 {
 }
 
 /* 
+** Global Page
+*/
+.entry-title {
+	margin-bottom: 1.5em;
+}
+.entry-content {
+	h2 {
+		margin-bottom: 1em;
+	}
+	h3 {
+		margin-bottom: .8em;
+	}
+	img {
+		@extend .img-fluid;
+		margin-bottom: 1em;
+	}
+}
+/* 
 ** Component - Hero Banner 
 */
 #section-hero-banner {
