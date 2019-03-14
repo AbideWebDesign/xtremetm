@@ -63,7 +63,7 @@
 					<div class="col text-center">
 						<span>Copyright <?php echo date('Y'); ?> xtremetm.com. All rights reserved.</span>
 						<i class="fas fa-chevron-right mx-2"></i>
-						<span><a href="#">Privacy Policy</a><i class="fas fa-chevron-right mx-2"></i><a href="#">Terms & Conditions</a></span>
+						<span><a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a><i class="fas fa-chevron-right mx-2"></i><a href="<?php echo home_url('/terms'); ?>">Terms & Conditions</a></span>
 						<i class="fas fa-chevron-right mx-2"></i> <a href="https://abidewebdesign.com" target="_blank">Website Design by Abide Web Design</a>
 					</div>
 				</div>
