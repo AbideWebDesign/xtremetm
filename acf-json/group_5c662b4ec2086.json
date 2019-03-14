@@ -355,7 +355,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": ""
+                    "return_format": "url"
                 },
                 {
                     "key": "field_5c893074d5357",
@@ -746,5 +746,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1552498844
+    "modified": 1552576605
 }
