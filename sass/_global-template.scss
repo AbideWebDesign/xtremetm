@@ -120,6 +120,10 @@ h3 {
 .title {
 	color: $brand-xtreme;
 	font-size: 3.0em;
+	
+	a {
+		font-size: $font-size-sm;
+	}
 }
 .subtitle {
 	color: $gray-600;

@@ -139,20 +139,9 @@ do_action( 'woocommerce_before_cart' ); ?>
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
 <div class="row justify-content-between">
-	<div class="col-12 col-sm-6 col-lg-6 order-2 order-lg-1 align-self-center">
-		<div class="cart-help p-1 bg-light">
-			<p class="mb-1"><strong>Need Help? Call</strong> <span class="color-brand"><?php the_field('global_phone', 'options'); ?></span></p>
-			<ul class="list-inline mb-0">
-				<li class="list-inline-item">
-					<a href="#">Returns</a>
-				</li>
-				<li class="list-inline-item">
-					<a href="#">Shipping</a>
-				</li>
-				<li class="list-inline-item">
-					<a href="#">Privacy</a>
-				</li>				
-			</ul>
+	<div class="col-12 col-sm-6 col-lg-6 order-2 order-lg-1 align-self-start">
+		<div class="cart-help p-1 bg-light text-center">
+			<p class="mb-0"><strong>Need Help? Call <span class="color-brand"><?php the_field('global_phone', 'options'); ?></span></strong></p>
 		</div>
 	</div>
 	<div class="col-sm-6 col-lg-6 order-1 order-lg-2">
