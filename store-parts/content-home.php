@@ -31,7 +31,7 @@
 			<div class="col-lg-4">
 				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_1_bg_src[0]; ?>)">
 					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column  h-100">
+					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
 						<div class="mt-auto">
 							<?php echo wp_get_attachment_image($brand_1['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
 							<h3 class="mb-1 text-white"><?php echo $brand_1['brand_title']; ?></h3>
@@ -44,7 +44,7 @@
 			<div class="col-lg-4">
 				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_2_bg_src[0]; ?>)">
 					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-sm-3 d-flex align-content-end flex-column  h-100">
+					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
 						<div class="mt-auto">
 							<?php echo wp_get_attachment_image($brand_2['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
 							<h3 class="mb-1 text-white"><?php echo $brand_2['brand_title']; ?></h3>
@@ -57,7 +57,7 @@
 			<div class="col-lg-4">
 				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_3_bg_src[0]; ?>)">
 					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-sm-3 d-flex align-content-end flex-column  h-100">
+					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
 						<div class="mt-auto">
 							<?php echo wp_get_attachment_image($brand_3['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 180px')); ?>
 							<h3 class="mb-1 text-white"><?php echo $brand_3['brand_title']; ?></h3>
