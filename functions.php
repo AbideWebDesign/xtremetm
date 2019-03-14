@@ -267,15 +267,8 @@ function xtremetm_widgets_init() {
 	) );
 	
 	register_sidebar( array(
-		'name'          => 'Store Filter Notes Rehv',
-		'id'            => 'store_filter_notes_rehv',
-		'before_widget' => '<div>',
-		'after_widget'  => '</div>',
-	) );
-	
-	register_sidebar( array(
-		'name'          => 'Tire Finder - Rehv',
-		'id'            => 'tire_finder_rehv',
+		'name'          => 'Store Filter Notes',
+		'id'            => 'store_filter_notes',
 		'before_widget' => '<div>',
 		'after_widget'  => '</div>',
 	) );
@@ -808,7 +801,6 @@ function wooc_validate_extra_register_fields( $username, $email, $validation_err
 }
  
 add_action( 'woocommerce_register_post', 'wooc_validate_extra_register_fields', 10, 3 );
-
 
 /**
  * Gravity Forms

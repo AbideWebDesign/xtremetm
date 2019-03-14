@@ -76,11 +76,6 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 						);
 					?>
 					
-<!--
-					<div class="d-none d-sm-block d-lg-none text-right">
-						<a class="d-block" href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>">Account</a>
-					</div>
--->
 				</div>
 				<div class="col-auto align-self-center">
 					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo $woocommerce->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>

@@ -7,8 +7,8 @@
  * @package xtremetm
  */
 
-if ( ! is_active_sidebar( 'store_filter_notes_rehv' ) ) {
+if ( ! is_active_sidebar( 'store_filter_notes' ) ) {
 	return;
 }
 ?>
-<?php dynamic_sidebar( 'store_filter_notes_rehv' ); ?>
+<?php dynamic_sidebar( 'store_filter_notes' ); ?>

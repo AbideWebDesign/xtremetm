@@ -545,6 +545,10 @@ h3 {
 ** Plugin - Woocommerce
 */
 .woocommerce {
+	.wcpf-filter-notes .wcpf-note-list .wcpf-note-item {
+		background-color: white;
+		padding: 5px 15px 5px 5px;
+	}
 	select {
 		@extend .custom-select;
 		background: white;
@@ -662,6 +666,31 @@ h3 {
 			@extend .box-sm;
 			@extend .s;
 			
+			&.product-lg {
+				a:hover {
+					text-decoration: none;
+				}
+				h2.woocommerce-loop-product__title {
+					@extend h1;
+					line-height: 50px;
+					margin-bottom: .2em;
+					color: $brand-xtreme;
+				}
+				.price {
+					margin: 0 0 1em 0;
+				}
+				p {
+					margin-bottom: 1em;
+				}
+				ul {
+					list-style: inherit;
+					margin-left: 1em;
+					
+					li {
+						list-style: inherit;
+					}
+				}
+			}
 			.woocommerce-loop-product__link:hover {
 				text-decoration: none;
 			}							
@@ -702,7 +731,7 @@ h3 {
 			}
 		}
 	}
-	.product {
+	div.product {
 		label {
 			font-weight: bold;
 		}
