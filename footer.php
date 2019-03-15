@@ -34,8 +34,8 @@
 									<?php the_field('global_schedule', 'options'); ?>
 								</div>
 								<div class="col-lg-auto mb-1 mb-lg-0">
-									<div><i class="fas fa-phone"></i> <?php the_field('global_phone', 'options'); ?></div>
-									<div><i class="fas fa-envelope"></i> <?php the_field('global_email', 'options'); ?></div>
+									<div><i class="fas fa-phone"></i> <a class="text-white" href="tel:<?php the_field('global_phone', 'options'); ?>"><?php the_field('global_phone', 'options'); ?></a></div>
+									<div><i class="fas fa-envelope"></i> <a class="text-white" href="mailto:<?php the_field('global_email', 'options'); ?>"><?php the_field('global_email', 'options'); ?></a></div>
 								</div>
 								<div class="col-lg-auto">
 									<a href="<?php echo home_url('/contact/'); ?>" class="btn btn-primary btn-sm"><span>Contact Us <i class="fas fa-chevron-right"></i></span></a>

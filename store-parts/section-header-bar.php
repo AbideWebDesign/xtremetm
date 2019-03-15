@@ -19,7 +19,7 @@
 				</div>
 			<?php endif; ?>
 			<div class="col-md-auto d-none d-md-block align-self-center">
-				<div id="header-phone" class="py-1"><?php the_field('global_phone', 'options'); ?></div>
+				<div id="header-phone" class="py-1"><a class="text-white" href="tel:<?php the_field('global_phone', 'options'); ?>"><?php the_field('global_phone', 'options'); ?></a></div>
 			</div>			
 		</div>
 	</div>

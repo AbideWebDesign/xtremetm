@@ -266,6 +266,10 @@ h3 {
 		font-family: $font-family-alt;
 		color: white !important;
 		text-align: center;
+		
+		a:hover {
+			text-decoration: none;
+		}
 	}
 	#header-search {
 		padding: 0;
@@ -1277,6 +1281,9 @@ h3 {
 				    height: 50px;
 				    padding: .75rem 1.2rem;
 				}
+			}
+			a:hover {
+				text-decoration: none;
 			}
 		}
 	}
