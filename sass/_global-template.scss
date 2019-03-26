@@ -779,11 +779,17 @@ h3 {
 				margin: 0;
 				
 				.flex-viewport {
-					width: 75%;
+					width: 85%;
 					float: right; 
+					
+					img {
+						width: auto;
+						max-height: 600px;
+						margin: auto;
+					}
 				 }
 				.flex-control-thumbs {
-					width: 25%;
+					width: 10%;
 					float: left;
 					
 					li {
@@ -1130,16 +1136,9 @@ h3 {
 
 @media(max-width: 767px) {
 	.woocommerce {
-		.product {
+		div.product {
 			#product-top {
-				.images {
-					.flex-viewport {
-						width: 100%;
-					}
-					.flex-control-thumbs {
-						display: none;
-					}
-				}
+				
 				.summary {
 					padding: 1.5em;
 					.product_title, .price {
