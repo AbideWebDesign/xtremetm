@@ -279,6 +279,7 @@ add_action( 'widgets_init', 'xtremetm_widgets_init' );
 function mytheme_add_woocommerce_support() {
     add_theme_support( 'woocommerce' );
 }
+
 /**
  * Hide update notifications from all users
  */
@@ -578,11 +579,11 @@ function xtremetm_close_div() {
 		
 		if (is_product()) {
 
-	    	include(locate_template('/store-parts/section-footer-top.php', false, false));
+	    		include(locate_template('/store-parts/section-footer-top.php', false, false));
 
-    	} 	
+    		} 	
     	
-    	include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
+		include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
     	
 	} elseif (is_search()) {
 		
@@ -687,51 +688,6 @@ add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
 	}
 
 } );
-
-/**
- * Change product quantity input display.
- */
-function woocommerce_quantity_input($args = array(), $product = null, $echo = true ) {
-    
-    if ( is_null( $product ) ) { 
-        $product = $GLOBALS['product']; 
-    } 
-    
-    if ( !array_key_exists('input_name', $args) ) {
-	    $input_name = 'qty';
-    } else {
-	    $input_name = $args['input_name'];
-    }
-    
-	$defaults = array(
-		'input_name'    => $input_name,
-		'input_value'   => $args['input_value'],
-		'max_value'   => apply_filters( 'woocommerce_quantity_input_max', '', $product ),
-		'min_value'   => apply_filters( 'woocommerce_quantity_input_min', '', $product ),
-		'step'    => apply_filters( 'woocommerce_quantity_input_step', '1', $product ),
-		'style'   => apply_filters( 'woocommerce_quantity_style', 'width: 75px', $product )
-	);
-	if ( ! empty( $defaults['min_value'] ) )
-		$min = $defaults['min_value'];
-	else $min = 1;
-	
-	if ( ! empty( $defaults['max_value'] ) )
-		$max = $defaults['max_value'];
-	else $max = 20;
-	
-	if ( ! empty( $defaults['step'] ) )
-		$step = $defaults['step'];
-	else $step = 1;
-	
-	$options = '';
-	
-	for ( $count = $min; $count <= $max; $count = $count+$step ) {
-		$selected = $count === $defaults['input_value'] ? ' selected' : '';
-		$options .= '<option value="' . $count . '"'.$selected.'>' . $count . '</option>';
-	}
-	
-	echo '<div class="quantity_select" style="' . $defaults['style'] . '"><select name="' . esc_attr( $defaults['input_name'] ) . '" title="' . _x( 'Qty', 'Product quantity input tooltip', 'woocommerce' ) . '" class="qty">' . $options . '</select></div>';
-}
 
 /**
  * Remove reset variations from displaying

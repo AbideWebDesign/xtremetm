@@ -571,6 +571,9 @@ h3 {
 ** Plugin - Woocommerce
 */
 .woocommerce {
+	.quantity_select {
+		min-width: 70px;
+	}
 	.wcpf-filter-notes .wcpf-note-list .wcpf-note-item {
 		background-color: white;
 		padding: 5px 15px 5px 5px;
