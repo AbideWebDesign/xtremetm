@@ -1,19 +1,26 @@
 <?php if (is_shop() && get_field('display_banner_area', $term)): ?>
 	
 	<?php $count = 0; ?>
+	<?php $banners = count(get_field('banners', $term)); ?>
 		
 		<div id="section-hero-banner" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-				
-				<?php while(have_rows('banners', $term)): the_row(); ?>
-				
-					<li data-target="#section-hero-banner" data-slide-to="<?php echo $count; ?>" class="<?php echo ($count==0 ? 'active' : ''); ?>"></li>
+			
+			<?php if ($banners > 1): ?>
+			
+				<ol class="carousel-indicators">
 					
-					<?php $count ++; ?>
+					<?php while(have_rows('banners', $term)): the_row(); ?>
 					
-				<?php endwhile; ?>
+						<li data-target="#section-hero-banner" data-slide-to="<?php echo $count; ?>" class="<?php echo ($count==0 ? 'active' : ''); ?>"></li>
+						
+						<?php $count ++; ?>
+						
+					<?php endwhile; ?>
+					
+				</ol>
 				
-			</ol>
+			<?php endif; ?>
+			
 			<div class="carousel-inner h-100">
 	
 				<?php $count = 0; ?>
