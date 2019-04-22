@@ -571,6 +571,9 @@ h3 {
 ** Plugin - Woocommerce
 */
 .woocommerce {
+	#billing_country_field, #shipping_country_field {
+		display: none;
+	}
 	.quantity_select {
 		min-width: 70px;
 	}
