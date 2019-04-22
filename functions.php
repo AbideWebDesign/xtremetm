@@ -776,3 +776,13 @@ add_action( 'admin_init', function() {
         remove_action( 'all_admin_notices', array( $yoast_nc, 'display_notifications' ) );
     }
 });
+
+/**
+ * Jetpack - turn off upsell ads
+ */
+add_filter( 'jetpack_just_in_time_msgs', '_return_false' );
+
+/**
+ * Woocommerce - turn off upsell ads
+ */
+add_filter( 'woocommerce_helper_suppress_admin_notices', '__return_true' );
