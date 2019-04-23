@@ -759,6 +759,61 @@ function wooc_validate_extra_register_fields( $username, $email, $validation_err
 add_action( 'woocommerce_register_post', 'wooc_validate_extra_register_fields', 10, 3 );
 
 /**
+ * Add ship to event field on checkout page
+ */ 
+add_action('woocommerce_after_order_notes', 'ship_to_event_field');
+function ship_to_event_field($checkout) {
+	
+	$events = array();
+	
+	while (have_rows('event_shipping', 'options')) {
+		the_row();
+		$event_name = get_sub_field('event_name');
+		
+		$events[$event_name] = $event_name;
+	}
+		
+	
+	echo '<div id="ship-to-event" class="mt-1" style="display: none;">';
+	
+	woocommerce_form_field('ship_to_event_list', array(
+		'type' => 'select',
+		'label' => __('') ,
+		'placeholder' => __('') ,
+		'options' => $events,
+		'required' => false,
+	), $checkout->get_value('ship_to_event_list'));
+	
+	echo '</div>';
+}
+
+/**
+ * Save ship to event field 
+ */ 
+add_action( 'woocommerce_checkout_create_order', 'custom_checkout_field_update_order_meta', 20, 2 );
+function custom_checkout_field_update_order_meta( $order, $data ) {
+   
+    if ( isset( $_POST['ship_to_event_list'] ) ) {
+		
+		$address = array(
+			'address_1'  => $_POST['ship_to_event_list'],
+			'address_2'  => '', 
+			'city'       => '',
+			'state'      => '',
+			'postcode'   => '',
+			'country'    => ''
+	    );
+		
+		$order->set_address( $address, 'shipping' );
+
+		return $order;
+        // Save custom checkout field value
+//         $order->update_meta_data( '_ship_to_event_list', esc_attr( $_POST['ship_to_event_list'] ) );
+		
+    }
+}
+
+/**
  * Gravity Forms
  */
 add_filter( 'gform_submit_button_1', 'xtremetm_form_submit_button', 10, 2 );

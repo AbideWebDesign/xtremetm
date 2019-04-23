@@ -20,6 +20,46 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_5cbf74541f228",
+            "label": "Event Shipping",
+            "name": "event_shipping",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5cbf747e1f229",
+            "min": 0,
+            "max": 0,
+            "layout": "row",
+            "button_label": "Add Event",
+            "sub_fields": [
+                {
+                    "key": "field_5cbf747e1f229",
+                    "label": "Event Name",
+                    "name": "event_name",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
         }
     ],
     "location": [
@@ -39,5 +79,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1552591325
+    "modified": 1556051106
 }
