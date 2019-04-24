@@ -332,7 +332,7 @@ remove_theme_support( 'wc-product-gallery-zoom' );
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
  
 function dequeue_stylesandscripts_select2() {
-    if ( class_exists( 'woocommerce' ) ) {
+    if ( class_exists( 'woocommerce' ) && !(is_admin()) ) {
         wp_dequeue_style( 'selectWoo' );
         wp_deregister_style( 'selectWoo' );
  
