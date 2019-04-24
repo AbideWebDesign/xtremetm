@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="woocommerce-shipping-fields mt-1">
+<div class="woocommerce-shipping-fields mt-1 mb-2">
 
 	<?php if ( true === WC()->cart->needs_shipping_address() ) : ?>
 	

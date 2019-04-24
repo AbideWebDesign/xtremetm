@@ -37,7 +37,17 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 		<div class="row" id="customer_details">
 			<div class="col-12 col-lg-8">
+				<h3 class="">Shipping Details</h3>
 				
+				<div id="ship-option" class="form-check mt-1">
+					<input id="ship-to-event-checkbox" class="form-check-input" type="checkbox" name="ship-to-event-checkbox" value="1">
+					<label class="form-check-label"><?php _e( 'Pick up order at event?', 'woocommerce' ); ?></label>
+				</div>
+				
+				<?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
+				
+				<?php do_action( 'woocommerce_checkout_shipping' ); ?>
+
 				<?php do_action( 'woocommerce_checkout_billing' ); ?>
 				
 				<div class="woocommerce-additional-fields">
@@ -61,17 +71,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 				
 				</div>
 				
-				<h3>Shipping Details</h3>
-				
-				<div id="ship-option" class="form-check mt-1">
-					<input id="ship-to-event-checkbox" class="form-check-input" type="checkbox" name="ship-to-event-checkbox" value="1">
-					<label class="form-check-label"><?php _e( 'Pick up order at event?', 'woocommerce' ); ?></label>
-				</div>
-				
-				<?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
-				
-				<?php do_action( 'woocommerce_checkout_shipping' ); ?>
-								
+												
 				<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
 			</div>
 			<div class="col-lg-4">

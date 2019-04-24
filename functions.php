@@ -126,6 +126,20 @@ function xtremetm_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'xtremetm_scripts' );
 
+function ajax_site_scripts() {
+    // Enqueue our JS file
+    wp_enqueue_script( 'ajax_appjs', get_template_directory_uri() . '/js/ajax.js', array( 'jquery' ), filemtime( get_template_directory() . '/js/ajax.js'), true);
+    
+    // Provide a global object to our JS file containing the AJAX url and security nonce
+    wp_localize_script( 'ajax_appjs', 'ajax_object',
+        array(
+            'ajax_url'      => admin_url('admin-ajax.php'),
+            'ajax_nonce'    => wp_create_nonce('ajax_nonce'),
+        )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'ajax_site_scripts', 999) ;
+
 /**
  * Image sizes
  */
@@ -315,7 +329,17 @@ add_action( 'after_setup_theme', 'mytheme_add_woocommerce_support' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 remove_theme_support( 'wc-product-gallery-zoom' );
-
+add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
+ 
+function dequeue_stylesandscripts_select2() {
+    if ( class_exists( 'woocommerce' ) ) {
+        wp_dequeue_style( 'selectWoo' );
+        wp_deregister_style( 'selectWoo' );
+ 
+        wp_dequeue_script( 'selectWoo');
+        wp_deregister_script('selectWoo');
+    } 
+} 
 /**
  * Remove product tags
  */
@@ -762,9 +786,12 @@ add_action( 'woocommerce_register_post', 'wooc_validate_extra_register_fields', 
  * Add ship to event field on checkout page
  */ 
 add_action('woocommerce_after_order_notes', 'ship_to_event_field');
+
 function ship_to_event_field($checkout) {
 	
 	$events = array();
+	
+	$events['blank'] = 'Select an Event';
 	
 	while (have_rows('event_shipping', 'options')) {
 		the_row();
@@ -772,47 +799,52 @@ function ship_to_event_field($checkout) {
 		
 		$events[$event_name] = $event_name;
 	}
-		
 	
 	echo '<div id="ship-to-event" class="mt-1" style="display: none;">';
 	
 	woocommerce_form_field('ship_to_event_list', array(
 		'type' => 'select',
 		'label' => __('') ,
-		'placeholder' => __('') ,
+		'placeholder' => __('Select an Event') ,
 		'options' => $events,
 		'required' => false,
 	), $checkout->get_value('ship_to_event_list'));
 	
 	echo '</div>';
+
 }
 
 /**
- * Save ship to event field 
+ * Ajax function to return event shipping address meta values
  */ 
-add_action( 'woocommerce_checkout_create_order', 'custom_checkout_field_update_order_meta', 20, 2 );
-function custom_checkout_field_update_order_meta( $order, $data ) {
-   
-    if ( isset( $_POST['ship_to_event_list'] ) ) {
-		
-		$address = array(
-			'address_1'  => $_POST['ship_to_event_list'],
-			'address_2'  => '', 
-			'city'       => '',
-			'state'      => '',
-			'postcode'   => '',
-			'country'    => ''
-	    );
-		
-		$order->set_address( $address, 'shipping' );
+add_action("wp_ajax_get_event_address", "get_event_address");
+add_action("wp_ajax_nopriv_get_event_address", "get_event_address");
 
-		return $order;
-        // Save custom checkout field value
-//         $order->update_meta_data( '_ship_to_event_list', esc_attr( $_POST['ship_to_event_list'] ) );
-		
-    }
-}
-
+function get_event_address() {  
+	
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce') ) {
+	
+		wp_send_json_error( array('message' => 'Nonce is invalid.') );
+	
+	}
+	
+	while (have_rows('event_shipping', 'options')) {
+	
+		the_row();
+	
+		if (get_sub_field('event_name') == $_POST['eventname']) {
+			
+			$event['street'] = get_sub_field('event_address_street');
+			$event['city'] = get_sub_field('event_address_city');
+			$event['state'] = get_sub_field('event_address_state');
+			$event['zip'] = get_sub_field('event_address_zip');
+			
+			wp_send_json_success( array('message' => 'success', 'address' => $event) );
+		}
+	}
+	
+	wp_send_json_error( array('message' => 'No event found.') );
+} 
 /**
  * Gravity Forms
  */

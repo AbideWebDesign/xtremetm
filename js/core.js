@@ -11,9 +11,7 @@
 				$(".form-group").removeClass("sb-search-open");
 			}
 		});
-		
-		$('#ship-to-event-list').select2();
-		
+				
 		$("#ship-to-event-checkbox").click(function (e) {
 	        if ($(this).is(':checked')) {
 		        $('#ship-to-event').slideDown('fast');
@@ -21,5 +19,5 @@
 		        $('#ship-to-event').slideUp('fast');
 	        }
     	});
-	});
+    });
 })(jQuery);

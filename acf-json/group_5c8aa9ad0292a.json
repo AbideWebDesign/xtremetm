@@ -46,7 +46,83 @@
                     "name": "event_name",
                     "type": "text",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5cc07faeea089",
+                    "label": "Event Address Street",
+                    "name": "event_address_street",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5cc07fc1ea08a",
+                    "label": "Event Address City",
+                    "name": "event_address_city",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5cc07fc8ea08b",
+                    "label": "Event Address State",
+                    "name": "event_address_state",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5cc07fcfea08c",
+                    "label": "Event Address Zip",
+                    "name": "event_address_zip",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -65,9 +141,9 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "post_format",
                 "operator": "==",
-                "value": "acf-options-store-global-fields"
+                "value": "aside"
             }
         ]
     ],
@@ -79,5 +155,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1556051106
+    "modified": 1556119567
 }
