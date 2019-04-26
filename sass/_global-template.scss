@@ -1078,6 +1078,9 @@ h3 {
 	margin-bottom: 0;
 }
 .woocommerce-checkout {
+	#ship-to-different-address{
+		display: none;
+	}
 	td {
 		text-align: right;
 	}

@@ -808,12 +808,13 @@ function ship_to_event_field($checkout) {
 		'placeholder' => __('Select an Event') ,
 		'options' => $events,
 		'required' => false,
+		'input_class' => array('form-check'),
 	), $checkout->get_value('ship_to_event_list'));
 	
 	echo '</div>';
 
 }
-
+add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
 /**
  * Ajax function to return event shipping address meta values
  */ 

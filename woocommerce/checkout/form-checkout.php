@@ -39,8 +39,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			<div class="col-12 col-lg-8">
 				<h3 class="">Shipping Details</h3>
 				
-				<div id="ship-option" class="form-check mt-1">
-					<input id="ship-to-event-checkbox" class="form-check-input" type="checkbox" name="ship-to-event-checkbox" value="1">
+				<div id="ship-option" class="form-check mt-1 bg-light p-1">
+					<input id="ship-to-event-checkbox" type="checkbox" name="ship-to-event-checkbox" value="1">
 					<label class="form-check-label"><?php _e( 'Pick up order at event?', 'woocommerce' ); ?></label>
 				</div>
 				
