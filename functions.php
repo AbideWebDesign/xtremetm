@@ -148,7 +148,7 @@ add_image_size('col-4', 434);
 add_image_size('col-5', 542);
 add_image_size('col-6', 650);
 add_image_size('col-7', 759);
-add_image_size('hero banner', 2400, 1600, true);
+add_image_size('hero banner', 1600, 500, true);
 
 /**
  * Plugin: ACF Options page

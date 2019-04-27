@@ -74,7 +74,7 @@
 	<div class="container">
 		<div class="row no-gutters">
 			<div class="col-lg-5 align-content-center">
-				<?php echo wp_get_attachment_image(get_field('home_schedule_image', $term), 'hero banner', false, array('class'=>'img-full')); ?>
+				<?php echo wp_get_attachment_image(get_field('home_schedule_image', $term), 'col-5', false, array('class'=>'img-full')); ?>
 			</div>
 			<div class="col-lg-7 bg-white p-1 p-sm-3 p-lg-4">
 				<h1 class="mt-3 mt-lg-0 mb-2 mb-lg-3"><?php the_field('home_schedule_title', $term); ?></h1>
