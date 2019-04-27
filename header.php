@@ -19,6 +19,7 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<link rel="icon" type="image/png" href="<?php the_field('favicon', 'options'); ?>">
 	<?php wp_head(); ?>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139180184-1"></script>
