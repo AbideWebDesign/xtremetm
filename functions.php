@@ -330,7 +330,8 @@ add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 remove_theme_support( 'wc-product-gallery-zoom' );
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
- 
+add_filter( 'wc_stripe_show_payment_request_on_checkout', '__return_true' );
+add_filter( 'wc_stripe_hide_payment_request_on_product_page', '__return_true' );
 function dequeue_stylesandscripts_select2() {
     if ( class_exists( 'woocommerce' ) && !(is_admin()) ) {
         wp_dequeue_style( 'selectWoo' );
@@ -808,7 +809,7 @@ function ship_to_event_field($checkout) {
 		'placeholder' => __('Select an Event') ,
 		'options' => $events,
 		'required' => false,
-		'input_class' => array('form-check'),
+		'input_class' => array('form-check')
 	), $checkout->get_value('ship_to_event_list'));
 	
 	echo '</div>';
