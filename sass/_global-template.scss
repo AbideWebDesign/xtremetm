@@ -570,16 +570,14 @@ h3 {
 /* 
 ** Plugin - Woocommerce
 */
+.wc_payment_method payment_method_stripe label {
+	width: 100%;
+}
 .woocommerce {
 	#wc-stripe-payment-request-wrapper {
 		width: 100px !important;
 		margin-bottom: 1em !important;
 		padding-top: 0em !important;
-	}
-	.wc_payment_method payment_method_stripe {
-		label {
-			width: 100%;
-		}
 	}
 	#billing_country_field, #shipping_country_field {
 		display: none;
