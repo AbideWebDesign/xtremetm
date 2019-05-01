@@ -576,6 +576,11 @@ h3 {
 		margin-bottom: 1em !important;
 		padding-top: 0em !important;
 	}
+	.wc_payment_method payment_method_stripe {
+		label {
+			width: 100%;
+		}
+	}
 	#billing_country_field, #shipping_country_field {
 		display: none;
 	}
@@ -990,8 +995,13 @@ h3 {
 			margin-right: .3em;
 		}
 	}
-	.form-row {
-		display: block;
+	form {
+		.form-row {
+			display: block;
+		}
+		.woocommerce-SavedPaymentMethods-saveNew {
+			padding: 0;
+		}
 	}
 	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select, textarea {
 		@extend .form-control;
