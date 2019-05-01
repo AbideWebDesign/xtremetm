@@ -851,7 +851,7 @@ function get_event_address() {
 		the_row();
 	
 		if (get_sub_field('event_name') == $_POST['eventname']) {
-			
+			$event['event_name'] = get_sub_field('event_name');
 			$event['street'] = get_sub_field('event_address_street');
 			$event['city'] = get_sub_field('event_address_city');
 			$event['state'] = get_sub_field('event_address_state');
