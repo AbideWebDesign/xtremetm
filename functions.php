@@ -863,6 +863,13 @@ function get_event_address() {
 	
 	wp_send_json_error( array('message' => 'No event found.') );
 } 
+// Override company name label
+add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields' );
+
+function custom_override_checkout_fields( $fields ) {
+     $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
+     return $fields;
+}
 /**
  * Gravity Forms
  */

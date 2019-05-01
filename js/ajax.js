@@ -7,7 +7,7 @@ $('#ship_to_event_list').change(function(){
 		action: 'get_event_address',
 		security: ajax_object.ajax_nonce
 	};
-      
+
 	// Get event address
 	$.ajax({
 		type: 'POST',
