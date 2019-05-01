@@ -330,8 +330,24 @@ add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 remove_theme_support( 'wc-product-gallery-zoom' );
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
-add_filter( 'wc_stripe_show_payment_request_on_checkout', '__return_true' );
+
+/* Show payment buttons on product pages */
+add_filter('wc_stripe_show_payment_request_on_checkout','__return_true' );
+
+/* Hide payment buttons on product pages */
 add_filter( 'wc_stripe_hide_payment_request_on_product_page', '__return_true' );
+
+/* Remove payment buttons on cart page */
+remove_action( 'woocommerce_proceed_to_checkout', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
+remove_action( 'woocommerce_proceed_to_checkout', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
+
+/* Remove payment buttons from default location on checkout page */
+remove_action( 'woocommerce_checkout_before_customer_details', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
+remove_action( 'woocommerce_checkout_before_customer_details', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
+
+/* Add payment buttons to new location on checkout page */
+add_action( 'woocommerce_review_order_before_payment', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
+
 function dequeue_stylesandscripts_select2() {
     if ( class_exists( 'woocommerce' ) && !(is_admin()) ) {
         wp_dequeue_style( 'selectWoo' );

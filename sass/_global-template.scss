@@ -571,6 +571,15 @@ h3 {
 ** Plugin - Woocommerce
 */
 .woocommerce {
+	#wc-stripe-payment-request-wrapper {
+		width: 100px !important;
+		float: right !important;
+		margin-bottom: 1em !important;
+	}
+	.wc-proceed-to-checkout {
+		float: right;
+		text-align: right;
+	}
 	#billing_country_field, #shipping_country_field {
 		display: none;
 	}
