@@ -1091,6 +1091,18 @@ h3 {
 	margin-bottom: 0;
 }
 .woocommerce-checkout {
+	#payment ul.payment_methods li input {
+		margin-right: 0;
+	}
+	.wc_payment_method payment_method_ach_stripe {
+		img {
+			display: none;
+		}
+		label[for="ach-auth"] {
+			font-size: 12px;
+			line-height: 18px;
+		}
+	}
 	.woocommerce-SavedPaymentMethods-saveNew label {
 		font-size: $font-size-xs;
 		font-weight: normal !important;
