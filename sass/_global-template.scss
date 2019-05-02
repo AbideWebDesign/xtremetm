@@ -1091,6 +1091,9 @@ h3 {
 	margin-bottom: 0;
 }
 .woocommerce-checkout {
+	#payment ul.payment_methods li input {
+		 margin-right: .5em;
+	}
 	.woocommerce-checkout-payment img {
 		display: none !important;
 	}
