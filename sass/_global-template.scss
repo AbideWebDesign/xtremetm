@@ -633,6 +633,11 @@ h3 {
 			border-color: #20376d;
 			color: #20376d;
 	}
+	.woocommerce-orders-table__cell-order-actions {
+		.buttons {
+			margin-right: 5px;
+		}
+	}
 	.woocommerce-breadcrumb {
 		margin: 0;
 		padding: 1.2em 0;
@@ -1090,31 +1095,49 @@ h3 {
 	text-align: right;
 	margin-bottom: 0;
 }
+.woocommerce-order-pay {
+	#order_review {
+		@extend .row;
+		@extend .justify-content-center;
+		.shop_table {
+			@extend .col-md-6;
+			margin-right: 15px;
+			
+			td {
+				text-align: left;
+			}
+		}
+		#payment {
+			@extend .col-md-4;
+		}
+	}
+}
+
 .woocommerce-checkout {
-	#payment ul.payment_methods li input {
+	#payment ul.payment_methods li input, #order_review ul.payment_methods{
 		 margin-right: .5em;
 	}
-	.woocommerce-checkout-payment img {
+	.woocommerce-checkout-payment img, #order_review img {
 		display: none !important;
 	}
-	.woocommerce-checkout-payment label[for="ach-auth"] {
+	.woocommerce-checkout-payment label[for="ach-auth"], #order_review label[for="ach-auth"]{
 	    line-height: 18px !important;
 	    font-weight: normal;	
 	    margin-bottom: 0;	
 	}
-	.payment_box payment_method_ach_stripe img {
+	.payment_box payment_method_ach_stripe img, #order_review payment_method_ach_stripe img {
 		display: none !important;
 	}
-	.woocommerce-checkout-payment .wc_payment_methods label {
+	.woocommerce-checkout-payment .wc_payment_methods label, #order_review .wc_payment_methods label {
 		font-size: 12px;
 	}
 	.woocommerce-checkout-payment .wc_payment_methods select {
 		display: block;	
 	}
-	.woocommerce-checkout-payment label[for="ach-country"], .woocommerce-checkout-payment label[for="ach-currency"] {
+	.woocommerce-checkout-payment label[for="ach-country"], .woocommerce-checkout-payment label[for="ach-currency"], #order_review label[for="ach-country"], #order_review label[for="ach-currency"]{
 		display: none !important;
 	}
-	.woocommerce-checkout-payment label[for="payment_method_ach_stripe"], .woocommerce-checkout-payment label[for="payment_method_stripe"] {
+	.woocommerce-checkout-payment label[for="payment_method_ach_stripe"], .woocommerce-checkout-payment label[for="payment_method_stripe"], #order_review label[for="payment_method_ach_stripe"], #order_review label[for="payment_method_stripe"]{
 		padding-left: 5px;
 	}
 	#wc-stripe-cc-form br {
@@ -1181,6 +1204,7 @@ h3 {
 	}
 }
 .woocommerce-account {
+	
 	.form.register  {
 		margin-top: 0;
 	}
