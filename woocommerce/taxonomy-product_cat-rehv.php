@@ -64,7 +64,7 @@ include(locate_template('/store-parts/section-value-bar.php', false, false));
 ?>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/flipdown.js"></script>
 <script>
-new FlipDown(1558882800, {
+new FlipDown(1561129200, {
 	theme: 'light'
 }).start();	
 </script>
