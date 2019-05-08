@@ -1787,10 +1787,10 @@ body .gform_validation_container {
 		margin-bottom: 0;
 	}
 }
+
 /* 
 ** Plugin: Shiftnav
 */
-
 body {
 	.shiftnav .shiftnav-panel-close {
 		display: none !important;
@@ -1822,6 +1822,51 @@ body {
 	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item.current-menu-item.shiftnav-depth-1 > .shiftnav-target {
 		background-color: white !important;
 		color: black !important;
+	}
+}
+
+/* 
+** Plugin: Stripe ACH
+*/
+.ui-widget.ui-widget-content {
+	border: none;
+	background-color: $brand-xtreme;
+	
+	.ui-dialog-content {
+		padding: 1em;
+	}
+	h3 {
+		color: white;
+		text-align: center;
+		font-size: 16px;
+		margin-bottom: 1em;
+	}
+	p {
+		color: white;
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+	label {
+		color: white;
+	}
+	.ui-widget-header {
+		display: none;
+	}
+	.ui-dialog-buttonpane {
+		border: none;
+		background-color: transparent;
+		padding: 0;
+		
+		.ui-dialog-buttonset {
+			float: none;
+			
+			button {
+				margin: 0 0 1em 0;
+				@extend .btn;
+				@extend .btn-white;
+				@extend .btn-sm;
+			}
+		}
 	}
 }
 /* 
