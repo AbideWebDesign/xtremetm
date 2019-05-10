@@ -870,6 +870,59 @@ function custom_override_checkout_fields( $fields ) {
      $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
      return $fields;
 }
+
+/** 
+ * Change ACH payment method label to include discount text
+ */
+add_filter( 'woocommerce_gateway_title', 'woocommerce_ach_method_label', 10, 2 );
+
+function woocommerce_ach_method_label($title, $id) {
+	
+	if ( ! is_checkout() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			return $title;
+	}
+	
+	if ( $title == "Bank Account" ) {
+		$title = "Bank Account <span class='text-thin'>($10 off per tire)</span>";
+	}
+	
+	return $title;
+	
+}
+
+/**
+ * Add discount for ACH payments
+ */
+add_action( 'woocommerce_cart_subtotal', 'woocommerce_ach_method_discount', 10, 3 );
+
+function woocommerce_ach_method_discount( $subtotal, $compound, $cart ) {
+
+	if ( is_admin() && ! defined( 'DOING_AJAX' ) || is_cart() ) {
+		return;
+	}
+	
+	if( WC()->session->chosen_payment_method != 'stripe' ) {
+	
+		$store_credit = $cart->get_cart_contents_count() * 10;
+	
+	    // We only need to add a store credit coupon if they have store credit
+	    if($store_credit > 0){
+	
+	        // Setup our virtual coupon
+	        $coupon_name = '';
+	        $coupon = array($coupon_name => $store_credit);
+	
+	        // Apply the store credit coupon to the cart & update totals
+	        $cart->applied_coupons = array($coupon_name);
+	        $cart->set_discount_total($store_credit);
+	        $cart->set_total( $cart->get_subtotal() - $store_credit);
+	        $cart->coupon_discount_totals = $coupon;
+	    }	
+	} 
+	
+	return $subtotal;
+}
+
 /**
  * Gravity Forms
  */
