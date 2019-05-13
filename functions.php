@@ -832,6 +832,7 @@ function ship_to_event_field($checkout) {
 
 }
 add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
+
 /**
  * Ajax function to return event shipping address meta values
  */ 
@@ -863,7 +864,9 @@ function get_event_address() {
 	
 	wp_send_json_error( array('message' => 'No event found.') );
 } 
-// Override company name label
+/**
+ * Override company name label
+ */
 add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields' );
 
 function custom_override_checkout_fields( $fields ) {
@@ -890,43 +893,33 @@ function woocommerce_ach_method_label($title, $id) {
 	
 }
 
+
 /**
- * Add discount for ACH payments
+ * Add custom discount for ACH payment method purchases
  */
-add_action( 'woocommerce_cart_subtotal', 'woocommerce_ach_method_discount', 10, 3 );
+add_action('woocommerce_cart_calculate_fees' , 'woocommerce_add_ach_discount');
 
-function woocommerce_ach_method_discount( $subtotal, $compound, $cart ) {
-
+function woocommerce_add_ach_discount( WC_Cart $cart ){
 	if ( is_admin() && ! defined( 'DOING_AJAX' ) || is_cart() ) {
+		
 		return;
+	
 	}
-	
-	if( WC()->session->chosen_payment_method != 'stripe' ) {
-	
-		$store_credit = $cart->get_cart_contents_count() * 10;
-	
-	    // We only need to add a store credit coupon if they have store credit
-	    if($store_credit > 0){
-	
-	        // Setup our virtual coupon
-	        $coupon_name = '';
-	        $coupon = array($coupon_name => $store_credit);
-	
-	        // Apply the store credit coupon to the cart & update totals
-	        $cart->applied_coupons = array($coupon_name);
-	        $cart->set_discount_total($store_credit);
-	        $cart->set_total( $cart->get_subtotal() - $store_credit);
-	        $cart->coupon_discount_totals = $coupon;
-	    }	
-	} 
-	
-	return $subtotal;
+    
+    if( WC()->session->chosen_payment_method != 'stripe' ) {
+	    
+	    // Calculate the amount to reduce
+	    $discount = $cart->get_cart_contents_count() * 10;
+	    $cart->add_fee( 'Bank Payment', -$discount);
+	    
+	}
 }
 
 /**
  * Gravity Forms
  */
 add_filter( 'gform_submit_button_1', 'xtremetm_form_submit_button', 10, 2 );
+
 function xtremetm_form_submit_button( $button, $form ) {
     return "<button class='btn btn-primary' id='gform_submit_button_{$form['id']}'><i class='fas fa-chevron-right'></i></button>";
 }
