@@ -886,7 +886,7 @@ function woocommerce_ach_method_label($title, $id) {
 	}
 	
 	if ( $title == "Bank Account" ) {
-		$title = "Bank Account <span class='text-thin'>($10 off per tire)</span>";
+		$title = "Bank Account - ($10 off per tire)";
 	}
 	
 	return $title;
@@ -910,7 +910,7 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 	    
 	    // Calculate the amount to reduce
 	    $discount = $cart->get_cart_contents_count() * 10;
-	    $cart->add_fee( 'Bank Payment', -$discount);
+	    $cart->add_fee( 'Discount', -$discount);
 	    
 	}
 }
