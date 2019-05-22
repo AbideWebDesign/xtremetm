@@ -332,21 +332,25 @@ remove_theme_support( 'wc-product-gallery-zoom' );
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
 
 /* Show payment buttons on product pages */
-add_filter('wc_stripe_show_payment_request_on_checkout','__return_true' );
+// add_filter('wc_stripe_show_payment_request_on_checkout','__return_true' );
 
 /* Hide payment buttons on product pages */
-add_filter( 'wc_stripe_hide_payment_request_on_product_page', '__return_true' );
+// add_filter( 'wc_stripe_hide_payment_request_on_product_page', '__return_true' );
 
 /* Remove payment buttons on cart page */
+/*
 remove_action( 'woocommerce_proceed_to_checkout', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
 remove_action( 'woocommerce_proceed_to_checkout', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
+*/
 
 /* Remove payment buttons from default location on checkout page */
+/*
 remove_action( 'woocommerce_checkout_before_customer_details', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
 remove_action( 'woocommerce_checkout_before_customer_details', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
+*/
 
 /* Add payment buttons to new location on checkout page */
-add_action( 'woocommerce_review_order_before_payment', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
+// add_action( 'woocommerce_review_order_before_payment', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
 
 function dequeue_stylesandscripts_select2() {
     if ( class_exists( 'woocommerce' ) && !(is_admin()) ) {
@@ -381,13 +385,13 @@ add_action( 'admin_init' , function() {
  * Add store to body class
  */
 add_filter( 'body_class', 'xtremetm_body_classes' );
-function xtremetm_body_classes($classes) {
+function xtremetm_body_classes( $classes ) {
 
 	global $wp_query;
 
 	$obj = $wp_query->get_queried_object();
 		
-	if (is_product()) { 
+	if ( is_product() ) { 
 		
 		$terms = get_the_terms($obj, 'product_cat');
 		
@@ -395,7 +399,7 @@ function xtremetm_body_classes($classes) {
 
 		$classes[] = 'store-' . $store->slug;
 		
-	} elseif (is_product_category()) {
+	} elseif ( is_product_category() ) {
 		
 		$store = get_top_level($obj);
 
@@ -409,17 +413,17 @@ function xtremetm_body_classes($classes) {
 /**
  * Setup custom field rules for product categories (stores)
  */
-add_filter('acf/location/rule_types', 'acf_wc_product_type_rule_type');
-function acf_wc_product_type_rule_type($choices) {
+add_filter( 'acf/location/rule_types', 'acf_wc_product_type_rule_type' );
+function acf_wc_product_type_rule_type( $choices ) {
 
-	if (!isset($choices['Product'])) {
+	if ( !isset( $choices['Product'] ) ) {
 
 	  $choices['Product'] = array();
 
 	}
 
 	// now add the 'Category' rule to it
-	if (!isset($choices['Product']['product_cat'])) {
+	if ( !isset( $choices['Product']['product_cat'] ) ) {
 
 	  // product_cat is the taxonomy name for woocommerce products
 	  $choices['Product']['product_cat_term'] = 'Product Category Term';
@@ -428,38 +432,40 @@ function acf_wc_product_type_rule_type($choices) {
 
 	return $choices;
 }
+
 add_filter('acf/location/rule_values/product_cat_term', 'acf_wc_product_type_rule_values');
-function acf_wc_product_type_rule_values($choices) {
+function acf_wc_product_type_rule_values( $choices ) {
 
 	$args = array(
 	  'taxonomy' => 'product_cat',
 	  'hide_empty' => false
 	);
-	$terms = get_terms($args);
+	$terms = get_terms( $args );
 	
-	foreach ($terms as $term) {
+	foreach ( $terms as $term ) {
 		$choices[$term->term_id] = $term->name;
 	}
 	
 	return $choices;
 }
-add_filter('acf/location/rule_match/product_cat_term', 'acf_wc_product_type_rule_match', 10, 3);
-function acf_wc_product_type_rule_match($match, $rule, $options) {
+
+add_filter( 'acf/location/rule_match/product_cat_term', 'acf_wc_product_type_rule_match', 10, 3 );
+function acf_wc_product_type_rule_match( $match, $rule, $options ) {
 	
-	if (!isset($_GET['tag_ID'])) {
+	if ( !isset($_GET['tag_ID']) ) {
 	
 		// tag id is not set
 		return $match;
 	
 	}
 	
-	if ($rule['operator'] == '==') {
+	if ( $rule['operator'] == '==' ) {
 	
-	  $match = ($rule['value'] == $_GET['tag_ID']);
+	  $match = ( $rule['value'] == $_GET['tag_ID'] );
 	
 	} else {
 	
-	  $match = !($rule['value'] == $_GET['tag_ID']);
+	  $match = !( $rule['value'] == $_GET['tag_ID'] );
 	}
 	
 	return $match;
@@ -495,16 +501,20 @@ function xtremetm_shipping_tab( $tabs ) {
 
 	return $tabs;
 }
+
 function xtremetm_shipping_tab_content() {
 
 	$product = get_queried_object();
-	$terms = get_the_terms($product->ID, 'product_cat');
-	$store = get_product_store($terms);
+	$terms = get_the_terms( $product->ID, 'product_cat' );
+	$store = get_product_store( $terms );
 	
 	echo '<h2>Shipping Policy</h2>';
-	the_field('shipping_policy', $store);
+	
+	the_field( 'shipping_policy', $store );
+	
 	echo '<h2>Return Policy</h2>';
-	the_field('return_policy', $store);
+	
+	the_field( 'return_policy', $store );
 }
 
 /**
@@ -521,17 +531,17 @@ function xtremetm_remove_sidebar_product_pages() {
 /**
  * Return top level store object
  */
-function get_top_level($term) {
+function get_top_level( $term ) {
 
-	if (is_shop()) {
+	if ( is_shop() ) {
 		
 		return $term;
 	
-	} elseif ($term->parent > 0) {
+	} elseif ( $term->parent > 0 ) {
        
-        $term = get_term_by("id", $term->parent, "product_cat");
+        $term = get_term_by( 'id', $term->parent, 'product_cat' );
        
-        return get_top_level($term);
+        return get_top_level( $term );
     
     } else {
     
@@ -549,35 +559,35 @@ function get_parent_cats() {
 	
 	$obj = $wp_query->get_queried_object();	
 
-	if (is_category() || is_tax()) {
+	if ( is_category() || is_tax() ) {
 
-		if($obj->parent == 0) {
+		if( $obj->parent == 0 ) {
 			
 			// This is the top level
 			
-			$cats = get_terms('product_cat', array( 'child_of' => $obj->term_taxonomy_id, 'hide_empty' => false ));
+			$cats = get_terms( 'product_cat', array( 'child_of' => $obj->term_taxonomy_id, 'hide_empty' => false ) );
 	
-			return($cats);
+			return( $cats );
 			
 		} else {
 			
 			// Not top level. Get top level
-			$parent = get_top_level($obj);
+			$parent = get_top_level( $obj );
 	
-			$cats = get_terms('product_cat', array( 'child_of' => $parent->term_taxonomy_id, 'hide_empty' => false ));
+			$cats = get_terms( 'product_cat', array( 'child_of' => $parent->term_taxonomy_id, 'hide_empty' => false ) );
 			
-			return($cats);
+			return( $cats );
 			
 		}
-	} elseif (is_product()) {
+	} elseif ( is_product() ) {
 		
-		$terms = get_the_terms($obj->ID, 'product_cat'); 
+		$terms = get_the_terms( $obj->ID, 'product_cat' ); 
 		
-		$store = get_product_store($terms);
+		$store = get_product_store( $terms );
 		
-		$cats = get_terms('product_cat', array( 'child_of' => $store->term_taxonomy_id, 'hide_empty' => false ));
+		$cats = get_terms( 'product_cat', array( 'child_of' => $store->term_taxonomy_id, 'hide_empty' => false ) );
 	
-		return($cats);
+		return( $cats );
 
 	}
 }
@@ -585,11 +595,11 @@ function get_parent_cats() {
 /**
  * Return top level store for product
  */
-function get_product_store($terms) {
+function get_product_store( $terms ) {
 	
-	foreach($terms as $term) {
-		if ($term->parent == 0) {
-			return($term);
+	foreach( $terms as $term ) {
+		if ( $term->parent == 0 ) {
+			return( $term );
 		}
 	}
 }
@@ -597,7 +607,7 @@ function get_product_store($terms) {
 /**
  * Opening div for content wrapper
  */
-add_action('woocommerce_before_main_content', 'xtremetm_open_div', 5);
+add_action( 'woocommerce_before_main_content', 'xtremetm_open_div', 5 );
 
 function xtremetm_open_div() {
     echo '<div id="global-store-container"><div class="container">';
@@ -606,19 +616,19 @@ function xtremetm_open_div() {
 /**
  * Closing content for after content wrapper
  */
-add_action('woocommerce_after_main_content', 'xtremetm_close_div', 50);
+add_action( 'woocommerce_after_main_content', 'xtremetm_close_div', 50 );
 
 function xtremetm_close_div() {
    
     echo '</div></div>';
     
-    if (!is_search() && (is_product_category() || is_product())) {
+    if ( !is_search() && ( is_product_category() || is_product() ) ) {
 
 		$post = get_queried_object();
 		$terms = get_the_terms($post->ID, 'product_cat');
 		$store = get_product_store($terms);
 		
-		if (is_product()) {
+		if ( is_product() ) {
 
 	    		include(locate_template('/store-parts/section-footer-top.php', false, false));
 
@@ -659,7 +669,7 @@ function woocommerce_custom_breadcrumb() {
 		'home' => false,
 	);
 	
-    woocommerce_breadcrumb($args);
+    woocommerce_breadcrumb( $args );
 }
 
 /**
@@ -688,16 +698,16 @@ add_action( 'admin_head-edit-tags.php', 'xtremetm_hide_cat_desc' );
 /**
  * Modify loop price output for variable products
  */
-add_filter('woocommerce_variable_sale_price_html', 'xtremetm_product_minmax_price_html', 10, 2);
-add_filter('woocommerce_variable_price_html', 'xtremetm_product_minmax_price_html', 10, 2);
+add_filter( 'woocommerce_variable_sale_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
+add_filter( 'woocommerce_variable_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
 
 function xtremetm_product_minmax_price_html($price, $product) {
-    $variation_min_price = $product->get_variation_price('min', true);
-    $variation_max_price = $product->get_variation_price('max', true);
-    $variation_min_regular_price = $product->get_variation_regular_price('min', true);
-    $variation_max_regular_price = $product->get_variation_regular_price('max', true);
+    $variation_min_price = $product->get_variation_price( 'min', true );
+    $variation_max_price = $product->get_variation_price( 'max', true );
+    $variation_min_regular_price = $product->get_variation_regular_price( 'min', true );
+    $variation_max_regular_price = $product->get_variation_regular_price( 'max', true );
 
-    if (($variation_min_price == $variation_min_regular_price) && ($variation_max_price == $variation_max_regular_price)) {
+    if ( ( $variation_min_price == $variation_min_regular_price ) && ( $variation_max_price == $variation_max_regular_price ) ) {
         $html_min_max_price = $price;
     } else {
         $html_price = '<div class="price d-flex">';
@@ -741,7 +751,7 @@ function filter_woocommerce_reset_variations_link( $link ) {
 add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
  
 function xtremetm_cart_refresh_update_qty() { 
-    if (is_cart()) { 
+    if ( is_cart() ) { 
         ?> 
         <script type="text/javascript"> 
             jQuery('div.woocommerce').on('change', '.qty', function(){ 
@@ -776,7 +786,7 @@ function xtremetm_extra_register_fields() {?>
 /**
  * Validate registration fields
  */ 
-function wooc_validate_extra_register_fields( $username, $email, $validation_errors ) {
+function xtremetm_validate_extra_register_fields( $username, $email, $validation_errors ) {
 
 	if ( isset( $_POST['billing_phone'] ) && empty( $_POST['billing_phone'] ) ) {
 	
@@ -797,7 +807,7 @@ function wooc_validate_extra_register_fields( $username, $email, $validation_err
 	 return $validation_errors;
 }
  
-add_action( 'woocommerce_register_post', 'wooc_validate_extra_register_fields', 10, 3 );
+add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
 
 /**
  * Add ship to event field on checkout page
@@ -836,8 +846,8 @@ add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
 /**
  * Ajax function to return event shipping address meta values
  */ 
-add_action("wp_ajax_get_event_address", "get_event_address");
-add_action("wp_ajax_nopriv_get_event_address", "get_event_address");
+add_action( 'wp_ajax_get_event_address', 'get_event_address' );
+add_action( 'wp_ajax_nopriv_get_event_address', 'get_event_address' );
 
 function get_event_address() {  
 	
@@ -847,7 +857,7 @@ function get_event_address() {
 	
 	}
 	
-	while (have_rows('event_shipping', 'options')) {
+	while ( have_rows('event_shipping', 'options') ) {
 	
 		the_row();
 	
@@ -867,32 +877,12 @@ function get_event_address() {
 /**
  * Override company name label
  */
-add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields' );
+add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields' );
 
-function custom_override_checkout_fields( $fields ) {
+function xtremetm_override_checkout_fields( $fields ) {
      $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
      return $fields;
 }
-
-/** 
- * Change ACH payment method label to include discount text
- */
-add_filter( 'woocommerce_gateway_title', 'woocommerce_ach_method_label', 10, 2 );
-
-function woocommerce_ach_method_label($title, $id) {
-	
-	if ( ! is_checkout() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			return $title;
-	}
-	
-	if ( $title == "Bank Account" ) {
-		$title = "Bank Account - ($10 off per tire)";
-	}
-	
-	return $title;
-	
-}
-
 
 /**
  * Add custom discount for ACH payment method purchases
@@ -905,8 +895,8 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 		return;
 	
 	}
-    
-    if( WC()->session->chosen_payment_method != 'stripe' ) {
+
+    if( WC()->session->chosen_payment_method == 'intuit_payments_echeck' ) {
 	    
 	    // Calculate the amount to reduce
 	    $discount = $cart->get_cart_contents_count() * 10;

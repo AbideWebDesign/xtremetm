@@ -1115,18 +1115,29 @@ h3 {
 		}
 	}
 }
-
-.woocommerce-checkout {
-	#payment div.payment_box input.js-sv-wc-payment-gateway-credit-card-form-input[type="tel"] {
-		@extend .form-control;
+body {
+	.woocommerce-checkout {
+		#payment {
+			div.payment_box {
+				input.js-sv-wc-payment-gateway-credit-card-form-input[type="tel"], input.js-sv-wc-payment-gateway-echeck-form-input[type="tel"] {
+					@extend .form-control;
+				}
+			}
+		}
 	}
+}
+.woocommerce-checkout {
 	#payment ul.payment_methods li input, #order_review ul.payment_methods{
 		 margin-right: .5em;
 	}
 	.woocommerce-checkout-payment img, #order_review img {
 		display: none !important;
 	}
-	.woocommerce-checkout-payment label[for="ach-auth"], #order_review label[for="ach-auth"]{
+	.woocommerce-checkout-payment label[for="ach-auth"], #order_review label[for="ach-auth"],
+	.woocommerce-checkout-payment .wc-intuit-payments-credit-card-new-payment-method-form label,
+	#order_review label[for="payment_method_intuit_payments_credit_card"],
+	.woocommerce-checkout-payment .wc-intuit-payments-echeck-new-payment-method-form label,
+	#order_review label[for="payment_method_intuit_payments_echeck"] {
 	    line-height: 18px !important;
 	    font-weight: normal;	
 	    margin-bottom: 0;	
@@ -1142,18 +1153,6 @@ h3 {
 	}
 	.woocommerce-checkout-payment label[for="ach-country"], .woocommerce-checkout-payment label[for="ach-currency"], #order_review label[for="ach-country"], #order_review label[for="ach-currency"]{
 		display: none !important;
-	}
-	.woocommerce-checkout-payment label[for="payment_method_ach_stripe"], 
-	.woocommerce-checkout-payment label[for="payment_method_stripe"], 
-	#order_review label[for="payment_method_ach_stripe"], 
-	#order_review label[for="payment_method_stripe"] ,
-	.woocommerce-checkout-payment label[for="payment_method_intuit_payments_credit_card"], 
-	#order_review label[for="payment_method_intuit_payments_credit_card"]{
-		padding-left: 5px;
-	}
-	.woocommerce-checkout-payment label[for="payment_method_intuit_payments_credit_card"], 
-	#order_review label[for="payment_method_intuit_payments_credit_card"] {
-		margin-bottom: 0;
 	}
 	#wc-stripe-cc-form br {
 		display: none;
