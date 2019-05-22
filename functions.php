@@ -89,8 +89,8 @@ if ( ! function_exists( 'xtremetm_setup' ) ) :
 		function remove_wp_nodes() {
 		    global $wp_admin_bar;   
 		    $wp_admin_bar->remove_node( 'new-post' );
-		    $wp_admin_bar->remove_menu( 'autoptimize' );
 		    $wp_admin_bar->remove_menu( 'customize' );
+		    $wp_admin_bar->remove_node( 'updates' );
 		}
 		add_action( 'admin_bar_menu', 'remove_wp_nodes', 999 );
 
