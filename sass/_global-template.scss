@@ -1119,7 +1119,10 @@ body {
 	.woocommerce-checkout {
 		#payment {
 			div.payment_box {
-				input.js-sv-wc-payment-gateway-credit-card-form-input[type="tel"], input.js-sv-wc-payment-gateway-echeck-form-input[type="tel"] {
+				margin: 1em 0 0 0;
+				
+				input.js-sv-wc-payment-gateway-credit-card-form-input[type="tel"], input.js-sv-wc-payment-gateway-echeck-form-input[type="tel"],
+				input.js-sv-wc-payment-gateway-credit-card-form-input[type="text"], input.js-sv-wc-payment-gateway-echeck-form-input[type="text"] {
 					@extend .form-control;
 				}
 			}
