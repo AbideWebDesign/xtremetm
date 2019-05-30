@@ -949,7 +949,7 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 
 	    // Calculate the amount to reduce
 	    $discount = $cart->get_cart_contents_count() * 10;
-	    $cart->add_fee( 'eCheck Discount', -$discount);
+	    $cart->add_fee( 'Bank Account Discount', -$discount);
 	    
 	}
 	
