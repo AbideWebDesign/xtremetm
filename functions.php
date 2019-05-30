@@ -262,11 +262,13 @@ add_theme_support( 'woocommerce', array(
 ) );
 
 add_filter( 'woocommerce_get_image_size_gallery_thumbnail', function( $size ) {
+	
 	return array(
 		'width' => 150,
 		'height' => 180,
 		'crop' => 1,
 	);
+	
 } );
 /*
  * Store widget
@@ -291,7 +293,9 @@ function xtremetm_widgets_init() {
 add_action( 'widgets_init', 'xtremetm_widgets_init' );
 
 function mytheme_add_woocommerce_support() {
+	
     add_theme_support( 'woocommerce' );
+
 }
 
 /**
@@ -300,6 +304,7 @@ function mytheme_add_woocommerce_support() {
 add_action( 'admin_init', 'xtremetm_hide_update_notifications_users' );
  
 function xtremetm_hide_update_notifications_users() {
+   
     global $menu, $submenu;
     $user = wp_get_current_user();
      
@@ -308,19 +313,23 @@ function xtremetm_hide_update_notifications_users() {
      
     // HIDE WP, PLUGIN, THEME NOTIFICATIONS FOR ALL OTHER USERS
     if ( $user && isset( $user->user_login ) && ! in_array( $user->user_login, $allowed ) ) {
+        
         add_filter( 'pre_site_transient_update_core', 'xtremetm_disable_update_notifications' );
         add_filter( 'pre_site_transient_update_plugins', 'xtremetm_disable_update_notifications' ); 
         add_filter( 'pre_site_transient_update_themes', 'xtremetm_disable_update_notifications' );
          
         // ALSO REMOVE THE RED UPDATE COUNTERS @ SIDEBAR MENU ITEMS
         $menu[65][0] = 'Plugins up to date';   
-        $submenu['index.php'][10][0] = 'Updates disabled';   
+        $submenu['index.php'][10][0] = 'Updates disabled';  
+         
     }
 }
  
 function xtremetm_disable_update_notifications() {
+	
     global $wp_version;
     return (object) array( 'last_checked' => time(), 'version_checked' => $wp_version, );
+    
 }
 /**
  * Setup Woocommerce
@@ -331,40 +340,24 @@ add_theme_support( 'wc-product-gallery-slider' );
 remove_theme_support( 'wc-product-gallery-zoom' );
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
 
-/* Show payment buttons on product pages */
-// add_filter('wc_stripe_show_payment_request_on_checkout','__return_true' );
-
-/* Hide payment buttons on product pages */
-// add_filter( 'wc_stripe_hide_payment_request_on_product_page', '__return_true' );
-
-/* Remove payment buttons on cart page */
-/*
-remove_action( 'woocommerce_proceed_to_checkout', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
-remove_action( 'woocommerce_proceed_to_checkout', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
-*/
-
-/* Remove payment buttons from default location on checkout page */
-/*
-remove_action( 'woocommerce_checkout_before_customer_details', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
-remove_action( 'woocommerce_checkout_before_customer_details', array( WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_separator_html'),2 );
-*/
-
-/* Add payment buttons to new location on checkout page */
-// add_action( 'woocommerce_review_order_before_payment', array(WC_Stripe_Payment_Request::instance(), 'display_payment_request_button_html'),1 );
-
 function dequeue_stylesandscripts_select2() {
-    if ( class_exists( 'woocommerce' ) && !(is_admin()) ) {
+	
+    if ( class_exists( 'woocommerce' ) && !( is_admin() ) ) {
+        
         wp_dequeue_style( 'selectWoo' );
         wp_deregister_style( 'selectWoo' );
  
         wp_dequeue_script( 'selectWoo');
         wp_deregister_script('selectWoo');
+    
     } 
+
 } 
 /**
  * Remove product tags
  */
 add_action('init', function() {
+	
     register_taxonomy('product_tag', 'product', [
         'public'            => false,
         'show_ui'           => false,
@@ -372,19 +365,23 @@ add_action('init', function() {
         'show_in_nav_menus' => false,
         'show_tagcloud'     => false,
     ]);
+    
 }, 100);
 
 add_action( 'admin_init' , function() {
+	
     add_filter('manage_product_posts_columns', function($columns) {
         unset($columns['product_tag']);
         return $columns;
     }, 100);
+    
 });
 
 /**
  * Add store to body class
  */
 add_filter( 'body_class', 'xtremetm_body_classes' );
+
 function xtremetm_body_classes( $classes ) {
 
 	global $wp_query;
@@ -414,6 +411,7 @@ function xtremetm_body_classes( $classes ) {
  * Setup custom field rules for product categories (stores)
  */
 add_filter( 'acf/location/rule_types', 'acf_wc_product_type_rule_type' );
+
 function acf_wc_product_type_rule_type( $choices ) {
 
 	if ( !isset( $choices['Product'] ) ) {
@@ -434,6 +432,7 @@ function acf_wc_product_type_rule_type( $choices ) {
 }
 
 add_filter('acf/location/rule_values/product_cat_term', 'acf_wc_product_type_rule_values');
+
 function acf_wc_product_type_rule_values( $choices ) {
 
 	$args = array(
@@ -450,6 +449,7 @@ function acf_wc_product_type_rule_values( $choices ) {
 }
 
 add_filter( 'acf/location/rule_match/product_cat_term', 'acf_wc_product_type_rule_match', 10, 3 );
+
 function acf_wc_product_type_rule_match( $match, $rule, $options ) {
 	
 	if ( !isset($_GET['tag_ID']) ) {
@@ -482,14 +482,17 @@ remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_r
 add_filter( 'woocommerce_product_tabs', 'xtremetm_remove_product_tabs', 98 );
 
 function xtremetm_remove_product_tabs( $tabs ) {
+  
     unset( $tabs['additional_information'] ); 
     return $tabs;
+
 }
 
 /**
  * Add a shipping/return tab
  */
 add_filter( 'woocommerce_product_tabs', 'xtremetm_shipping_tab' );
+
 function xtremetm_shipping_tab( $tabs ) {
 	
 	// Adds the new tab
@@ -523,9 +526,13 @@ function xtremetm_shipping_tab_content() {
 add_action( 'wp', 'xtremetm_remove_sidebar_product_pages' );
  
 function xtremetm_remove_sidebar_product_pages() {
+	
 	if ( is_product() ) {
+		
 		remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+	
 	}
+	
 }
 
 /**
@@ -598,8 +605,11 @@ function get_parent_cats() {
 function get_product_store( $terms ) {
 	
 	foreach( $terms as $term ) {
+		
 		if ( $term->parent == 0 ) {
+		
 			return( $term );
+		
 		}
 	}
 }
@@ -610,7 +620,9 @@ function get_product_store( $terms ) {
 add_action( 'woocommerce_before_main_content', 'xtremetm_open_div', 5 );
 
 function xtremetm_open_div() {
-    echo '<div id="global-store-container"><div class="container">';
+	
+	echo '<div id="global-store-container"><div class="container">';
+
 }
 
 /**
@@ -662,6 +674,7 @@ function xtremetm_remove_wc_breadcrumbs() {
 add_action( 'xtremetm_custom_breadcrumb', 'woocommerce_custom_breadcrumb' );
 
 function woocommerce_custom_breadcrumb() {
+	
 	$args = array(
 		'delimiter' => '<i class="fas fa-chevron-right"></i>',
 		'wrap_before' => '<div class="woocommerce-breadcrumb"><div class="container"><div class="row"><div class="col">',
@@ -670,6 +683,7 @@ function woocommerce_custom_breadcrumb() {
 	);
 	
     woocommerce_breadcrumb( $args );
+    
 }
 
 /**
@@ -701,22 +715,28 @@ add_action( 'admin_head-edit-tags.php', 'xtremetm_hide_cat_desc' );
 add_filter( 'woocommerce_variable_sale_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
 add_filter( 'woocommerce_variable_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
 
-function xtremetm_product_minmax_price_html($price, $product) {
+function xtremetm_product_minmax_price_html( $price, $product ) {
+   
     $variation_min_price = $product->get_variation_price( 'min', true );
     $variation_max_price = $product->get_variation_price( 'max', true );
     $variation_min_regular_price = $product->get_variation_regular_price( 'min', true );
     $variation_max_regular_price = $product->get_variation_regular_price( 'max', true );
 
     if ( ( $variation_min_price == $variation_min_regular_price ) && ( $variation_max_price == $variation_max_regular_price ) ) {
+       
         $html_min_max_price = $price;
+   
     } else {
+    
         $html_price = '<div class="price d-flex">';
         $html_price .= '<div>' . wc_price($variation_min_price) /* . '-' . wc_price($variation_max_price)  */. '</div>';
         $html_price .= '<div><del>' . wc_price($variation_min_regular_price) /* . '-' . wc_price($variation_max_regular_price) */ . '</del></div></div>';
         $html_min_max_price = $html_price;
+    
     }
 
     return $html_min_max_price;
+
 }
 
 /**
@@ -726,9 +746,12 @@ add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
 
 	global $product;
 
-	if ( is_shop() && $product->is_type('variable')) {
+	if ( is_shop() && $product->is_type('variable') ) {
+		
 		return '';
+	
 	} else {
+		
 		sprintf( '<a href="%s" data-quantity="%s" class="%s" %s>%s</a>',
 			esc_url( $product->add_to_cart_url() ),
 			esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 ),
@@ -736,6 +759,7 @@ add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
 			isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
 			esc_html( $product->add_to_cart_text() )
 		);
+		
 	}
 
 } );
@@ -744,13 +768,17 @@ add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
  * Remove reset variations from displaying
  */
 add_filter( 'woocommerce_reset_variations_link', 'filter_woocommerce_reset_variations_link', 10, 1 ); 
+
 function filter_woocommerce_reset_variations_link( $link ) { 
+
     return ''; 
+
 }; 
 
 add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
  
 function xtremetm_cart_refresh_update_qty() { 
+    
     if ( is_cart() ) { 
         ?> 
         <script type="text/javascript"> 
@@ -759,14 +787,17 @@ function xtremetm_cart_refresh_update_qty() {
             }); 
         </script> 
         <?php 
-    } 
+    }
+     
 }
 
 /**
  * Add registration fields
  */
 add_action( 'woocommerce_register_form_start', 'xtremetm_extra_register_fields' );
+
 function xtremetm_extra_register_fields() {?>
+
 	<p class="form-row form-row-first">
 		<label for="reg_billing_first_name"><?php _e( 'First name', 'woocommerce' ); ?><span class="required">*</span></label>
 		<input type="text" class="input-text" name="billing_first_name" id="reg_billing_first_name" value="<?php if ( ! empty( $_POST['billing_first_name'] ) ) esc_attr_e( $_POST['billing_first_name'] ); ?>" />
@@ -781,11 +812,14 @@ function xtremetm_extra_register_fields() {?>
 	</p>
 	<div class="clear"></div>
 	<?php
+		
  }
 
 /**
  * Validate registration fields
  */ 
+add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
+
 function xtremetm_validate_extra_register_fields( $username, $email, $validation_errors ) {
 
 	if ( isset( $_POST['billing_phone'] ) && empty( $_POST['billing_phone'] ) ) {
@@ -806,8 +840,6 @@ function xtremetm_validate_extra_register_fields( $username, $email, $validation
 	}
 	 return $validation_errors;
 }
- 
-add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
 
 /**
  * Add ship to event field on checkout page
@@ -874,14 +906,17 @@ function get_event_address() {
 	
 	wp_send_json_error( array('message' => 'No event found.') );
 } 
+
 /**
  * Override company name label
  */
 add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields' );
 
 function xtremetm_override_checkout_fields( $fields ) {
+    
      $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
      return $fields;
+     
 }
 
 /**
@@ -890,6 +925,7 @@ function xtremetm_override_checkout_fields( $fields ) {
 add_action('woocommerce_cart_calculate_fees' , 'woocommerce_add_ach_discount');
 
 function woocommerce_add_ach_discount( WC_Cart $cart ){
+	
 	if ( is_admin() && ! defined( 'DOING_AJAX' ) || is_cart() ) {
 		
 		return;
@@ -898,11 +934,25 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 
     if( WC()->session->chosen_payment_method == 'intuit_payments_echeck' ) {
 	    
+	    foreach ( $cart->get_cart() as $cart_item ) {
+			
+			$terms = wp_get_post_terms($cart_item['product_id'], 'product_cat', false);
+			$store = get_product_store($terms);
+
+			if ( $store->name == 'Rehz' || $store->name == 'XtremeTM' ) {
+				
+				return;
+				
+			}
+		   		    
+	    }
+
 	    // Calculate the amount to reduce
 	    $discount = $cart->get_cart_contents_count() * 10;
-	    $cart->add_fee( 'Discount', -$discount);
+	    $cart->add_fee( 'eCheck Discount', -$discount);
 	    
 	}
+	
 }
 
 /**
@@ -911,18 +961,26 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 add_filter( 'gform_submit_button_1', 'xtremetm_form_submit_button', 10, 2 );
 
 function xtremetm_form_submit_button( $button, $form ) {
+   
     return "<button class='btn btn-primary' id='gform_submit_button_{$form['id']}'><i class='fas fa-chevron-right'></i></button>";
+
 }
 
 /**
  * Yoast SEO
  */
 add_action( 'admin_init', function() {
+   
     if ( class_exists( 'Yoast_Notification_Center' ) ) {
+        
         $yoast_nc = Yoast_Notification_Center::get();
+        
         remove_action( 'admin_notices', array( $yoast_nc, 'display_notifications' ) );
+        
         remove_action( 'all_admin_notices', array( $yoast_nc, 'display_notifications' ) );
+    
     }
+    
 });
 
 /**
