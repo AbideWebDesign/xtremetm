@@ -19,7 +19,7 @@ $('#ship_to_event_list').change(function(){
 			$('#shipping_city').val(response.data.address.city);
 			$('#shipping_state').val(response.data.address.state);
 			$('#shipping_postcode').val(response.data.address.zip);
-// 			$(document.body).trigger('update_checkout');
+			$(document.body).trigger('update_checkout');
           },
           fail : function( response ) {
             console.log(response.data.message);
