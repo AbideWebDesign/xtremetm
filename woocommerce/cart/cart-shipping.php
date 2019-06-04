@@ -27,7 +27,6 @@ $calculator_text          = '';
 <tr class="woocommerce-shipping-totals shipping">
 	<th><?php echo wp_kses_post( $package_name ); ?></th>
 	<td data-title="<?php echo esc_attr( $package_name ); ?>">
-<!--
 		<?php if ( $available_methods ) : ?>
 			<ul id="shipping_method" class="woocommerce-shipping-methods">
 				<?php foreach ( $available_methods as $method ) : ?>
@@ -44,6 +43,7 @@ $calculator_text          = '';
 					</li>
 				<?php endforeach; ?>
 			</ul>
+<!--
 			<?php if ( is_cart() ) : ?>
 				<p class="woocommerce-shipping-destination">
 					<?php
@@ -57,26 +57,21 @@ $calculator_text          = '';
 					?>
 				</p>
 			<?php endif; ?>
+-->
 		<?php
 		elseif ( ! $has_calculated_shipping || ! $formatted_destination ) :
 			esc_html_e( 'Enter your address to view shipping options.', 'woocommerce' );
 		elseif ( ! is_cart() ) :
 			echo wp_kses_post( apply_filters( 'woocommerce_no_shipping_available_html', __( 'There are no shipping methods available. Please ensure that your address has been entered correctly, or contact us if you need any help.', 'woocommerce' ) ) );
 		else :
+		
+			the_field('shipping_method_message', 'options');
 			// Translators: $s shipping destination.
+/*
 			echo wp_kses_post( apply_filters( 'woocommerce_cart_no_shipping_available_html', sprintf( esc_html__( 'No shipping options were found for %s.', 'woocommerce' ) . ' ', '<strong>' . esc_html( $formatted_destination ) . '</strong>' ) ) );
 			$calculator_text = __( 'Enter a different address', 'woocommerce' );
+*/
 		endif;
 		?>
-
-		<?php if ( $show_package_details ) : ?>
-			<?php echo '<p class="woocommerce-shipping-contents"><small>' . esc_html( $package_details ) . '</small></p>'; ?>
-		<?php endif; ?>
-
-		<?php if ( $show_shipping_calculator ) : ?>
-			<?php woocommerce_shipping_calculator( $calculator_text ); ?>
-		<?php endif; ?>
--->
-		<?php the_field('shipping_method_message', 'options'); ?>
 	</td>
 </tr>

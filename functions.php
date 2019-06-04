@@ -846,14 +846,16 @@ function xtremetm_validate_extra_register_fields( $username, $email, $validation
  */ 
 add_action('woocommerce_after_order_notes', 'ship_to_event_field');
 
-function ship_to_event_field($checkout) {
+function ship_to_event_field( $checkout ) {
 	
 	$events = array();
 	
 	$events['blank'] = 'Select an Event';
 	
-	while (have_rows('event_shipping', 'options')) {
+	while ( have_rows('event_shipping', 'options') ) {
+		
 		the_row();
+		
 		$event_name = get_sub_field('event_name');
 		
 		$events[$event_name] = $event_name;
