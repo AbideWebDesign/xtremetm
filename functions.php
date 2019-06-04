@@ -939,7 +939,7 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 			$terms = wp_get_post_terms($cart_item['product_id'], 'product_cat', false);
 			$store = get_product_store($terms);
 
-			if ( $store->name == 'Rehz' || $store->name == 'XtremeTM' ) {
+			if ( $store->name == 'Rehz' || $store->name == 'Primis' ) {
 				
 				return;
 				
