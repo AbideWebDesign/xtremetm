@@ -956,6 +956,41 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 }
 
 /**
+ * Rehv early access users and redirect after login
+ */
+
+function check_rehv_access() {
+	
+	$users = array('abide_admin', 'abeaser', 'rstauber');
+	
+	$user = wp_get_current_user();
+
+    if( $user && isset( $user->user_login ) && in_array($user->user_login, $users) ){
+       
+       return true;
+       
+    } else {
+	   
+	   return false;
+	   
+    }
+	
+}
+
+function rehv_access_login_redirect( $redirect, $user ) {
+    
+    if ( isset($_GET['redirect']) && $_GET['redirect'] == 'rehv' ) {
+
+        return home_url('/store/rehv');
+    
+    }
+ 
+    return wc_get_page_permalink( 'shop' );
+}
+ 
+add_filter( 'woocommerce_login_redirect', 'rehv_access_login_redirect', 10, 2 );
+
+/**
  * Gravity Forms
  */
 add_filter( 'gform_submit_button_1', 'xtremetm_form_submit_button', 10, 2 );
