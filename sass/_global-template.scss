@@ -81,6 +81,18 @@ h3 {
 /* 
 ** Helpers
 */
+.fade-in {
+	-webkit-animation-name: slideNav;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-fill-mode:forwards;
+	animation-name: fadeIn;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in-out;
+	animation-duration: 1s;
+	animation-fill-mode:forwards;
+}
 .box {
 	background-color: white;
 }
@@ -395,6 +407,7 @@ h3 {
 	background-size: cover;
 	background-repeat: none;
 	background-position: center center;
+	@extend .fade-in;
 }
 .bg-overlay {
 	position: absolute;
