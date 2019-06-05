@@ -74,9 +74,22 @@ if ( $show_downloads ) {
 					<?php
 						foreach ( $order->get_order_item_totals() as $key => $total ) {
 							?>
+							<?php 
+								
+								if( $total['label'] == 'Shipping:') {
+								
+									$total_value = str_replace('&nbsp;<small class="shipped_via">via Shipping</small>', '', $total['value']);
+							
+								} else {
+									
+									$total_value = $total['value'];
+									
+								}
+							
+							?>
 							<tr>
 								<th scope="row"><?php echo $total['label']; ?></th>
-								<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total['value'] ) : $total['value']; ?></td>
+								<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total_value ) : $total_value; ?></td>
 							</tr>
 							<?php
 						}

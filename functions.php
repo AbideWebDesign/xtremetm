@@ -958,6 +958,19 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 }
 
 /**
+ * Change shipping method label
+ */
+add_filter( 'woocommerce_cart_shipping_method_full_label', 'xtremetm_shipping_labels', 10, 2 );
+
+function xtremetm_shipping_labels( $full_label, $method ) {
+    
+    $full_label = str_replace("Shipping: ", "", $full_label);
+
+	return $full_label;
+
+}
+
+/**
  * Rehv early access users and redirect after login
  */
 
