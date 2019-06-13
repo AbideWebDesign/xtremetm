@@ -23,7 +23,7 @@ get_header( 'shop' );
 $term = get_queried_object();
 $store = get_top_level($term);	
 
-// include(locate_template('/store-parts/section-store-cats-nav.php', false, false));
+include(locate_template('/store-parts/section-store-cats-nav.php', false, false));
 
 if (!is_search() && (is_product_category() || is_shop())) {
 

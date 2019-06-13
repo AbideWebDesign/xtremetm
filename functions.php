@@ -93,7 +93,43 @@ if ( ! function_exists( 'xtremetm_setup' ) ) :
 		    $wp_admin_bar->remove_node( 'updates' );
 		}
 		add_action( 'admin_bar_menu', 'remove_wp_nodes', 999 );
+		
+		//check if role exist before removing it
+/*
+		if( get_role('subscriber') ){
+		      remove_role( 'subscriber' );
+		}
+		if( get_role('editor') ){
+		      remove_role( 'editor' );
+		}
+		if( get_role('contributor') ){
+		      remove_role( 'contributor' );
+		}
+		if( get_role('wpseo_editor') ){
+		      remove_role( 'wpseo_editor' );
+		}
+		if( get_role('wpseo_manager') ){
+		      remove_role( 'wpseo_manager' );
+		}	
+		if( get_role('author') ){
+		      remove_role( 'author' );
+		}	
+		
+		add_action('init', 'cloneRole');
 
+		function cloneRole() {
+			$adm = get_role('customer');
+			$adm_cap= array_keys( $adm->capabilities ); //get administator capabilities
+			
+			add_role('Wholesale', 'Wholesale'); //create new role
+			
+			$new_role = get_role('Wholesale');
+			
+			foreach ( $adm_cap as $cap ) {
+				$new_role->add_cap( $cap ); //clone administrator capabilities to new role
+			}
+		}	
+*/
 	}
 endif;
 add_action( 'after_setup_theme', 'xtremetm_setup' );
@@ -976,7 +1012,7 @@ function xtremetm_shipping_labels( $full_label, $method ) {
 
 function check_rehv_access() {
 	
-	$users = array('abide_admin', 'abeaser', 'rstauber');
+	$users = array('abide_admin', 'abeaser', 'rstauber', 'dtompkins', 'sdellmingo', 'rhoffman', 'jmelniczuk', 'kcummings', 'cwatts', 'cmarlowe', 'rmckeever');
 	
 	$user = wp_get_current_user();
 
@@ -1004,6 +1040,110 @@ function rehv_access_login_redirect( $redirect, $user ) {
 }
  
 add_filter( 'woocommerce_login_redirect', 'rehv_access_login_redirect', 10, 2 );
+
+/**
+ * Index WooCommerce product_variation SKUs with the parent post
+ */
+
+add_filter( 'searchwp_extra_metadata', 'xtremetm_searchwp_index_woocommerce_variation_skus', 10, 2 );
+
+function xtremetm_searchwp_index_woocommerce_variation_skus( $extra_meta, $post_being_indexed ) {
+	
+	if ( 'product' !== get_post_type( $post_being_indexed ) ) {
+		
+		return $extra_meta;
+	
+	}
+	// retrieve all the product variations
+	$args = array(
+		'post_type'       => 'product_variation',
+		'posts_per_page'  => -1,
+		'fields'          => 'ids',
+		'post_parent'     => $post_being_indexed->ID,
+	);
+	
+	$product_variations = get_posts( $args );
+	
+	if ( ! empty( $product_variations ) ) {
+		
+		// store all SKUs as a Custom Field with a key of 'my_product_variation_skus'
+		$extra_meta['xtremetm_product_variation_skus'] = array();
+		
+		// loop through all product variations, grab and store the SKU
+		
+		foreach ( $product_variations as $product_variation ) {
+		
+			$extra_meta['xtremetm_product_variation_skus'][] = get_post_meta( absint( $product_variation ), '_sku', true );
+		
+		}
+	}
+	
+	return $extra_meta;
+}
+
+add_filter( 'searchwp_custom_field_keys', 'xtremetm_searchwp_custom_field_keys_variation_skus', 10, 1 );
+
+function xtremetm_searchwp_custom_field_keys_variation_skus( $keys ) {
+  
+  $keys[] = 'xtremetm_product_variation_skus';
+  
+  return $keys;
+}
+
+/**
+ * Check for user role and turn off tax for that role
+ */
+
+// add_action( 'template_redirect', 'xtremetm_no_tax_for_user', 1 );
+
+function xtremetm_no_tax_for_user() {
+
+	// check for the user role
+	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+
+		// set the customer object to have no VAT
+		WC()->customer->is_vat_exempt = true;
+	}
+
+}
+
+/**
+ * Function that filters the variable product hash based on user
+ */
+
+// add_filter( 'woocommerce_get_variation_prices_hash', 'xtremetm_get_variation_prices_hash_filter', 1, 3 );
+
+function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
+
+	// check for the user role
+	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+
+		// clear key 2, which is where taxes are
+		$hash['2'] = array();
+	}
+
+	// return the hash
+	return $hash;
+}
+
+/**
+ * Function that removes the price suffix (inc. Tax) from variable products based on role
+ */
+
+// add_filter( 'woocommerce_get_price_suffix', 'xtremetm_get_price_suffix_filter', 10, 2 );
+
+function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {
+
+	// check for the user role
+	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+
+		// return blank if it matches
+		return '';
+	}
+
+	// return if unmatched
+	return $price_display_suffix;
+}
 
 /**
  * Gravity Forms
