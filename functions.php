@@ -93,43 +93,6 @@ if ( ! function_exists( 'xtremetm_setup' ) ) :
 		    $wp_admin_bar->remove_node( 'updates' );
 		}
 		add_action( 'admin_bar_menu', 'remove_wp_nodes', 999 );
-		
-		//check if role exist before removing it
-/*
-		if( get_role('subscriber') ){
-		      remove_role( 'subscriber' );
-		}
-		if( get_role('editor') ){
-		      remove_role( 'editor' );
-		}
-		if( get_role('contributor') ){
-		      remove_role( 'contributor' );
-		}
-		if( get_role('wpseo_editor') ){
-		      remove_role( 'wpseo_editor' );
-		}
-		if( get_role('wpseo_manager') ){
-		      remove_role( 'wpseo_manager' );
-		}	
-		if( get_role('author') ){
-		      remove_role( 'author' );
-		}	
-		
-		add_action('init', 'cloneRole');
-
-		function cloneRole() {
-			$adm = get_role('customer');
-			$adm_cap= array_keys( $adm->capabilities ); //get administator capabilities
-			
-			add_role('Wholesale', 'Wholesale'); //create new role
-			
-			$new_role = get_role('Wholesale');
-			
-			foreach ( $adm_cap as $cap ) {
-				$new_role->add_cap( $cap ); //clone administrator capabilities to new role
-			}
-		}	
-*/
 	}
 endif;
 add_action( 'after_setup_theme', 'xtremetm_setup' );
@@ -830,6 +793,57 @@ function xtremetm_cart_refresh_update_qty() {
 /**
  * Add registration fields
  */
+function xtremetm_custom_setup_fields() {
+    
+    $fields = array(
+		array(
+            'type'        => 'select',
+            'label'       => __( 'Create Reseller Account', 'xtremetm' ),
+            'placeholder' => __( 'No', 'xtremetm' ),
+            'id'		  => 'reseller_account',
+            'required'    => false,
+            'options' 	  => array('no' => 'No', 'yes' => 'Yes'),
+		),
+	    array(
+            'type'        => 'text',
+            'label'       => __( 'Resale Certificate Number', 'xtremetm' ),
+            'id'		  => 'resale_certficiate_number',
+            'placeholder' => __( '', 'xtremetm' ),
+            'required'    => false,
+		),
+		array(
+            'type'        => 'text',
+            'label'       => __( 'Resale State', 'xtremetm' ),
+            'id'		  => 'resale_state',
+            'placeholder' => __( '', 'xtremetm' ),
+            'required'    => false,
+		),
+		array(
+            'type'        => 'date',
+            'label'       => __( 'Resale Date', 'xtremetm' ),
+            'placeholder' => __( '', 'xtremetm' ),
+            'id'		  => 'resale_date',
+            'required'    => false,
+		)		
+    );   
+
+    return $fields;
+}
+
+function woocommerce_edit_my_account_page() {
+
+    return apply_filters( 'woocommerce_forms_field', xtremetm_custom_setup_fields() );
+
+}
+
+function edit_my_account_page_woocommerce() {
+    $fields = woocommerce_edit_my_account_page();
+
+    foreach ( $fields as $key => $field_args ) {
+        woocommerce_form_field( $key, $field_args );
+    }
+}
+add_action( 'woocommerce_register_form', 'edit_my_account_page_woocommerce', 15 );
 add_action( 'woocommerce_register_form_start', 'xtremetm_extra_register_fields' );
 
 function xtremetm_extra_register_fields() {?>
@@ -877,6 +891,74 @@ function xtremetm_validate_extra_register_fields( $username, $email, $validation
 	 return $validation_errors;
 }
 
+function xtremetm_save_extra_register_fields( $customer_id ) {
+
+	if ( isset( $_POST['billing_first_name'] ) ) {
+	
+		// WordPress default first name field.
+		
+		update_user_meta( $customer_id, 'first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+		
+		
+		// WooCommerce billing first name.
+		
+		update_user_meta( $customer_id, 'billing_first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+	
+	}
+	
+	if ( isset( $_POST['billing_last_name'] ) ) {
+	
+		// WordPress default last name field.
+		
+		update_user_meta( $customer_id, 'last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+		
+		
+		// WooCommerce billing last name.
+		
+		update_user_meta( $customer_id, 'billing_last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+	
+	}
+	
+	if ( isset( $_POST['billing_phone'] ) ) {
+		
+		// WooCommerce billing phone
+		
+		update_user_meta( $customer_id, 'billing_phone', sanitize_text_field( $_POST['billing_phone'] ) );
+		
+	}
+	
+	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' ) {
+
+		// Create reseller account
+		
+		$user = get_user_by( 'id', $customer_id );
+		$user->set_role('reseller');
+		
+		update_user_meta( $customer_id, 'reseller_account', sanitize_text_field( $_POST['0'] ) );
+	  
+		if ( isset( $_POST['1'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
+	      
+		}
+
+		if ( isset( $_POST['2'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
+	      
+		}
+		
+		if ( isset( $_POST['3'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
+	      
+		}
+	
+	}
+
+}
+
+add_action( 'woocommerce_created_customer', 'xtremetm_save_extra_register_fields' );
 /**
  * Add ship to event field on checkout page
  */ 
@@ -1010,6 +1092,7 @@ function xtremetm_shipping_labels( $full_label, $method ) {
  * Rehv early access users and redirect after login
  */
 
+/*
 function check_rehv_access() {
 	
 	$users = array('abide_admin', 'abeaser', 'rstauber', 'dtompkins', 'sdellmingo', 'rhoffman', 'jmelniczuk', 'kcummings', 'cwatts', 'cmarlowe', 'rmckeever');
@@ -1040,6 +1123,7 @@ function rehv_access_login_redirect( $redirect, $user ) {
 }
  
 add_filter( 'woocommerce_login_redirect', 'rehv_access_login_redirect', 10, 2 );
+*/
 
 /**
  * Index WooCommerce product_variation SKUs with the parent post
@@ -1094,15 +1178,15 @@ function xtremetm_searchwp_custom_field_keys_variation_skus( $keys ) {
  * Check for user role and turn off tax for that role
  */
 
-// add_action( 'template_redirect', 'xtremetm_no_tax_for_user', 1 );
+add_action( 'template_redirect', 'xtremetm_no_tax_for_user', 1 );
 
 function xtremetm_no_tax_for_user() {
 
 	// check for the user role
-	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+	if ( is_user_logged_in() && valid_reseller() ) {
 
 		// set the customer object to have no VAT
-		WC()->customer->is_vat_exempt = true;
+		WC()->customer->set_is_vat_exempt(true);
 	}
 
 }
@@ -1111,12 +1195,12 @@ function xtremetm_no_tax_for_user() {
  * Function that filters the variable product hash based on user
  */
 
-// add_filter( 'woocommerce_get_variation_prices_hash', 'xtremetm_get_variation_prices_hash_filter', 1, 3 );
+add_filter( 'woocommerce_get_variation_prices_hash', 'xtremetm_get_variation_prices_hash_filter', 1, 3 );
 
 function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
 
 	// check for the user role
-	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+	if ( is_user_logged_in() && valid_reseller() ) {
 
 		// clear key 2, which is where taxes are
 		$hash['2'] = array();
@@ -1130,12 +1214,12 @@ function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
  * Function that removes the price suffix (inc. Tax) from variable products based on role
  */
 
-// add_filter( 'woocommerce_get_price_suffix', 'xtremetm_get_price_suffix_filter', 10, 2 );
+add_filter( 'woocommerce_get_price_suffix', 'xtremetm_get_price_suffix_filter', 10, 2 );
 
 function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {
 
 	// check for the user role
-	if ( is_user_logged_in() && current_user_can( 'Wholesale' ) ) {
+	if ( is_user_logged_in() && valid_reseller() ) {
 
 		// return blank if it matches
 		return '';
@@ -1143,6 +1227,39 @@ function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {
 
 	// return if unmatched
 	return $price_display_suffix;
+}
+
+function valid_reseller() {
+	
+	// Check to see if user has valid reseller account
+	
+	if ( current_user_can( 'reseller' ) ) {
+		
+		$current_user = wp_get_current_user();
+		
+		$tz = new DateTimeZone('America/Los_Angeles');
+		
+		$reseller_date = new DateTime(get_user_meta($current_user->ID, 'resale_date', true));	
+		$reseller_date->setTimeZone($tz);
+
+		$date_now = new DateTime();
+		$date_now->setTimeZone($tz);
+
+		if ( $date_now >= $reseller_date ) {
+
+			return false;
+			
+		} else {
+			
+			return true;
+			
+		}
+		
+	} else {
+		
+		return false;
+		
+	}
 }
 
 /**
@@ -1173,6 +1290,15 @@ add_action( 'admin_init', function() {
     
 });
 
+add_action('admin_head', 'xtremetm_hide_yoast_profile');
+
+function xtremetm_hide_yoast_profile() {
+  echo '<style>
+          form#your-profile > h3, form#your-profile .user-profile-picture, form#your-profile .user-description-wrap, form#your-profile .user-display-name-wrap, form#your-profile .user-nickname-wrap, form#your-profile .show-admin-bar, .user-comment-shortcuts-wrap, form#your-profile .yoast-settings, form#your-profile .user-rich-editing-wrap, form#your-profile .user-admin-color-wrap, form#your-profile .user-url-wrap, form#your-profile .user-facebook-wrap, form#your-profile .user-instagram-wrap, form#your-profile .user-linkedin-wrap, form#your-profile .user-myspace-wrap, form#your-profile .user-pinterest-wrap, form#your-profile .user-soundcloud-wrap, form#your-profile .user-tumblr-wrap, form#your-profile .user-twitter-wrap, form#your-profile .user-youtube-wrap, form#your-profile .user-wikipedia-wrap  {
+               display: none;
+          }
+        </style>';
+}
 /**
  * Jetpack - turn off upsell ads
  */

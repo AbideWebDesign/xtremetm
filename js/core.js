@@ -2,25 +2,29 @@
 	
 	$( document ).ready(function(){
 		
-		$( '#search' ).on("click",( function(e){
+		$( '#resale_certficiate_number_field' ).hide();
+		$( '#resale_state_field' ).hide();
+		$( '#resale_date_field' ).hide();
+		
+		$( '#search' ).on('click',( function(e){
 			
-			$(".form-group").addClass("sb-search-open");
-			$("#search-text").show();
+			$('.form-group').addClass('sb-search-open');
+			$('#search-text').show();
 			e.stopPropagation();			
 			
 		} ) );
 			
-		$( document ).on("click", function(e) {
+		$( document ).on('click', function(e) {
 			
-			if ( $(e.target).is("#search") === false ) {
+			if ( $(e.target).is('#search') === false ) {
 			
-				$(".form-group").removeClass("sb-search-open");
+				$('.form-group').removeClass('sb-search-open');
 			
 			}
 	
 		} );
 				
-		$( "#ship-to-event-checkbox" ).click( function(e) {
+		$( '#ship-to-event-checkbox' ).click( function(e) {
 	        
 	        if ( $(this).is(':checked') ) {
 		    
@@ -37,10 +41,28 @@
 	        }
     	
     	} );
+    	
+    	$( '#reseller_account' ).change( function() {
+    		
+    		if ( $(this).val() == 'yes' ) {
+	    		
+				$( '#resale_certficiate_number_field' ).show();
+				$( '#resale_state_field' ).show();
+				$( '#resale_date_field' ).show();
+	    		
+    		} else {
+
+				$( '#resale_certficiate_number_field' ).hide();
+				$( '#resale_state_field' ).hide();
+				$( '#resale_date_field' ).hide();
+	    		
+    		}
+    		
+    	});
     
     } );
     
-    $( document.body ).on( 'change', 'input[name="payment_method"]', function() {
+    $( document.body ).on( 'change', "input[name='payment_method']", function() {
 	    
 		$( 'body' ).trigger( 'update_checkout' );
 	

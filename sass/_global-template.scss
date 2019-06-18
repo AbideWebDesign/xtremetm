@@ -1022,7 +1022,7 @@ h3 {
 			padding: 0;
 		}
 	}
-	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select, textarea,  {
+	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"], select, textarea,  {
 		@extend .form-control;
 	}
 	.select2-container--default .select2-selection--single {
