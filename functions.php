@@ -424,7 +424,7 @@ function xtremetm_add_custom_fields_woocommerce() {
 		
 		$custom_fields = apply_filters( 'woocommerce_forms_field', xtremetm_custom_setup_fields() );
 		
-		echo '<h3 class="mt-0 mb-0">Resale Account</h3>';
+		echo '<h3 class="mb-0">Resale Account</h3>';
 	
 		foreach ( $custom_fields as $key => $field_args ) {
 			

@@ -590,6 +590,7 @@ h3 {
 	width: 100%;
 }
 .woocommerce {
+	
 	#resale_account {
 		width: 100px;
 	}
@@ -711,6 +712,9 @@ h3 {
 		p {
 			font-size: $font-size-sm;
 			margin-bottom: .5em;
+		}
+		h3 {
+			margin-top: 2em;
 		}
 	}
 	.woocommerce-info::before {
