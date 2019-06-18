@@ -489,6 +489,7 @@ function xtremetm_custom_setup_fields() {
             'label'       => __( 'Resale Date', 'xtremetm' ),
             'placeholder' => __( '', 'xtremetm' ),
             'id'		  => 'resale_date',
+            'placeholder' => 'xx/xx/xxxx',
             'required'    => true,
 		)		
     );   
