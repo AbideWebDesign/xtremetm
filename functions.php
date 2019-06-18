@@ -446,10 +446,16 @@ function xtremetm_add_custom_fields_woocommerce() {
 			}
 		
 		}
+			
+	}	
+	
+	if ( current_user_can( 'reseller' ) ) {
+		
+		// Add space below reseller account information on edit account page.
 		
 		echo '<div class="mb-2"></div>';
 	
-	}	
+	}
 
 }
 
