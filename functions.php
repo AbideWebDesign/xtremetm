@@ -388,7 +388,7 @@ add_action( 'admin_init' , function() {
 });
 
 /**
- * Add registration fields
+ * Add custom fields
  */
 
 add_action( 'woocommerce_register_form', 'xtremetm_add_register_fields_woocommerce', 15 );
@@ -493,10 +493,24 @@ function xtremetm_custom_setup_fields() {
 /**
  * Validate registration fields
  */ 
+ 
 add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
 
 function xtremetm_validate_extra_register_fields( $username, $email, $validation_errors ) {
+			
+	return xtremetm_custom_validations( $validation_errors );
+}
 
+add_action( 'woocommerce_save_account_details_errors', 'xtremetm_validate_extra_fields', 10, 1 );
+
+function xtremetm_validate_extra_fields( $validation_errors ) {
+	
+	$validation_errors = xtremetm_custom_validations( $validation_errors );
+		
+}
+
+function xtremetm_custom_validations( $validation_errors ) {
+	
 	if ( isset( $_POST['billing_phone'] ) && empty( $_POST['billing_phone'] ) ) {
 	
 		$validation_errors->add( 'billing_phone_error', __( 'Phone number is required.', 'woocommerce' ) );
@@ -514,7 +528,7 @@ function xtremetm_validate_extra_register_fields( $username, $email, $validation
 	
 	}
 	
-	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' ) {
+	if ( (isset( $_POST['0'] ) && $_POST['0'] == 'yes') || current_user_can('reseller') ) {
 		
 		if ( isset( $_POST['1'] ) && empty( $_POST['1'] ) ) {
 
@@ -535,10 +549,15 @@ function xtremetm_validate_extra_register_fields( $username, $email, $validation
 		}
 	
 	}
-		
+	
 	return $validation_errors;
+
 }
 
+/**
+ * Save custom fields
+ */ 
+ 
 add_action( 'woocommerce_created_customer', 'xtremetm_save_extra_register_fields' );
 add_action( 'personal_options_update', 'xtremetm_save_extra_register_fields' ); // edit own account admin
 add_action( 'edit_user_profile_update', 'xtremetm_save_extra_register_fields' ); // edit other account admin
