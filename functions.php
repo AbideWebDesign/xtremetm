@@ -586,12 +586,16 @@ function xtremetm_save_extra_register_fields( $customer_id ) {
 		
 		$user = get_user_by( 'id', $customer_id );
 		$user->set_role('reseller');
-		update_user_meta( $customer_id, 'resale_account', sanitize_text_field( $_POST['0'] ) );
 		
-	}
-	
-	if ( current_user_can('reseller') ) {
-			  
+		update_user_meta( $customer_id, 'resale_account', sanitize_text_field( $_POST['0'] ) );
+		update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
+		update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
+		update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
+		
+	} elseif ( current_user_can('reseller') ) {
+		
+		// Handel edit account page
+		
 		if ( isset( $_POST['1'] ) ) {
 	      
 	      update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
