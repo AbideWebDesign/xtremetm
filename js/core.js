@@ -2,10 +2,6 @@
 	
 	$( document ).ready(function(){
 		
-		$( '#resale_certficiate_number_field' ).hide();
-		$( '#resale_state_field' ).hide();
-		$( '#resale_date_field' ).hide();
-		
 		$( '#search' ).on('click',( function(e){
 			
 			$('.form-group').addClass('sb-search-open');
@@ -42,19 +38,24 @@
     	
     	} );
     	
-    	$( '#reseller_account' ).change( function() {
+
+    	$( '#customer_login #resale_certificate_number_field' ).hide(); 
+    	$( '#customer_login #resale_state_field' ).hide();
+    	$( '#customer_login #resale_date_field' ).hide();
+    	
+    	$( '#customer_login #resale_account' ).change( function() {
     		
     		if ( $(this).val() == 'yes' ) {
 	    		
-				$( '#resale_certficiate_number_field' ).show();
-				$( '#resale_state_field' ).show();
-				$( '#resale_date_field' ).show();
+				$( '#customer_login #resale_certificate_number_field' ).show();
+				$( '#customer_login #resale_state_field' ).show();
+				$( '#customer_login #resale_date_field' ).show();
 	    		
     		} else {
 
-				$( '#resale_certficiate_number_field' ).hide();
-				$( '#resale_state_field' ).hide();
-				$( '#resale_date_field' ).hide();
+				$( '#customer_login #resale_certificate_number_field' ).hide();
+				$( '#customer_login #resale_state_field' ).hide();
+				$( '#customer_login #resale_date_field' ).hide();
 	    		
     		}
     		

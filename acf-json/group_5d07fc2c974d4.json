@@ -4,8 +4,8 @@
     "fields": [
         {
             "key": "field_5d07fc3162a04",
-            "label": "Reseller Account",
-            "name": "reseller_account",
+            "label": "Resale Account",
+            "name": "resale_account",
             "type": "select",
             "instructions": "",
             "required": 0,
@@ -133,5 +133,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1560814261
+    "modified": 1560881823
 }

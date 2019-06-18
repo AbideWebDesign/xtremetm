@@ -590,6 +590,9 @@ h3 {
 	width: 100%;
 }
 .woocommerce {
+	#resale_account {
+		width: 100px;
+	}
 	#wc-stripe-payment-request-wrapper {
 		width: 100px !important;
 		margin-bottom: 1em !important;
@@ -626,12 +629,6 @@ h3 {
 			padding-left: 0;
 		}
 	}
-/*
-	.woocommerce-error, .woocommerce-info, .woocommerce-message {
-		background-color: white;
-		padding: 4em;
-	}
-*/
 	.woocommerce-error::before, .woocommerce-info::before, .woocommerce-message::before {
 		display: none;
 	}
@@ -1292,6 +1289,9 @@ body {
 		}
 		.woocommerce-error, .woocommerce-info, .woocommerce-message {
 			padding: 2em;
+		}
+		#resale_account {
+			width: 100%;
 		}
 	}
 	#footer-value-bar {

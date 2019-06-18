@@ -307,10 +307,8 @@ function xtremetm_hide_update_notifications_users() {
     global $menu, $submenu;
     $user = wp_get_current_user();
      
-    // ENTER HERE THE ONLY ALLOWED USERNAME
     $allowed = array( 'abide_admin' );
      
-    // HIDE WP, PLUGIN, THEME NOTIFICATIONS FOR ALL OTHER USERS
     if ( $user && isset( $user->user_login ) && ! in_array( $user->user_login, $allowed ) ) {
         
         add_filter( 'pre_site_transient_update_core', 'xtremetm_disable_update_notifications' );
@@ -330,6 +328,7 @@ function xtremetm_disable_update_notifications() {
     return (object) array( 'last_checked' => time(), 'version_checked' => $wp_version, );
     
 }
+
 /**
  * Setup Woocommerce
  */
@@ -352,6 +351,18 @@ function dequeue_stylesandscripts_select2() {
     } 
 
 } 
+
+// Register main datepicker jQuery plugin script
+add_action( 'wp_enqueue_scripts', 'enabling_date_picker' );
+function enabling_date_picker() {
+
+    // Only on front-end and checkout page
+    if( is_admin() || !is_account_page() ) return;
+
+    // Load the datepicker jQuery-ui plugin script
+    wp_enqueue_script( 'jquery-ui-datepicker' );
+}
+
 /**
  * Remove product tags
  */
@@ -375,6 +386,249 @@ add_action( 'admin_init' , function() {
     }, 100);
     
 });
+
+/**
+ * Add registration fields
+ */
+
+add_action( 'woocommerce_register_form', 'xtremetm_add_register_fields_woocommerce', 15 );
+
+function xtremetm_add_register_fields_woocommerce() { ?>
+    
+	<p class="form-row form-row-first">
+		<label for="reg_billing_first_name"><?php _e( 'First name', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_first_name" id="reg_billing_first_name" value="<?php if ( ! empty( $_POST['billing_first_name'] ) ) esc_attr_e( $_POST['billing_first_name'] ); ?>" />
+	</p>
+	<p class="form-row form-row-last">
+		<label for="reg_billing_last_name"><?php _e( 'Last name', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_last_name" id="reg_billing_last_name" value="<?php if ( ! empty( $_POST['billing_last_name'] ) ) esc_attr_e( $_POST['billing_last_name'] ); ?>" />
+	</p>
+	<p class="form-row form-row-wide">
+		<label for="reg_billing_phone"><?php _e( 'Phone', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_phone" id="reg_billing_phone" value="<?php if(isset($_POST['billing_phone'])): esc_attr_e( $_POST['billing_phone'] ); endif; ?>" />
+	</p>
+	<div class="clear"></div>
+	
+	<?php
+	
+	xtremetm_add_custom_fields_woocommerce();
+}
+
+add_action( 'woocommerce_edit_account_form_start', 'xtremetm_add_custom_fields_woocommerce', 10 );
+
+function xtremetm_add_custom_fields_woocommerce() {
+	
+	if ( current_user_can( 'reseller' ) || ! is_user_logged_in() ) {
+		
+		$userMeta = get_user_meta( get_current_user_id() );
+		
+		$custom_fields = apply_filters( 'woocommerce_forms_field', xtremetm_custom_setup_fields() );
+		
+		echo '<h3 class="mt-0 mb-0">Resale Account</h3>';
+	
+		foreach ( $custom_fields as $key => $field_args ) {
+			
+			if ( $field_args['id'] == 'resale_account' ) {
+				
+				// Display resale select field only on registration
+				
+				if ( !is_user_logged_in() ) {
+					
+					woocommerce_form_field( $key, $field_args );
+					
+				}
+				
+			} else {
+			
+				$id = $field_args['id'];
+				woocommerce_form_field( $key, $field_args, $userMeta[$id][0] );
+
+			}
+		
+		}
+		
+		echo '<div class="mb-2"></div>';
+	
+	}	
+
+}
+
+function xtremetm_custom_setup_fields() {
+    
+    $fields = array(
+		array(
+            'type'        => 'select',
+            'label'       => __( 'Create Resale Account', 'xtremetm' ),
+            'placeholder' => __( 'No', 'xtremetm' ),
+            'id'		  => 'resale_account',
+            'required'    => false,
+            'options' 	  => array('no' => 'No', 'yes' => 'Yes'),
+		),
+	    array(
+            'type'        => 'text',
+            'label'       => __( 'Resale Certificate Number', 'xtremetm' ),
+            'id'		  => 'resale_certificate_number',
+            'placeholder' => __( '', 'xtremetm' ),
+            'required'    => true,
+		),
+		array(
+            'type'        => 'text',
+            'label'       => __( 'Resale State', 'xtremetm' ),
+            'id'		  => 'resale_state',
+            'placeholder' => __( '', 'xtremetm' ),
+            'required'    => true,
+		),
+		array(
+            'type'        => 'date',
+            'label'       => __( 'Resale Date', 'xtremetm' ),
+            'placeholder' => __( '', 'xtremetm' ),
+            'id'		  => 'resale_date',
+            'required'    => true,
+		)		
+    );   
+
+    return $fields;
+}
+
+/**
+ * Validate registration fields
+ */ 
+add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
+
+function xtremetm_validate_extra_register_fields( $username, $email, $validation_errors ) {
+
+	if ( isset( $_POST['billing_phone'] ) && empty( $_POST['billing_phone'] ) ) {
+	
+		$validation_errors->add( 'billing_phone_error', __( 'Phone number is required.', 'woocommerce' ) );
+	
+	}
+	if ( isset( $_POST['billing_first_name'] ) && empty( $_POST['billing_first_name'] ) ) {
+	
+		$validation_errors->add( 'billing_first_name_error', __( 'First name is required.', 'woocommerce' ) );
+	
+	}
+	
+	if ( isset( $_POST['billing_last_name'] ) && empty( $_POST['billing_last_name'] ) ) {
+		
+		$validation_errors->add( 'billing_last_name_error', __( 'Last name is required.', 'woocommerce' ) );
+	
+	}
+	
+	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' ) {
+		
+		if ( isset( $_POST['1'] ) && empty( $_POST['1'] ) ) {
+
+			$validation_errors->add( 'resale_certificate_number', __( 'Resale certificate number is required.', 'woocommerce' ) );
+	
+		}
+		
+		if ( isset( $_POST['2'] ) && empty( $_POST['2'] ) ) {
+
+			$validation_errors->add( 'resale_state', __( 'Resale state is required.', 'woocommerce' ) );
+	
+		}
+		
+		if ( isset( $_POST['3'] ) && empty( $_POST['3'] ) ) {
+
+			$validation_errors->add( 'resale_date', __( 'Resale expiration date is required.', 'woocommerce' ) );
+	
+		}
+	
+	}
+		
+	return $validation_errors;
+}
+
+add_action( 'woocommerce_created_customer', 'xtremetm_save_extra_register_fields' );
+add_action( 'personal_options_update', 'xtremetm_save_extra_register_fields' ); // edit own account admin
+add_action( 'edit_user_profile_update', 'xtremetm_save_extra_register_fields' ); // edit other account admin
+add_action( 'woocommerce_save_account_details', 'xtremetm_save_extra_register_fields' ); // edit WC account
+
+function xtremetm_save_extra_register_fields( $customer_id ) {
+
+	if ( isset( $_POST['billing_first_name'] ) ) {
+	
+		// WordPress default first name field.
+		
+		update_user_meta( $customer_id, 'first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+		
+		
+		// WooCommerce billing first name.
+		
+		update_user_meta( $customer_id, 'billing_first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+	
+	}
+	
+	if ( isset( $_POST['billing_last_name'] ) ) {
+	
+		// WordPress default last name field.
+		
+		update_user_meta( $customer_id, 'last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+		
+		
+		// WooCommerce billing last name.
+		
+		update_user_meta( $customer_id, 'billing_last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+	
+	}
+	
+	if ( isset( $_POST['billing_phone'] ) ) {
+		
+		// WooCommerce billing phone
+		
+		update_user_meta( $customer_id, 'billing_phone', sanitize_text_field( $_POST['billing_phone'] ) );
+		
+	}
+	
+	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' && !current_user_can('reseller') ) {
+
+		// Create reseller account
+		
+		$user = get_user_by( 'id', $customer_id );
+		$user->set_role('reseller');
+		update_user_meta( $customer_id, 'resale_account', sanitize_text_field( $_POST['0'] ) );
+		
+	}
+	
+	if ( current_user_can('reseller') ) {
+			  
+		if ( isset( $_POST['1'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
+	      
+		}
+
+		if ( isset( $_POST['2'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
+	      
+		}
+		
+		if ( isset( $_POST['3'] ) ) {
+	      
+	      update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
+	      
+		}
+	
+	}
+
+}
+
+/**
+ * Change order of account tabs
+ */
+
+add_filter ( 'woocommerce_account_menu_items', 'xtremetm_reorder_my_account_menu' );
+
+function xtremetm_reorder_my_account_menu() {
+    $order = array(
+        'edit-account'       => __( 'Account Details', 'woocommerce' ),
+        'orders'             => __( 'Previous Orders', 'woocommerce' ),
+        'edit-address'       => __( 'Addresses', 'woocommerce' ),
+        'customer-logout'    => __( 'Logout', 'woocommerce' ),
+    );
+    return $order;
+}
 
 /**
  * Add store to body class
@@ -791,175 +1045,6 @@ function xtremetm_cart_refresh_update_qty() {
 }
 
 /**
- * Add registration fields
- */
-function xtremetm_custom_setup_fields() {
-    
-    $fields = array(
-		array(
-            'type'        => 'select',
-            'label'       => __( 'Create Reseller Account', 'xtremetm' ),
-            'placeholder' => __( 'No', 'xtremetm' ),
-            'id'		  => 'reseller_account',
-            'required'    => false,
-            'options' 	  => array('no' => 'No', 'yes' => 'Yes'),
-		),
-	    array(
-            'type'        => 'text',
-            'label'       => __( 'Resale Certificate Number', 'xtremetm' ),
-            'id'		  => 'resale_certficiate_number',
-            'placeholder' => __( '', 'xtremetm' ),
-            'required'    => false,
-		),
-		array(
-            'type'        => 'text',
-            'label'       => __( 'Resale State', 'xtremetm' ),
-            'id'		  => 'resale_state',
-            'placeholder' => __( '', 'xtremetm' ),
-            'required'    => false,
-		),
-		array(
-            'type'        => 'date',
-            'label'       => __( 'Resale Date', 'xtremetm' ),
-            'placeholder' => __( '', 'xtremetm' ),
-            'id'		  => 'resale_date',
-            'required'    => false,
-		)		
-    );   
-
-    return $fields;
-}
-
-function woocommerce_edit_my_account_page() {
-
-    return apply_filters( 'woocommerce_forms_field', xtremetm_custom_setup_fields() );
-
-}
-
-function edit_my_account_page_woocommerce() {
-    $fields = woocommerce_edit_my_account_page();
-
-    foreach ( $fields as $key => $field_args ) {
-        woocommerce_form_field( $key, $field_args );
-    }
-}
-add_action( 'woocommerce_register_form', 'edit_my_account_page_woocommerce', 15 );
-add_action( 'woocommerce_register_form_start', 'xtremetm_extra_register_fields' );
-
-function xtremetm_extra_register_fields() {?>
-
-	<p class="form-row form-row-first">
-		<label for="reg_billing_first_name"><?php _e( 'First name', 'woocommerce' ); ?><span class="required">*</span></label>
-		<input type="text" class="input-text" name="billing_first_name" id="reg_billing_first_name" value="<?php if ( ! empty( $_POST['billing_first_name'] ) ) esc_attr_e( $_POST['billing_first_name'] ); ?>" />
-	</p>
-	<p class="form-row form-row-last">
-		<label for="reg_billing_last_name"><?php _e( 'Last name', 'woocommerce' ); ?><span class="required">*</span></label>
-		<input type="text" class="input-text" name="billing_last_name" id="reg_billing_last_name" value="<?php if ( ! empty( $_POST['billing_last_name'] ) ) esc_attr_e( $_POST['billing_last_name'] ); ?>" />
-	</p>
-	<p class="form-row form-row-wide">
-		<label for="reg_billing_phone"><?php _e( 'Phone', 'woocommerce' ); ?><span class="required">*</span></label>
-		<input type="text" class="input-text" name="billing_phone" id="reg_billing_phone" value="<?php if(isset($_POST['billing_phone'])): esc_attr_e( $_POST['billing_phone'] ); endif; ?>" />
-	</p>
-	<div class="clear"></div>
-	<?php
-		
- }
-
-/**
- * Validate registration fields
- */ 
-add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
-
-function xtremetm_validate_extra_register_fields( $username, $email, $validation_errors ) {
-
-	if ( isset( $_POST['billing_phone'] ) && empty( $_POST['billing_phone'] ) ) {
-	
-		$validation_errors->add( 'billing_phone_error', __( '<strong>Error</strong>: Phone number is required.', 'woocommerce' ) );
-	
-	}
-	if ( isset( $_POST['billing_first_name'] ) && empty( $_POST['billing_first_name'] ) ) {
-	
-		$validation_errors->add( 'billing_first_name_error', __( '<strong>Error</strong>: First name is required.', 'woocommerce' ) );
-	
-	}
-	
-	if ( isset( $_POST['billing_last_name'] ) && empty( $_POST['billing_last_name'] ) ) {
-		
-		$validation_errors->add( 'billing_last_name_error', __( '<strong>Error</strong>: Last name is required.', 'woocommerce' ) );
-	
-	}
-	 return $validation_errors;
-}
-
-function xtremetm_save_extra_register_fields( $customer_id ) {
-
-	if ( isset( $_POST['billing_first_name'] ) ) {
-	
-		// WordPress default first name field.
-		
-		update_user_meta( $customer_id, 'first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
-		
-		
-		// WooCommerce billing first name.
-		
-		update_user_meta( $customer_id, 'billing_first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
-	
-	}
-	
-	if ( isset( $_POST['billing_last_name'] ) ) {
-	
-		// WordPress default last name field.
-		
-		update_user_meta( $customer_id, 'last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
-		
-		
-		// WooCommerce billing last name.
-		
-		update_user_meta( $customer_id, 'billing_last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
-	
-	}
-	
-	if ( isset( $_POST['billing_phone'] ) ) {
-		
-		// WooCommerce billing phone
-		
-		update_user_meta( $customer_id, 'billing_phone', sanitize_text_field( $_POST['billing_phone'] ) );
-		
-	}
-	
-	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' ) {
-
-		// Create reseller account
-		
-		$user = get_user_by( 'id', $customer_id );
-		$user->set_role('reseller');
-		
-		update_user_meta( $customer_id, 'reseller_account', sanitize_text_field( $_POST['0'] ) );
-	  
-		if ( isset( $_POST['1'] ) ) {
-	      
-	      update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
-	      
-		}
-
-		if ( isset( $_POST['2'] ) ) {
-	      
-	      update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
-	      
-		}
-		
-		if ( isset( $_POST['3'] ) ) {
-	      
-	      update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
-	      
-		}
-	
-	}
-
-}
-
-add_action( 'woocommerce_created_customer', 'xtremetm_save_extra_register_fields' );
-/**
  * Add ship to event field on checkout page
  */ 
 add_action('woocommerce_after_order_notes', 'ship_to_event_field');
@@ -1239,13 +1324,13 @@ function valid_reseller() {
 		
 		$tz = new DateTimeZone('America/Los_Angeles');
 		
-		$reseller_date = new DateTime(get_user_meta($current_user->ID, 'resale_date', true));	
-		$reseller_date->setTimeZone($tz);
+		$resale_date = new DateTime(get_user_meta($current_user->ID, 'resale_date', true));	
+		$resale_date->setTimeZone($tz);
 
 		$date_now = new DateTime();
 		$date_now->setTimeZone($tz);
 
-		if ( $date_now >= $reseller_date ) {
+		if ( $date_now >= $resale_date ) {
 
 			return false;
 			
