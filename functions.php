@@ -489,7 +489,6 @@ function xtremetm_custom_setup_fields() {
             'label'       => __( 'Resale Date', 'xtremetm' ),
             'placeholder' => __( '', 'xtremetm' ),
             'id'		  => 'resale_date',
-            'placeholder' => 'xx/xx/xxxx',
             'required'    => true,
 		)		
     );   
@@ -1204,46 +1203,8 @@ function xtremetm_shipping_labels( $full_label, $method ) {
 }
 
 /**
- * Rehv early access users and redirect after login
- */
-
-/*
-function check_rehv_access() {
-	
-	$users = array('abide_admin', 'abeaser', 'rstauber', 'dtompkins', 'sdellmingo', 'rhoffman', 'jmelniczuk', 'kcummings', 'cwatts', 'cmarlowe', 'rmckeever');
-	
-	$user = wp_get_current_user();
-
-    if( $user && isset( $user->user_login ) && in_array($user->user_login, $users) ){
-       
-       return true;
-       
-    } else {
-	   
-	   return false;
-	   
-    }
-	
-}
-
-function rehv_access_login_redirect( $redirect, $user ) {
-    
-    if ( isset($_GET['redirect']) && $_GET['redirect'] == 'rehv' ) {
-
-        return home_url('/store/rehv');
-    
-    }
- 
-    return wc_get_page_permalink( 'shop' );
-}
- 
-add_filter( 'woocommerce_login_redirect', 'rehv_access_login_redirect', 10, 2 );
-*/
-
-/**
  * Index WooCommerce product_variation SKUs with the parent post
  */
-
 add_filter( 'searchwp_extra_metadata', 'xtremetm_searchwp_index_woocommerce_variation_skus', 10, 2 );
 
 function xtremetm_searchwp_index_woocommerce_variation_skus( $extra_meta, $post_being_indexed ) {
@@ -1289,10 +1250,53 @@ function xtremetm_searchwp_custom_field_keys_variation_skus( $keys ) {
   return $keys;
 }
 
+add_action('template_redirect', 'xtremetm_searchwp_search_woocommerce_sku_redirect');
+
+function xtremetm_searchwp_search_woocommerce_sku_redirect() {
+	
+	if ( is_search() ) {
+      
+        global $wp_query;
+    
+        if ( $wp_query->post_count == 1 ) {
+	        
+	        $sku = get_search_query();
+
+			$args = array(
+				'post_type'       => 'product_variation',
+				'posts_per_page'  => 1,
+				'fields'          => 'ids',
+				'meta_query'      => array(
+					array(
+						'key'     => '_sku',
+						'value'   => $sku,
+					),
+				),
+			);
+			
+			$variation = get_posts( $args );
+			
+			if ( ! empty( $variation ) && function_exists( 'wc_get_attribute_taxonomy_names' ) ) {
+				
+				// this is a variation SKU, we need to prepopulate the filters
+				$variation_id = absint( $variation[0] );
+				$variation_obj = new WC_Product_Variation( $variation_id );
+				$attributes = $variation_obj->get_variation_attributes();
+				
+				if ( !empty( $attributes ) ) {
+
+					$permalink = add_query_arg( $attributes, get_permalink( $wp_query->posts['0']->ID ) );
+					wp_redirect( $permalink );
+				
+				} 
+			}
+        } 
+    }
+}
+
 /**
  * Check for user role and turn off tax for that role
  */
-
 add_action( 'template_redirect', 'xtremetm_no_tax_for_user', 1 );
 
 function xtremetm_no_tax_for_user() {
@@ -1309,7 +1313,6 @@ function xtremetm_no_tax_for_user() {
 /**
  * Function that filters the variable product hash based on user
  */
-
 add_filter( 'woocommerce_get_variation_prices_hash', 'xtremetm_get_variation_prices_hash_filter', 1, 3 );
 
 function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
@@ -1328,7 +1331,6 @@ function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
 /**
  * Function that removes the price suffix (inc. Tax) from variable products based on role
  */
-
 add_filter( 'woocommerce_get_price_suffix', 'xtremetm_get_price_suffix_filter', 10, 2 );
 
 function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {

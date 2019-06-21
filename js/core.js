@@ -5,7 +5,8 @@
 		$( '#search' ).on('click',( function(e){
 			
 			$('.form-group').addClass('sb-search-open');
-			$('#search-text').show();
+			$('#search-text').show().focus();
+			
 			e.stopPropagation();			
 			
 		} ) );
