@@ -1,9 +1,40 @@
-$('#ship_to_event_list').change(function(){
+$( '#ship-to-event-checkbox' ).click( function(){
 
-	var id = $(this).attr('id');
+	if ( $( this ).is(":checked")) {
+		
+		var checked = 'true';
+		
+	} else {
+		
+		var checked = 'false';
+		
+	}
 	
 	var data = {
-		eventname: $(this).val(),
+		status: checked,
+		action: 'set_event_session',
+		security: ajax_object.ajax_nonce
+	};
+		
+	$.ajax({
+		type: 'POST',
+		url: ajax_object.ajax_url,
+		data: data,
+		success : function( response ) {
+			
+        },
+		fail : function( response ) {
+			console.log( 'failure' );
+		},
+	} );	
+} );
+
+$( '#ship_to_event_list' ).change( function(){
+
+	var id = $( this ).attr('id');
+	
+	var data = {
+		eventname: $( this ).val(),
 		action: 'get_event_address',
 		security: ajax_object.ajax_nonce
 	};
@@ -24,5 +55,5 @@ $('#ship_to_event_list').change(function(){
           fail : function( response ) {
             console.log(response.data.message);
           }
-	});
-});
+	} );
+} );

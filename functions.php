@@ -1112,11 +1112,28 @@ add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
 /**
  * Ajax function to return event shipping address meta values
  */ 
+
+add_action( 'wp_ajax_set_event_session', 'set_event_session' );
+add_action( 'wp_ajax_nopriv_set_event_session', 'set_event_session' );
+
+function set_event_session() {
+
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce') ) {
+
+		wp_send_json_error( array('message' => 'Nonce is invalid.') );
+	
+	}
+	
+	WC()->session->set( 'ship_to_event', $_POST['status'] );	
+	
+	wp_send_json_success( array('message' => 'success') );
+}
+
 add_action( 'wp_ajax_get_event_address', 'get_event_address' );
 add_action( 'wp_ajax_nopriv_get_event_address', 'get_event_address' );
 
 function get_event_address() {  
-	
+
 	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce') ) {
 	
 		wp_send_json_error( array('message' => 'Nonce is invalid.') );
@@ -1133,7 +1150,7 @@ function get_event_address() {
 			$event['city'] = get_sub_field('event_address_city');
 			$event['state'] = get_sub_field('event_address_state');
 			$event['zip'] = get_sub_field('event_address_zip');
-			
+				
 			wp_send_json_success( array('message' => 'success', 'address' => $event) );
 		}
 	}
@@ -1151,6 +1168,25 @@ function xtremetm_override_checkout_fields( $fields ) {
      $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
      return $fields;
      
+}
+
+/**
+ * Set custom shipping on pick up at event
+ */
+add_filter( 'woocommerce_package_rates', 'xtremetm_change_flat_rates_cost', 10, 2 );
+
+function xtremetm_change_flat_rates_cost( $rates, $package ) {
+
+	// Make sure flat rate is available
+	if ( isset( $rates['flat_rate:2']) && WC()->session->get( 'ship_to_event') == 'true' ) {
+	
+		// Set the cost to free
+	
+		$rates['flat_rate:2']->cost = 0;
+	
+	}
+
+	return $rates;
 }
 
 /**
