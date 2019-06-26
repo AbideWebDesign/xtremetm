@@ -1177,12 +1177,12 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_change_flat_rates_cost', 10, 
 
 function xtremetm_change_flat_rates_cost( $rates, $package ) {
 
-	// Make sure flat rate is available
-	if ( isset( $rates['flat_rate:2']) && WC()->session->get( 'ship_to_event') == 'true' ) {
+	// Make sure flat rate is available. Note: Production is flat_rate:4
+	if ( isset( $rates['flat_rate:4']) && WC()->session->get( 'ship_to_event') == 'true' ) {
 	
 		// Set the cost to free
 	
-		$rates['flat_rate:2']->cost = 0;
+		$rates['flat_rate:4']->cost = 0;
 	
 	}
 
