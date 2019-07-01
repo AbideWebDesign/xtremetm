@@ -19,13 +19,15 @@
 						</div>
 					</div>
 				</div>
-				<div id="footer-boxes" class="row align-items-stretch">
+				<div id="footer-boxes" class="row align-items-stretch justify-content-center">
+<!--
 					<div class="col-lg-6 mb-1 mb-lg-0">
 						<div class="footer-box h-100">
 							<div class="footer-box-title text-center mb-1"><?php the_field('footer_box_title_1', 'options'); ?></div>
 							<?php echo do_shortcode('[gravityform id="1" title="false" description="false" ajax="true"]'); ?>
 						</div>
 					</div>
+-->
 					<div class="col-lg-6">
 						<div class="footer-box h-100 text-center text-lg-left">
 							<div class="row align-items-center h-100">
