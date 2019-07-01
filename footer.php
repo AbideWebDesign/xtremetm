@@ -24,22 +24,21 @@
 					<div class="col-lg-6 mb-1 mb-lg-0">
 						<div class="footer-box h-100">
 							<div class="footer-box-title text-center mb-1"><?php the_field('footer_box_title_1', 'options'); ?></div>
-							<?php echo do_shortcode('[gravityform id="1" title="false" description="false" ajax="true"]'); ?>
 						</div>
 					</div>
 -->
-					<div class="col-lg-6">
-						<div class="footer-box h-100 text-center text-lg-left">
-							<div class="row align-items-center h-100">
-								<div class="col-lg-auto mb-1 mb-lg-0">
+					<div class="col-md-11 col-lg-7">
+						<div class="footer-box h-100 text-center text-md-left">
+							<div class="row align-items-center justify-content-center h-100">
+								<div class="col-md-auto mb-1 mb-md-0">
 									<div class="footer-box-title"><?php the_field('footer_box_title_2', 'options'); ?></div>
 									<?php the_field('global_schedule', 'options'); ?>
 								</div>
-								<div class="col-lg-auto mb-1 mb-lg-0">
+								<div class="col-md-auto mb-1 mb-md-0">
 									<div><i class="fas fa-phone"></i> <a class="text-white" href="tel:<?php the_field('global_phone', 'options'); ?>"><?php the_field('global_phone', 'options'); ?></a></div>
 									<div><i class="fas fa-envelope"></i> <a class="text-white" href="mailto:<?php the_field('global_email', 'options'); ?>"><?php the_field('global_email', 'options'); ?></a></div>
 								</div>
-								<div class="col-lg-auto">
+								<div class="col-md-auto">
 									<a href="<?php echo home_url('/contact/'); ?>" class="btn btn-primary btn-sm"><span>Contact Us <i class="fas fa-chevron-right"></i></span></a>
 								</div>
 							</div>

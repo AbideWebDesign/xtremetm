@@ -1373,12 +1373,13 @@ body {
 	}
 	#footer-boxes {
 		.footer-box {
-			padding: 1em 3em;
+			padding: 2em;
 			background-color: #1E1E1E;
 			color: white;
 			
 			.footer-box-title {
 				font-weight: bold;
+				text-transform: uppercase;
 				line-height: 1.5em;
 			}
 			.field_sublabel_below {
