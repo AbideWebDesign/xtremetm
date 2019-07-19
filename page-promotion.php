@@ -21,7 +21,7 @@ get_header();
 						<h4 class="mb-2 text-white"><?php the_sub_field('header_banner_sub_title'); ?></h4>
 						<?php if (get_sub_field('add_button')): ?>
 						
-							<a href="<?php the_sub_field('hero_banner_button_link'); ?>" class="btn btn-primary btn-rehv btn-lg"><span><?php the_sub_field('hero_banner_button_label'); ?> <i class="fas fa-chevron-right ml-1"></i></span></a>
+							<a href="<?php the_sub_field('hero_banner_button_link'); ?>" target="_blank" class="btn btn-primary btn-rehv btn-lg"><span><?php the_sub_field('hero_banner_button_label'); ?> <i class="fas fa-chevron-right ml-1"></i></span></a>
 						
 						<?php endif; ?>
 					</div>
