@@ -87,6 +87,13 @@
                 "operator": "==",
                 "value": "standard"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-promotion.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -97,5 +104,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1549929939
+    "modified": 1563578680
 }

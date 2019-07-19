@@ -78,6 +78,7 @@ h3 {
 	-o-transform:skew(0);
 	transform:skew(0);	
 }
+
 /* 
 ** Helpers
 */
@@ -816,6 +817,7 @@ h3 {
 				.flex-viewport {
 					width: 85%;
 					float: right; 
+					@extend .h-100;
 					
 					img {
 						width: auto;
@@ -1907,6 +1909,9 @@ body {
 /* 
 ** Brand Colors
 */
+.bg-rehv {
+	background-color: $brand-rev-primary;
+}
 .store-rehv {
 	.btn-primary, .button {
 		background-color: $brand-rev-primary !important;
