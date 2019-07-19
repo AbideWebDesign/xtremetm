@@ -93,7 +93,7 @@ get_header();
 					<h3 class="mb-0"><?php the_field('footer_top_description'); ?></h3>
 				</div>
 				<div class="col-lg-2 text-center text-lg-left">
-					<a href="<?php the_field('footer_top_button_link'); ?>" <?php echo (get_field('footer_top_link_type') ? 'target="_blank"' : ''); ?> class="btn btn-primary btn-white"><span>Shop Avon Tires <i class="fas fa-chevron-right"></i></span></a>
+					<a href="<?php the_field('footer_top_button_link'); ?>" <?php echo (get_field('footer_top_link_type') ? 'target="_blank"' : ''); ?> class="btn btn-primary btn-white"><span>Shop Avon <i class="fas fa-chevron-right"></i></span></a>
 				</div>
 			</div>
 		</div>
