@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-	<div class="col-auto">
+	<div class="col-12 col-md-auto">
 		<form class="woocommerce-ordering" method="get">
 			<select name="orderby" class="orderby form-control">
 				<?php foreach ( $catalog_orderby_options as $id => $name ) : ?>

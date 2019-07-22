@@ -171,7 +171,7 @@ h3 {
 		font-family: $font-family-alt;
 		color: white;
 		text-transform: uppercase;
-		font-size: $font-size-xs;
+		font-size: 1rem;
 		text-decoration: none;
 		font-weight: 500;
 	}
@@ -609,6 +609,23 @@ h3 {
 	.wcpf-filter-notes .wcpf-note-list .wcpf-note-item {
 		background-color: white;
 		padding: 5px 15px 5px 5px;
+	}
+	@media (max-width: 768px) {
+		.wcpf-filter {
+			display: none;
+			
+			&.show {
+				display: block;
+			}
+		}
+	}
+	@media (max-width: 576px) {	
+		.woocommerce-result-count, .wcpf-filter-notes {
+			display: none;
+		}
+		.woocommerce-ordering {
+			width: 100%;
+		}
 	}
 	select {
 		@extend .custom-select;
