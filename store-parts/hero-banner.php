@@ -33,7 +33,7 @@
 							<div class="bg-overlay"></div>
 							<div class="bg-img-content text-center d-flex flex-column h-100 align-content-center justify-content-center">
 								<h4 class="mb-1 mb-lg-0 text-white"><?php the_sub_field('header_banner_sub_title'); ?></h4>
-								<h2 class="text-white mb-2"><?php the_sub_field('hero_banner_title'); ?></h2>
+								<h1 class="text-white mb-2"><?php the_sub_field('hero_banner_title'); ?></h1>
 								
 								<?php if (get_sub_field('add_button')): ?>
 								
