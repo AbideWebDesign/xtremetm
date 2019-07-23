@@ -256,6 +256,13 @@
                 "operator": "==",
                 "value": "page-promotion.php"
             }
+        ],
+        [
+            {
+                "param": "product_cat_term",
+                "operator": "==",
+                "value": "94"
+            }
         ]
     ],
     "menu_order": 0,
@@ -266,5 +273,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1563575563
+    "modified": 1563900374
 }

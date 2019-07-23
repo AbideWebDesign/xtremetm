@@ -1,5 +1,5 @@
-<?php if (is_shop() && get_field('display_banner_area', $term)): ?>
-	
+<?php if (get_field('display_banner_area', $term)): ?>
+
 	<?php $count = 0; ?>
 	<?php $banners = count(get_field('banners', $term)); ?>
 		
