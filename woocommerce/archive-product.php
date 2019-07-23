@@ -32,7 +32,7 @@ if (!is_search() && (is_product_category() || is_shop())) {
 
 	include(locate_template('/store-parts/hero-banner.php', false, false));  
 
-}
+} 
 
 if (is_product_category()) {
 	
@@ -69,6 +69,12 @@ if (is_shop() && !is_product_category()) {
 			?>
 		</div>
 		<div class="col-lg-9">
+			
+			<?php if ( is_product_category() && !get_field('display_banner_area', $term) ): ?>
+			
+				<h1 class="mb-1 text-center text-sm-left"><?php echo $term->name; ?> Tires</h1>
+			
+			<?php endif; ?>
 			
 			<?php get_sidebar('filter-notes'); ?>
 			
