@@ -17,7 +17,7 @@ get_header();
 				<div class="carousel-item h-100 text-center bg-img <?php echo ($count==0 ? 'active' : ''); ?>" style="background-image: url('<?php echo $bg_img[0]; ?>')">
 					<div class="bg-overlay"></div>
 					<div class="bg-img-content text-center d-flex flex-column h-100 align-content-center justify-content-center">
-						<h2 class="text-white mb-1"><?php the_sub_field('hero_banner_title'); ?></h2>
+						<h1 class="text-white mb-1"><?php the_sub_field('hero_banner_title'); ?></h1>
 						<h4 class="mb-2 text-white"><?php the_sub_field('header_banner_sub_title'); ?></h4>
 						<?php if (get_sub_field('add_button')): ?>
 						
@@ -51,7 +51,7 @@ get_header();
 							</div>
 							<div class="p-2">
 								<h3 class="mb-1">Purchase your Avon Tires</h3>
-								<p class="mb-0">You get a $20 reward for purchasing 1 tire and $60 for purchasing a single set. Purchase between May 31st, 2019 and August 31, 2019. </p>
+								<p class="mb-0">You get a $20 reward for purchasing 1 tire and $60 for purchasing a single set. Purchase between May 31st, 2019 and August 31, 2019. </p>
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@ get_header();
 							</div>
 							<div class="p-2">
 								<h3 class="mb-1">CLAIM YOUR REWARD</h3>
-								<p class="mb-0">Fill in the <a href="https://www.avontyrerewards.com/#/home" target="_blank">form</a> and upload your sales receipt through our external reward platform. </p>
+								<p class="mb-0">Fill in the <a href="https://www.avontyrerewards.com/#/home" target="_blank">form</a> and upload your sales receipt through our external reward platform. Alternatively, download and complete the <a href="https://www.avontyrerewards.com/media/uploads/1562781609827.pdf" target="_blank">rebate form</a>.</p>
 							</div>
 						</div>
 					</div>

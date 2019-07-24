@@ -215,29 +215,6 @@
                         "id": ""
                     },
                     "return_format": "url"
-                },
-                {
-                    "key": "field_5c662bda8799b",
-                    "label": "Hero Banner Button Link (copy)",
-                    "name": "hero_banner_button_link_copy",
-                    "type": "link",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_5c37c377fe807",
-                                "operator": "==",
-                                "value": "1"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "url"
                 }
             ]
         }
@@ -273,5 +250,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1563900374
+    "modified": 1563990855
 }
