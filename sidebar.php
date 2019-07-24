@@ -10,8 +10,24 @@
 if ( ! is_active_sidebar( 'store_sidebar' ) ) {
 	return;
 }
+
+$term = get_queried_object();
+$store = get_top_level($term);	
 ?>
 <div id="store-sidebar" class="s mb-1 mb-lg-0">
 	<a class="btn btn-primary d-block d-lg-none" data-toggle="collapse" href=".wcpf-filter" role="button" aria-expanded="false" aria-controls="wcpf-filter"><span>Filters</span></a>
+	
 	<?php dynamic_sidebar( 'store_sidebar' ); ?>
+	
 </div>
+
+<?php if ( get_field('ad_space_2', $store) ): ?>
+	
+	<div class="mt-1">
+	
+		<?php echo wp_get_attachment_image(get_field('ad_space_2', $store), 'full', false, array('class' => 'img-fluid')); ?>
+
+	</div>	
+
+<?php endif; ?>
+

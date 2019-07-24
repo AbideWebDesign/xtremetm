@@ -3,22 +3,6 @@
     "title": "Store Fields",
     "fields": [
         {
-            "key": "field_5c620b0fc1725",
-            "label": "Hero Banner",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
             "key": "field_5c5b674786719",
             "label": "Hero Banner",
             "name": "hero_banner",
@@ -38,22 +22,6 @@
             "layout": "block",
             "prefix_label": 0,
             "prefix_name": 0
-        },
-        {
-            "key": "field_5c620b1ac1726",
-            "label": "Value Bar",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
         },
         {
             "key": "field_5c5c529b262a8",
@@ -77,22 +45,6 @@
             "prefix_name": 0
         },
         {
-            "key": "field_5c620b27c1727",
-            "label": "Shipping and Returns",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
             "key": "field_5c61e8b9433c0",
             "label": "Shipping and Returns",
             "name": "shipping_and_returns",
@@ -112,22 +64,6 @@
             "layout": "block",
             "prefix_label": 0,
             "prefix_name": 0
-        },
-        {
-            "key": "field_5c620b5926e12",
-            "label": "Footer Top",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
         },
         {
             "key": "field_5c620bd3ddfb6",
@@ -151,22 +87,6 @@
             "prefix_name": 0
         },
         {
-            "key": "field_5c62f78ddf752",
-            "label": "Footer Value Bar",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "left",
-            "endpoint": 0
-        },
-        {
             "key": "field_5c62f79bdf753",
             "label": "Footer Value Bar",
             "name": "footer_value_bar",
@@ -186,6 +106,54 @@
             "layout": "block",
             "prefix_label": 0,
             "prefix_name": 0
+        },
+        {
+            "key": "field_5d38c5d402be2",
+            "label": "Ad Space 1",
+            "name": "ad_space_1",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "preview_size": "full",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_5d38c5e602be3",
+            "label": "Ad Space 2",
+            "name": "ad_space_2",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "preview_size": "full",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         }
     ],
     "location": [
@@ -200,7 +168,7 @@
             {
                 "param": "product_cat_term",
                 "operator": "==",
-                "value": "18"
+                "value": "33"
             }
         ],
         [
@@ -213,11 +181,11 @@
     ],
     "menu_order": 0,
     "position": "acf_after_title",
-    "style": "default",
+    "style": "seamless",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1549989809
+    "modified": 1564002055
 }

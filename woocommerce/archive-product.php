@@ -57,6 +57,21 @@ if (is_shop() && !is_product_category()) {
 	do_action( 'woocommerce_before_main_content' );
 	
 	?>
+	
+	<?php if ( get_field('ad_space_1', $store) ): ?>
+	
+		<div class="row">
+			<div class="col-12">
+				<div class="mb-2 text-center">
+				
+					<?php echo wp_get_attachment_image(get_field('ad_space_1', $store), 'full', false, array('class' => 'img-fluid')); ?>
+			
+				</div>
+			</div>
+		</div>	
+
+	<?php endif; ?>
+	
 	<div class="row">
 		<div class="col-lg-3">		
 			<?php
