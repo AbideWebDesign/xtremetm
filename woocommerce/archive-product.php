@@ -60,11 +60,13 @@ if (is_shop() && !is_product_category()) {
 	
 	<?php if ( get_field('ad_space_1', $store) ): ?>
 	
+		<?php $ad_space_1_link = get_field('ad_space_1_link', $store); ?>
+		
 		<div class="row">
 			<div class="col-12">
 				<div class="mb-2 text-center">
 				
-					<?php echo wp_get_attachment_image(get_field('ad_space_1', $store), 'full', false, array('class' => 'img-fluid')); ?>
+					<a href="<?php echo $ad_space_1_link['url']; ?>" target="<?php echo $ad_space_1_link['target']; ?>"><?php echo wp_get_attachment_image(get_field('ad_space_1', $store), 'full', false, array('class' => 'img-fluid')); ?></a>
 			
 				</div>
 			</div>

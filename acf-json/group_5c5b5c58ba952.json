@@ -132,6 +132,28 @@
             "mime_types": ""
         },
         {
+            "key": "field_5d38ca40f551b",
+            "label": "Ad Space 1 Link",
+            "name": "ad_space_1_link",
+            "type": "link",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d38c5d402be2",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
             "key": "field_5d38c5e602be3",
             "label": "Ad Space 2",
             "name": "ad_space_2",
@@ -154,6 +176,28 @@
             "max_height": "",
             "max_size": "",
             "mime_types": ""
+        },
+        {
+            "key": "field_5d38ca65f551c",
+            "label": "Ad Space 2 Link",
+            "name": "ad_space_2_link",
+            "type": "link",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d38c5e602be3",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
         }
     ],
     "location": [
@@ -187,5 +231,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1564002055
+    "modified": 1564002934
 }
