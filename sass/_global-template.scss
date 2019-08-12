@@ -1856,12 +1856,32 @@ body .gform_validation_container {
 ** Plugin: Shiftnav
 */
 body {
+	.shiftnav {
+		#shiftnav-header {
+			
+			.btn {
+				font-size: $font-size-xs;
+			}
+			.btn-block {
+				width: 100%;
+			}
+			.btn-dark {
+				background-color: $gray-800;
+				border-color: $gray-800;
+				padding: 10px 0;
+				
+				&:hover {
+					color: white;
+				}	
+			}
+		}
+	}
 	.shiftnav .shiftnav-panel-close {
 		display: none !important;
 	}
 	.shiftnav h3 {
 		font-size: 16px;
-		color: $gray-600;
+		color: $gray-800;
 		padding: 10px 25px;
 	}
 	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item > .shiftnav-submenu-activation {
