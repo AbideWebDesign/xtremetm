@@ -171,6 +171,15 @@ if( function_exists('acf_add_options_page') ) {
 }
 
 /**
+ * Allow SVG
+ */
+function cc_mime_types($mimes) {
+  $mimes['svg'] = 'image/svg+xml';
+  return $mimes;
+}
+add_filter('upload_mimes', 'cc_mime_types');
+
+/**
  * Add Bootstrap 4 Nav walker
  */
 require_once("bs4Navwalker.php");
@@ -179,11 +188,17 @@ require_once("bs4Navwalker.php");
  * Add Bootstrap 4 inline list classes
  */
 function bootstrap_inline_list_class($classes, $item, $args) {
-	if ( 'shiftnav' != $args->theme_location ) {
+
+	if ( 'top-links-logged-in' == $args->theme_location || 'top-links' == $args->theme_location ) {
+		
 		if( $args->add_li_class  ) {
+		
 		    $classes[] = $args->add_li_class;
+		
 		}
+	
 	}
+    
     return $classes;
 }
 add_filter('nav_menu_css_class', 'bootstrap_inline_list_class', 1, 3);
@@ -886,12 +901,14 @@ function get_parent_cats() {
  */
 function get_product_store( $terms ) {
 	
-	foreach( $terms as $term ) {
-		
-		if ( $term->parent == 0 ) {
-		
-			return( $term );
-		
+	if ( $terms ) {
+		foreach( $terms as $term ) {
+			
+			if ( $term->parent == 0 ) {
+			
+				return( $term );
+			
+			}
 		}
 	}
 }
