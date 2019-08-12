@@ -1859,7 +1859,11 @@ body {
 	.shiftnav .shiftnav-panel-close {
 		display: none !important;
 	}
-
+	.shiftnav h3 {
+		font-size: 16px;
+		color: $gray-600;
+		padding: 10px 25px;
+	}
 	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item > .shiftnav-submenu-activation {
 		border-bottom: none !important;
 	}
@@ -1938,7 +1942,7 @@ body {
 ** Plugin: Ubermenu 
 */
 
-.woocommerce {
+body {
 	#header-global {
 		#header-global-stores {
 			.ubermenu {
