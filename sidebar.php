@@ -25,7 +25,7 @@ $store = get_top_level($term);
 	
 	<?php $ad_space_2_link = get_field('ad_space_2_link', $store); ?>
 	
-	<div class="mt-1">
+	<div class="mt-1 d-none d-lg-block">
 	
 		<a href="<?php echo $ad_space_2_link['url']; ?>" target="<?php echo $ad_space_2_link['target']; ?>"><?php echo wp_get_attachment_image(get_field('ad_space_2', $store), 'full', false, array('class' => 'img-fluid')); ?></a>
 
