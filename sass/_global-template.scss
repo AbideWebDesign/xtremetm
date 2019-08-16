@@ -23,6 +23,12 @@ h1, h2 {
 	font-family: $font-family-alt;
 	text-transform: uppercase;
 }
+h2 {
+		
+	&.large {
+		font-size: 40px;
+	}
+}
 h3 {
 	text-transform: uppercase;
 	font-weight: bold;
@@ -415,6 +421,7 @@ h3 {
 ** Part - Background Image
 */
 .bg-img {
+	position: relative;
 	background-size: cover;
 	background-repeat: none;
 	background-position: center center;
@@ -436,9 +443,19 @@ h3 {
 	.bg-overlay {
 		background: linear-gradient(180deg,rgba(0,15,30,0) 0%,rgba(0,15,30,.45) 75%,rgba(0,15,30,.8) 100%);
 	}
-	.bg-img {
-		min-height: 600px;
+	a {
+		.bg-img {
+			min-height: 300px;
+			
+			h2 {
+				text-shadow: 0 0 3px rgba(0,0,0,.3), 0 3px 6px rgba(0,0,0,.3);
+			}
+		}							
+		&:hover {
+			text-decoration: none;
+		}	
 	}
+	
 }
 
 /* 
@@ -1857,6 +1874,9 @@ body .gform_validation_container {
 */
 body {
 	.shiftnav {
+		.shiftnav-inner {
+			background-color: #1C1C1C;
+		}
 		#shiftnav-header {
 			
 			.btn {
@@ -1866,13 +1886,17 @@ body {
 				width: 100%;
 			}
 			.btn-dark {
-				background-color: $gray-800;
-				border-color: $gray-800;
-				padding: 10px 0;
+				background-color: #1C1C1C;
+				border-color: #1C1C1C;
+				padding: 15px 0;
 				
 				&:hover {
 					color: white;
 				}	
+			}
+			img {
+				height: 15px;
+				padding-bottom: 3px;
 			}
 		}
 	}
@@ -1882,7 +1906,8 @@ body {
 	.shiftnav h3 {
 		font-size: 16px;
 		color: $gray-800;
-		padding: 10px 25px;
+		padding: 15px 25px;
+		background-color: white;
 	}
 	.shiftnav.shiftnav-shiftnav-main ul.shiftnav-menu li.menu-item > .shiftnav-submenu-activation {
 		border-bottom: none !important;

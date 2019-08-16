@@ -13,94 +13,71 @@
 	$brand_3_bg_src = wp_get_attachment_image_src($brand_3_bg['id'], 'col-7', false);
 	
 ?>
-
-<div class="py-3 py-lg-4">
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-lg-6 text-center">
-				<h1 class="mb-3 title"><?php the_field('home_title', $term); ?></h1>
-				<h3 class="mb-3 subtitle"><?php the_field('home_sub_title', $term); ?></h3>
-				<i class="fas fa-chevron-down fa-3x text-primary"></i>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="section-brands" class="bg-light">
-	<div class="container-fluid p-0">
-		<div class="row no-gutters align-items-stretch">
-			<div class="col-lg-4">
-				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_1_bg_src[0]; ?>)">
-					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
-						<div class="mt-auto">
-							<?php echo wp_get_attachment_image($brand_1['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
-							<h3 class="mb-1 text-white"><?php echo $brand_1['brand_title']; ?></h3>
-							<p class="mb-2 text-white"><?php echo $brand_1['brand_text']; ?></p>
-							<a href="<?php echo $brand_1['brand_button_link']; ?>" class="btn btn-white"><?php echo $brand_1['brand_button_label']; ?></a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_2_bg_src[0]; ?>)">
-					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
-						<div class="mt-auto">
-							<?php echo wp_get_attachment_image($brand_2['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
-							<h3 class="mb-1 text-white"><?php echo $brand_2['brand_title']; ?></h3>
-							<p class="mb-2 text-white"><?php echo $brand_2['brand_text']; ?></p>
-							<a href="<?php echo $brand_2['brand_button_link']; ?>" class="btn btn-white"><?php echo $brand_2['brand_button_label']; ?></a>
-						</div>
-					</div>
-				</div>			
-			</div>
-			<div class="col-lg-4">
-				<div class="bg-img h-100" style="background-image: url(<?php echo $brand_3_bg_src[0]; ?>)">
-					<div class="bg-overlay"></div>
-					<div class="bg-img-content py-2 px-1 px-sm-3 d-flex align-content-end flex-column h-100">
-						<div class="mt-auto">
-							<?php echo wp_get_attachment_image($brand_3['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 180px')); ?>
-							<h3 class="mb-1 text-white"><?php echo $brand_3['brand_title']; ?></h3>
-							<p class="mb-2 text-white"><?php echo $brand_3['brand_text']; ?></p>
-							<a href="<?php echo $brand_3['brand_button_link']; ?>" class="btn btn-white"><?php echo $brand_3['brand_button_label']; ?></a>
-						</div>
-					</div>
-				</div>			
-			</div>
-		</div>
-	</div>
-</div>
-<div id="section-schedule" class="py-3 py-lg-4 bg-light">
-	<div class="container">
-		<div class="row no-gutters">
-			<div class="col-lg-5 align-content-center">
-				<?php echo wp_get_attachment_image(get_field('home_schedule_image', $term), 'col-5', false, array('class'=>'img-full')); ?>
-			</div>
-			<div class="col-lg-7 bg-white p-1 p-sm-3 p-lg-4">
-				<h1 class="mt-3 mt-lg-0 mb-2 mb-lg-3"><?php the_field('home_schedule_title', $term); ?></h1>
-				<div class="text-lg mb-2 mb-lg-3"><?php the_field('home_schedule_description', $term); ?></div>
-				<a href="<?php the_field('home_schedule_button_link', $term); ?>" class="btn btn-primary d-block d-sm-inline-block text-center text-lg-left"><span><?php the_field('home_schedule_button_label', $term); ?></span></a>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="section-partners" class="py-3 py-lg-4 ">
+<div id="section-brands" class="bg-light py-3">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12 text-center">
-				<h1 class="mb-4">Our Partners</h1>
+			<div class="col-12 text-center">
+				<h2 class="mb-2 large">Find Your Tires</h2>
 			</div>
 		</div>
-		<div class="row justify-content-center">
-			
-			<?php while(have_rows('home_partners', $term)): the_row(); ?>
-			
-				<div class="col-sm-2 col-lg-3 mb-1 mb-lg-3 px-lg-2 align-self-center">
-					<a href="<?php the_sub_field('home_partner_link'); ?>" target="_blank"><?php echo wp_get_attachment_image(get_sub_field('home_partner_logo'), 'col-3', false, array('class'=>'img-fluid')); ?></a>
+		<div class="row align-items-stretch">
+			<div class="col-md-6 col-lg-4">
+				<div class="bg-white h-100 s">
+					<a href="<?php echo $brand_1['brand_button_link']; ?>">
+						<div class="bg-img d-flex px-1" style="background-image: url(<?php echo $brand_1_bg_src[0]; ?>)">
+							<div class="bg-overlay"></div>
+							<div class="d-flex align-content-center w-100 text-center position-relative">
+								<h2 class="text-white w-100 text-center align-self-center"><?php echo $brand_1['brand_title']; ?></h2>
+							</div>
+						</div>
+					</a>
+					<div class="bg-img-content px-1 px-sm-2 py-2">
+						<div class="mt-auto">
+							<?php echo wp_get_attachment_image($brand_1['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
+							<p class="mb-2"><?php echo $brand_1['brand_text']; ?></p>
+							<a href="<?php echo $brand_1['brand_button_link']; ?>" class="btn btn-primary"><span><?php echo $brand_1['brand_button_label']; ?></span></a>
+						</div>
+					</div>
 				</div>
-			
-			<?php endwhile; ?>
-			
+			</div>
+			<div class="col-md-6 col-lg-4 mt-2 mt-md-0">
+				<div class="bg-white h-100 s">
+					<a href="<?php echo $brand_2['brand_button_link']; ?>">
+						<div class="bg-img d-flex  px-1" style="background-image: url(<?php echo $brand_2_bg_src[0]; ?>)">
+							<div class="bg-overlay"></div>
+							<div class="d-flex align-content-center w-100 text-center position-relative">
+								<h2 class="text-white w-100 text-center align-self-center"><?php echo $brand_2['brand_title']; ?></h2>
+							</div>
+						</div>
+					</a>
+					<div class="bg-img-content px-1 px-sm-2 py-2">
+						<div class="mt-auto">
+							<?php echo wp_get_attachment_image($brand_2['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
+							<p class="mb-2"><?php echo $brand_2['brand_text']; ?></p>
+							<a href="<?php echo $brand_2['brand_button_link']; ?>" class="btn btn-primary"><span><?php echo $brand_2['brand_button_label']; ?></span></a>
+						</div>
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-6 col-lg-4 mt-2 mt-lg-0">
+				<div class="bg-white h-100 s">
+					<a href="<?php echo $brand_3['brand_button_link']; ?>">
+						<div class="bg-img d-flex px-1" style="background-image: url(<?php echo $brand_3_bg_src[0]; ?>)">
+							<div class="bg-overlay"></div>
+							<div class="d-flex align-content-center w-100 text-center position-relative">
+								<h2 class="text-white w-100 text-center align-self-center"><?php echo $brand_3['brand_title']; ?></h2>
+							</div>
+						</div>
+					</a>
+					<div class="bg-img-content px-1 px-sm-2 py-2">
+						<div class="mt-auto">
+							<?php echo wp_get_attachment_image($brand_3['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
+							<p class="mb-2"><?php echo $brand_3['brand_text']; ?></p>
+							<a href="<?php echo $brand_3['brand_button_link']; ?>" class="btn btn-primary"><span><?php echo $brand_3['brand_button_label']; ?></span></a>
+						</div>
+					</div>
+				</div>	
+			</div>
 		</div>
 	</div>
 </div>

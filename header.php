@@ -36,7 +36,7 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 				</div>
 				<div class="col-auto flex-xl-grow-1 d-none d-xl-block">
 					<div id="header-global-stores" class="d-flex h-100">
-						<!- Staging 307 -->
+						<!- Staging 307. Production 309 -->
 						<?php ubermenu( 'main' , array( 'menu' => 309 ) ); ?>						
 					
 					</div>
