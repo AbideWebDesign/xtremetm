@@ -2225,6 +2225,152 @@ body {
 		}
 	}
 }
+.store-primis {
+	.btn-primary, .button {
+		background-color: $brand-primis-primary !important;
+		border-color: $brand-primis-primary !important;
+		color: white !important;
+		
+		&:hover {
+			background-color: white !important;
+			border-color: $brand-primis-primary !important;
+			color: $brand-primis-primary !important;
+		}
+	}
+	.btn-white {
+		background-color: white !important;
+		border-color: white !important;
+		color: black !important;
+		
+		&:hover {
+			background-color: black !important;
+			border-color: black !important;
+			color: white !important;
+		}
+	}	
+	#footer-value-bar {
+		background-color: $brand-primis-primary;
+		
+		a {
+			color: white;
+		}
+	}
+	#footer-value-bar {
+		li:not(:last-child) {
+			border-bottom-color: darken($brand-primis-primary, 10);
+		}
+	}
+	#footer {
+		.btn-primary {
+			background-color: $brand-primis-primary;
+			color: black;
+		}
+	}
+	.summary {
+		border-left-color: $brand-primis-primary !important;
+		
+		&:before, &:after { 
+			background-color: $brand-primis-primary !important;
+		}
+	}
+	a.button {
+		border-color: $brand-primis-primary;
+	}
+	.woocommerce-breadcrumb {
+		border-color: $brand-primis-primary;
+	}
+	.woocommerce-message {
+		border-top-color: $brand-primis-primary;
+		
+		&:before {
+			color: $brand-primis-primary;
+		}
+	}
+	.product {
+		#product-bottom {
+			.woocommerce-tabs {
+				ul.tabs {						
+					li.active {
+						border-bottom-color: $brand-primis-primary;
+					}
+				}
+			}
+		}
+	}	
+}
+.store-contract {
+	.btn-primary, .button {
+		background-color: $brand-xtreme !important;
+		border-color: $brand-xtreme !important;
+		color: white !important;
+		
+		&:hover {
+			background-color: white !important;
+			border-color: $brand-xtreme !important;
+			color: $brand-xtreme !important;
+		}
+	}
+	.btn-white {
+		background-color: white !important;
+		border-color: white !important;
+		color: black !important;
+		
+		&:hover {
+			background-color: black !important;
+			border-color: black !important;
+			color: white !important;
+		}
+	}	
+	#footer-value-bar {
+		background-color: $brand-xtreme;
+		
+		a {
+			color: white;
+		}
+	}
+	#footer-value-bar {
+		li:not(:last-child) {
+			border-bottom-color: darken($brand-xtreme, 10);
+		}
+	}
+	#footer {
+		.btn-primary {
+			background-color: $brand-xtreme;
+			color: black;
+		}
+	}
+	.summary {
+		border-left-color: $brand-xtreme !important;
+		
+		&:before, &:after { 
+			background-color: $brand-xtreme !important;
+		}
+	}
+	a.button {
+		border-color: $brand-xtreme;
+	}
+	.woocommerce-breadcrumb {
+		border-color: $brand-xtreme;
+	}
+	.woocommerce-message {
+		border-top-color: $brand-xtreme;
+		
+		&:before {
+			color: $brand-xtreme;
+		}
+	}
+	.product {
+		#product-bottom {
+			.woocommerce-tabs {
+				ul.tabs {						
+					li.active {
+						border-bottom-color: $brand-xtreme;
+					}
+				}
+			}
+		}
+	}	
+}
 .menu-rehv {
 	.ubermenu-submenu {
 		.ubermenu-row:last-child {
