@@ -27,7 +27,7 @@
 						</div>
 					</div>
 -->
-					<div class="col-md-11 col-lg-7">
+					<div class="col-md-11 col-lg-9 col-xl-7">
 						<div class="footer-box h-100 text-center text-md-left">
 							<div class="row align-items-center justify-content-center h-100">
 								<div class="col-md-auto mb-1 mb-md-0">
