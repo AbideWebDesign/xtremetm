@@ -42,12 +42,44 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "",
+            "collapsed": "field_5c37c351fe805",
             "min": 0,
             "max": 0,
-            "layout": "block",
-            "button_label": "Add Slide",
+            "layout": "row",
+            "button_label": "Add Banner",
             "sub_fields": [
+                {
+                    "key": "field_5c37c3e4fe80c",
+                    "label": "Hero Banner Image",
+                    "name": "hero_banner_image",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5c5b66f04c89b",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": 2400,
+                    "min_height": 1600,
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                },
                 {
                     "key": "field_5c37c351fe805",
                     "label": "Hero Banner Title",
@@ -65,7 +97,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -92,7 +124,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -101,38 +133,6 @@
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
-                },
-                {
-                    "key": "field_5c37c3e4fe80c",
-                    "label": "Hero Banner Image",
-                    "name": "hero_banner_image",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_5c5b66f04c89b",
-                                "operator": "==",
-                                "value": "1"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "id",
-                    "preview_size": "thumbnail",
-                    "library": "all",
-                    "min_width": 2400,
-                    "min_height": 1600,
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
                 },
                 {
                     "key": "field_5c37c377fe807",
@@ -229,13 +229,6 @@
         ],
         [
             {
-                "param": "page_template",
-                "operator": "==",
-                "value": "page-promotion.php"
-            }
-        ],
-        [
-            {
                 "param": "product_cat_term",
                 "operator": "==",
                 "value": "94"
@@ -250,5 +243,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1563990855
+    "modified": 1568245475
 }
