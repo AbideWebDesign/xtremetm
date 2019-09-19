@@ -3,7 +3,7 @@
 <div id="header-nav" class="d-none d-lg-block">
 	<div class="container">
 		<div class="row no-gutters">
-			<div class="col-lg-auto flex-grow-1">
+			<div class="col-lg-auto flex-grow-1 align-self-center">
 				<ul class="list-inline mb-0">
 					
 					<?php foreach($cats as $cat): ?>

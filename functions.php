@@ -117,7 +117,7 @@ function xtremetm_scripts() {
 
 	wp_enqueue_script( 'xtremetm-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '', true );
 	
-	wp_enqueue_script( 'core', get_template_directory_uri() . '/js/core.js', array(), '', true );	
+	wp_enqueue_script( 'core', get_template_directory_uri() . '/js/core.js', array(), '', false );	
 
 	wp_enqueue_script( 'popper.min', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '', true );
 	
