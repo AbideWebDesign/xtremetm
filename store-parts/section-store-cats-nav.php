@@ -15,10 +15,14 @@
 				</ul>
 			</div>
 			<div class="col-lg-auto align-self-center">
+				
 				<?php include(locate_template('/store-parts/search-bar.php', false, false)); ?>
+				
 			</div>
 			<div class="col-lg-auto align-self-center">
-				<div id="header-phone"><a class="text-white" href="tel:<?php the_field('global_phone', 'options'); ?>"><?php the_field('global_phone', 'options'); ?></a></div>
+				<div id="header-phone">
+					<a href="tel:<?php the_field('global_phone', 'options'); ?>"><?php the_field('global_phone', 'options'); ?></a>
+				</div>
 			</div>
 		</div>
 	</div>

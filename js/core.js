@@ -2,6 +2,20 @@
 	
 	$( document ).ready(function(){
 		
+		// Change brand images
+		
+		if ( $('body').hasClass('store-rehv') ) {
+			
+			$('.menu-rehv img').attr('src', 'https://xtremetm.net/wp-content/uploads/2019/09/menu-rehv-dark.png');
+			$('.menu-rehv img').attr('class', 'd-inline-block ubermenu-image ubermenu-image-size-full');
+			
+		} else if ( $('body').hasClass('store-primis') ) {
+			
+			$('.menu-primis img').attr('src', 'https://xtremetm.net/wp-content/uploads/2019/09/menu-primis-active.png');
+			$('.menu-primis img').attr('class', 'd-inline-block ubermenu-image ubermenu-image-size-full');
+			
+		}
+		
 		$( '#search' ).on('click',( function(e){
 			
 			$('.form-group').addClass('sb-search-open');

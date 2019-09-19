@@ -171,7 +171,7 @@ h3 {
 */
 #header-global {
 	background-color: black;
-	border-bottom: 1px solid $border-color;
+// 	border-bottom: 1px solid $border-color;
 	
 	a {
 		font-family: $font-family-alt;
@@ -299,6 +299,9 @@ h3 {
 		color: white !important;
 		text-align: center;
 		
+		a {
+			color: white;
+		}
 		a:hover {
 			text-decoration: none;
 		}
@@ -1995,6 +1998,16 @@ body {
 	#header-global {
 		#header-global-stores {
 			.ubermenu {
+				&.ubermenu-main {
+					width: 100%;
+				}
+				.ubermenu-nav {
+					width: 100%;
+					
+					.ubermenu-column-1-3 {
+						min-width: 33.3%;
+					}
+				}
 				.ubermenu-item-layout-image_above>.ubermenu-image {
 					margin-bottom: 0;
 					max-height: 16px;
@@ -2050,6 +2063,7 @@ body {
 				.ubermenu-item-level-0.ubermenu-current-menu-ancestor > .ubermenu-target {
 				  color: #ffffff;
 				  background: #000000;
+				  min-height: 58px;
 				}
 				.ubermenu-row:first-child {
 					padding: 0px 25px;
@@ -2157,6 +2171,48 @@ body {
 	background-color: $brand-rev-primary;
 }
 .store-rehv {
+	#header-global {
+		#header-global-stores {
+			.ubermenu {
+				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
+				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
+				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+					background-color: $brand-rev-primary;
+					
+					img {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+	#header-nav {
+		background-color: $brand-rev-primary;
+		
+		li {
+			a {
+				color: black;
+				
+				.fas {
+					color: black;
+				}
+			}
+		}
+		#header-search {
+			.fas {
+				color: black;
+			}
+			.form-group.sb-search-open .search-label, .no-js .sb-search .search-label {
+				background-color: darken($brand-rev-primary, 20);
+			}
+		}
+		#header-phone {
+			a {
+				color: black;
+			}
+		}
+	}
+	
 	.btn-primary, .button {
 		background-color: $brand-rev-primary !important;
 		border-color: $brand-rev-primary !important;
@@ -2230,6 +2286,50 @@ body {
 	}
 }
 .store-primis {
+	#header-global {
+		#header-global-stores {
+			.ubermenu {
+				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
+				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
+				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+					background-color: $brand-primis-primary;
+					
+					img {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+	#header-nav {
+		background-color: $brand-primis-primary;
+		
+		li {
+			a {
+				color: white;
+				
+				.fas {
+					color: white;
+				}
+			}
+		}
+		li:not(:last-child) {
+			border-right-color: white;
+		}
+		#header-search {
+			.fas {
+				color: white;
+			}
+			.form-group.sb-search-open .search-label, .no-js .sb-search .search-label {
+				background-color: darken($brand-primis-primary, 20);
+			}
+		}
+		#header-phone {
+			a {
+				color: white;
+			}
+		}
+	}
 	.btn-primary, .button {
 		background-color: $brand-primis-primary !important;
 		border-color: $brand-primis-primary !important;
@@ -2303,6 +2403,46 @@ body {
 	}	
 }
 .store-contract {
+	#header-global {
+		#header-global-stores {
+			.ubermenu {
+				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
+				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
+				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+					background-color: $brand-xtreme;
+				}
+			}
+		}
+	}
+	#header-nav {
+		background-color: $brand-xtreme;
+		
+		li {
+			a {
+				color: white;
+				
+				.fas {
+					color: white;
+				}
+			}
+		}
+		li:not(:last-child) {
+			border-right-color: white;
+		}
+		#header-search {
+			.fas {
+				color: white;
+			}
+			.form-group.sb-search-open .search-label, .no-js .sb-search .search-label {
+				background-color: darken($brand-xtreme, 20);
+			}
+		}
+		#header-phone {
+			a {
+				color: white;
+			}
+		}
+	}
 	.btn-primary, .button {
 		background-color: $brand-xtreme !important;
 		border-color: $brand-xtreme !important;
