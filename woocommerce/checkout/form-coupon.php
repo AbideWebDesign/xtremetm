@@ -23,7 +23,7 @@ if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
 
 ?>
 <div class="woocommerce-form-coupon-toggle">
-	<?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message', __( 'Have a coupon?', 'woocommerce' ) . ' <a href="#" class="showcoupon">' . __( 'Click here to enter your code', 'woocommerce' ) . '</a>' ), 'notice' ); ?>
+	<?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message',  ' <a href="#" class="showcoupon">' . __( 'Have a Coupon?', 'woocommerce' ) . '</a>' ), 'notice' ); ?>
 	<form class="checkout_coupon woocommerce-form-coupon form-inline" method="post" style="display:none">	
 		<div class="form-group w-100">
 			<input type="text" name="coupon_code" class="form-control col-lg-4 mr-1" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" id="coupon_code" value="" />
@@ -31,4 +31,3 @@ if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
 		</div>
 	</form>
 </div>
-

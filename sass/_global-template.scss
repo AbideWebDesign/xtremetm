@@ -277,7 +277,7 @@ h3 {
 			color: white;
 			font-family: $font-family-alt;
 			text-transform: uppercase;
-			font-weight: 700;
+			font-weight: 500;
 			
 			&:hover {
 				text-decoration: none;
@@ -302,7 +302,7 @@ h3 {
 		
 		a {
 			color: white;
-			font-weight: 700;
+			font-weight: 500;
 		}
 		a:hover {
 			text-decoration: none;
@@ -680,14 +680,11 @@ h3 {
 			padding-left: 0;
 		}
 	}
-	.woocommerce-error::before, .woocommerce-info::before, .woocommerce-message::before {
+	.woocommerce-error::before, .woocommerce-message::before {
 		display: none;
 	}
 	.woocommerce-info, .woocommerce-notices-wrapper {
 		font-size: $font-size-sm;
-	}
-	.woocommerce-info {
-		border-top-color: $brand-xtreme;
 	}
 	button.button, button.button.alt {
 		@extend .btn;
@@ -735,8 +732,10 @@ h3 {
 	.woocommerce-message {
 		border-top-color: $brand-xtreme;
 		background-color: white;
-		background-color: $gray-200;
 		font-size: $font-size-sm;
+		font-weight: bold;
+		color: black;
+		@extend .s;
 		
 		&:before {
 			color: black;
@@ -751,6 +750,34 @@ h3 {
 		.woocommerce-info {
 			padding-bottom: 1em;
 			margin: 0;
+			border: none;
+			background-color: $brand-xtreme;
+			color: white;
+			text-transform: uppercase;
+			font-family: $font-family-alt;
+			
+			a {
+				color: white;
+				
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+		.woocommerce-info::before {
+			font-family: "Font Awesome 5 Free";
+			font-weight: 900;
+		    content: "\f067";
+		    color: white;
+		}
+		.woocommerce-error {
+			margin-bottom: 0;
+			border: none;
+			font-size: $font-size-sm;
+			padding-left: 1em;
+		}
+		form.woocommerce-form-coupon {
+			border-radius: 0;
 		}
 	}
 	form.woocommerce-form-coupon, form.woocommerce-form-login, form.woocommerce-form-register {
@@ -953,6 +980,17 @@ h3 {
 				}
 				.woocommerce-variation-price {
 					margin-bottom: 1em;
+				}
+				.wc-no-matching-variations.woocommerce-info {
+					border-top-color: black;
+					
+					&:before {
+						content: "\e016";
+						color: black;
+					}
+				}
+				.blockOverlay {
+					display: none !important;
 				}
 			}
 		}
@@ -1290,6 +1328,12 @@ body {
 	}
 	#order_review_heading {
 		display: none;
+	}
+	.woocommerce-form-login-toggle {
+		margin-bottom: 1em;
+	}
+	.woocommerce-form-coupon-toggle {
+		margin-bottom: 2em;
 	}
 }
 .woocommerce-account {
