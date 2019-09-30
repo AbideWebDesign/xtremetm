@@ -2,6 +2,17 @@
 	
 	$( document ).ready(function(){
 		
+		// Move coupon box from top of page to sidebar
+		
+		if ( $('body').hasClass('woocommerce-checkout') ) {
+			
+			var coupon = $('#woocommerce-coupon-code');
+			coupon.insertAfter('.shop_table.woocommerce-checkout-review-order-table');
+			coupon.removeClass('d-none'); 
+			$('.checkout_coupon').addClass('d-block');
+		}
+
+
 		// Change brand images
 		
 		if ( $('body').hasClass('store-rehv') ) {
@@ -78,5 +89,6 @@
 		$( 'body' ).trigger( 'update_checkout' );
 	
 	} );
-		
+	
+			
 } )( jQuery );

@@ -22,12 +22,11 @@ if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
 }
 
 ?>
-<div class="woocommerce-form-coupon-toggle">
-	<?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message',  ' <a href="#" class="showcoupon">' . __( 'Have a Coupon?', 'woocommerce' ) . '</a>' ), 'notice' ); ?>
-	<form class="checkout_coupon woocommerce-form-coupon form-inline" method="post" style="display:none">	
-		<div class="form-group w-100">
-			<input type="text" name="coupon_code" class="form-control col-lg-4 mr-1" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" id="coupon_code" value="" />
-			<button type="submit" class="btn btn-sm" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_html_e( 'Apply', 'woocommerce' ); ?></button>
+<div id="woocommerce-coupon-code" class="woocommerce-form-coupon-toggle bg-light p-1 d-none">
+	<form class="checkout_coupon woocommerce-form-coupon form-inline" method="post">
+		<div class="d-flex">
+			<input type="text" name="coupon_code" class="form-control form-control-sm flex-grow-1 mr-1" placeholder="<?php esc_attr_e( 'Gift card or discount code', 'woocommerce' ); ?>" id="coupon_code" value="" />
+			<input type="submit" class="btn btn-sm" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>" />
 		</div>
 	</form>
 </div>

@@ -122,6 +122,7 @@ function xtremetm_scripts() {
 	wp_enqueue_script( 'popper.min', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '', true );
 	
 	wp_enqueue_script( 'bootstrap.min', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), '', true );
+	
 }
 add_action( 'wp_enqueue_scripts', 'xtremetm_scripts' );
 
@@ -351,19 +352,43 @@ add_action( 'after_setup_theme', 'mytheme_add_woocommerce_support' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 remove_theme_support( 'wc-product-gallery-zoom' );
-add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts_select2', 100 );
 
-function dequeue_stylesandscripts_select2() {
+// Remove unused scripts
+add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts', 100 );
+function dequeue_stylesandscripts() {
 	
-    if ( class_exists( 'woocommerce' ) && !( is_admin() ) ) {
+	wp_dequeue_style( 'wc-block-style' );
+	wp_dequeue_style( 'wp-block-library' );
+	
+    if ( !is_woocommerce() && !is_cart() && !is_checkout() ) {
         
         wp_dequeue_style( 'selectWoo' );
         wp_deregister_style( 'selectWoo' );
  
         wp_dequeue_script( 'selectWoo');
         wp_deregister_script('selectWoo');
-    
+
     } 
+    
+    if ( !is_product_category() ) {
+	    
+	    // Remove product filter plugin scripts
+	    wp_dequeue_script( 'wcpf-plugin-vendor-script' );
+	    wp_dequeue_script( 'wcpf-plugin-script' );
+	    wp_dequeue_script( 'accounting' );
+	    wp_dequeue_script( 'wcpf-plugin-polyfills-script' );
+	    
+	    wp_dequeue_style( 'wcpf-plugin-style' );
+
+	}
+	
+	if ( !is_checkout() ) {
+		
+		// Remove payment gateway scripts/styles
+		wp_dequeue_style( 'sv-wc-payment-gateway-payment-form' );
+		wp_dequeue_script( 'wc-intuit-payments' );
+		wp_dequeue_script( 'sv-wc-payment-gateway-payment-form' );
+	}
 
 } 
 
@@ -1478,3 +1503,4 @@ add_filter( 'jetpack_just_in_time_msgs', '_return_false' );
  * Woocommerce - turn off upsell ads
  */
 add_filter( 'woocommerce_helper_suppress_admin_notices', '__return_true' );
+

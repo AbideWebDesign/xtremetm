@@ -20,13 +20,6 @@
 					</div>
 				</div>
 				<div id="footer-boxes" class="row align-items-stretch justify-content-center">
-<!--
-					<div class="col-lg-6 mb-1 mb-lg-0">
-						<div class="footer-box h-100">
-							<div class="footer-box-title text-center mb-1"><?php the_field('footer_box_title_1', 'options'); ?></div>
-						</div>
-					</div>
--->
 					<div class="col-md-11 col-lg-9 col-xl-7">
 						<div class="footer-box h-100 text-center text-md-left">
 							<div class="row align-items-center justify-content-center h-100">
