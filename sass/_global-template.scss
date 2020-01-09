@@ -723,9 +723,13 @@ h3 {
 		@extend .btn;
 	}
 	button.button.alt:hover {
-		    background-color: white;
-			border-color: #20376d;
-			color: #20376d;
+	    background-color: white;
+		border-color: #20376d;
+		color: #20376d;
+	}
+	.button.button:disabled, button.button:disabled[disabled], input.button.disabled, input.button:disabled, input.button:disabled[disabled], button.button.disabled, a.button:disabled[disabled], a.button:disabled, a.button.disabled, #respond input#submit:disabled[disabled], #respond input#submit:disabled, #respond input#submit.disabled {
+		padding: .75rem 2.2rem;
+		color: white;
 	}
 	.woocommerce-orders-table__cell-order-actions {
 		.button {
