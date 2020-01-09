@@ -144,6 +144,10 @@ h3 {
 }
 .s {
 	box-shadow: $shadow;
+	
+	.woocommerce-message, .woocommerce-error {
+		box-shadow: none !important;
+	}
 }
 .sb {
 	box-shadow: $shadow-bottom;
@@ -773,6 +777,7 @@ h3 {
 			border: 1px solid black;
 		}
 	}
+	
 	.woocommerce-form-coupon-toggle {
 		input {
 			font-size: $font-size-sm;			
@@ -817,6 +822,9 @@ h3 {
 		border: none;
 		padding: 0;
 		
+		.woocommerce-LostPassword {
+			margin-top: 1em;
+		}
 		p {
 			font-size: $font-size-sm;
 			margin-bottom: .5em;

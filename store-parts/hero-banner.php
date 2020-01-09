@@ -1,7 +1,7 @@
 <?php if (get_field('display_banner_area', $term)): ?>
 
 	<?php $count = 0; ?>
-	<?php $banners = count(get_field('banners', $term)); ?>
+	<?php $banners = 1; ?>
 		
 		<div id="section-hero-banner" class="carousel slide" data-ride="carousel">
 			

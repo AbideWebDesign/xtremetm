@@ -53,8 +53,9 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 					<input class="woocommerce-form__input woocommerce-form__input-checkbox ml-md-1" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'woocommerce' ); ?></span>
 				</label>
 			</p>
+			<h3>Lost Your Password?</h3>
 			<p class="woocommerce-LostPassword lost_password">
-				<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'woocommerce' ); ?></a>
+				<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Click here to request password reset', 'woocommerce' ); ?></a>
 			</p>
 
 			<?php do_action( 'woocommerce_login_form_end' ); ?>
