@@ -12,6 +12,12 @@ global $woocommerce;
 
 $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false ));
 
+if ( is_search() ) {
+	
+	global $wp_query;
+	$term = get_term_by( 'slug', $wp_query->get('product_cat'), 'product_cat' );
+	$store_class = 'store-' . $term->slug;
+}
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -22,7 +28,7 @@ $stores = get_terms('product_cat', array( 'parent' => 0, 'hide_empty' => false )
 	<link rel="icon" type="image/png" href="<?php the_field('favicon', 'options'); ?>">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class($store_class); ?>>
 	<div id="header-global">
 		<div class="container">
 			<div class="row">

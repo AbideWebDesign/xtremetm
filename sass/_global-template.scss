@@ -781,7 +781,11 @@ h3 {
 			border: 1px solid black;
 		}
 	}
-	
+	#global-store-container {
+		.woocommerce-message, .woocommerce-error {
+			@extend .bg-white;
+		}
+	}
 	.woocommerce-form-coupon-toggle {
 		input {
 			font-size: $font-size-sm;			
@@ -2293,9 +2297,7 @@ body {
 	#header-global {
 		#header-global-stores {
 			.ubermenu {
-				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
-				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
-				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+				.menu-rehv.ubermenu-item-level-0>.ubermenu-target {
 					background-color: $brand-rev-primary;
 					
 					img {
@@ -2408,9 +2410,7 @@ body {
 	#header-global {
 		#header-global-stores {
 			.ubermenu {
-				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
-				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
-				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+				.menu-primis.ubermenu-item-level-0>.ubermenu-target {
 					background-color: $brand-primis-primary;
 				}
 			}
@@ -2521,9 +2521,7 @@ body {
 	#header-global {
 		#header-global-stores {
 			.ubermenu {
-				.ubermenu-item-level-0.ubermenu-current-menu-item>.ubermenu-target, 
-				.ubermenu-item-level-0.ubermenu-current-menu-ancestor>.ubermenu-target,
-				.ubermenu-item-level-0.ubermenu-current-menu-parent>.ubermenu-target {
+				.menu-xtreme.ubermenu-item-level-0>.ubermenu-target {
 					background-color: $brand-xtreme;
 				}
 			}

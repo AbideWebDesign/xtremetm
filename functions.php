@@ -101,6 +101,7 @@ add_action( 'after_setup_theme', 'xtremetm_setup' );
  * Enqueue scripts and styles.
  */
 function xtremetm_scripts() {
+	
 	$theme = wp_get_theme();
 	
 	wp_deregister_script( 'jquery' );
@@ -122,6 +123,8 @@ function xtremetm_scripts() {
 	wp_enqueue_script( 'popper.min', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '', true );
 	
 	wp_enqueue_script( 'bootstrap.min', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), '', true );
+	
+	wp_enqueue_script( 'product-filters', home_url() . '/wp-content/plugins/woocommerce-product-filters/assets/prod/styles/plugin.css', array(), '', true );
 	
 }
 add_action( 'wp_enqueue_scripts', 'xtremetm_scripts' );
@@ -656,6 +659,7 @@ function xtremetm_save_extra_register_fields( $customer_id ) {
 		update_user_meta( $customer_id, 'resale_certificate_number', sanitize_text_field( $_POST['1'] ) );
 		update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
 		update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
+		update_user_meta( $customer_id, 'tax_exemption_type', 'wholesale' ); // Needed for TaxJar plugin
 		
 	} elseif ( current_user_can('reseller') ) {
 		
@@ -891,16 +895,17 @@ function get_parent_cats() {
 	if ( is_category() || is_tax() ) {
 
 		if( $obj->parent == 0 ) {
-			
+						
+			$product_cat = get_term_by( 'slug', $wp_query->get('product_cat'), 'product_cat' );
 			// This is the top level
-			
-			$cats = get_terms( 'product_cat', array( 'child_of' => $obj->term_taxonomy_id, 'hide_empty' => false ) );
+			$cats = get_terms( 'product_cat', array( 'child_of' => $product_cat->term_taxonomy_id, 'hide_empty' => false ) );
 	
 			return( $cats );
 			
 		} else {
 			
 			// Not top level. Get top level
+			
 			$parent = get_top_level( $obj );
 	
 			$cats = get_terms( 'product_cat', array( 'child_of' => $parent->term_taxonomy_id, 'hide_empty' => false ) );
