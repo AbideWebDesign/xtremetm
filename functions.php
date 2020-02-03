@@ -521,10 +521,11 @@ function xtremetm_custom_setup_fields() {
             'required'    => true,
 		),
 		array(
-            'type'        => 'text',
+            'type'        => 'state',
             'label'       => __( 'Resale State', 'xtremetm' ),
             'id'		  => 'resale_state',
-            'placeholder' => __( '', 'xtremetm' ),
+            'class' 	  => ['address-field'],
+            'validate' 	  => ['state'],
             'required'    => true,
 		),
 		array(
@@ -660,6 +661,7 @@ function xtremetm_save_extra_register_fields( $customer_id ) {
 		update_user_meta( $customer_id, 'resale_state', sanitize_text_field( $_POST['2'] ) );
 		update_user_meta( $customer_id, 'resale_date', $_POST['3'] );
 		update_user_meta( $customer_id, 'tax_exemption_type', 'wholesale' ); // Needed for TaxJar plugin
+		update_user_meta( $customer_id, 'tax_exempt_regions', sanitize_text_field( $_POST['2'] ) ); // Needed for TaxJar plugin
 		
 	} elseif ( current_user_can('reseller') ) {
 		
