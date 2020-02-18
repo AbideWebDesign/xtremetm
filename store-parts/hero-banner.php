@@ -32,6 +32,15 @@
 						<div class="carousel-item h-100 text-center bg-img <?php echo ($count==0 ? 'active' : ''); ?>" style="background-image: url('<?php echo $bg_img[0]; ?>')">
 							<div class="bg-overlay"></div>
 							<div class="bg-img-content text-center d-flex flex-column h-100 align-content-center justify-content-center">
+								
+								<?php if ( get_sub_field('add_logo') ): ?>
+								
+									<?php $logo_img = wp_get_attachment_image_src( get_sub_field('logo'), 'Full', false); ?>
+									
+									<img src="<?php echo $logo_img[0]; ?>" class="hero-logo align-self-center mb-2" />
+								
+								<?php endif; ?>
+								
 								<h4 class="mb-1 mb-lg-0 text-white"><?php the_sub_field('header_banner_sub_title'); ?></h4>
 								<h1 class="text-white mb-2"><?php the_sub_field('hero_banner_title'); ?></h1>
 								

@@ -43,9 +43,6 @@
 						<a href="<?php echo home_url('/store/rehv'); ?>"><img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-rehv.png'); ?>" /></a>
 					</div>
 					<div class="col-auto">
-						<a href="<?php echo home_url('/store/primis'); ?>"><img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-primis.png'); ?>" /></a>
-					</div>
-					<div class="col-auto">
 						<a href="<?php echo home_url('/store/contract'); ?>"><img src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm-alt.png'); ?>" /></a>
 					</div>					
 				</div>
