@@ -61,7 +61,7 @@ if ( is_search() ) {
 					
 				</div>
 				<div class="col-auto align-self-center">
-					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo $woocommerce->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>
+					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo WC()->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>
 					<a class="cart-container d-lg-none" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><span class="d-none d-md-inline-block"><?php echo WC()->cart->get_cart_contents_count() ?></span></a>
 				</div>
 			</div>
