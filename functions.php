@@ -1443,7 +1443,7 @@ function valid_reseller() {
     }
     
 	
-	if ( current_user_can( 'reseller' ) && !current_user_can( 'administrator' ) {
+	if ( current_user_can( 'reseller' ) && !current_user_can( 'administrator' ) ) {
 		
 		$tz = new DateTimeZone('America/Los_Angeles');
 		
