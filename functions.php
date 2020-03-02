@@ -1434,10 +1434,16 @@ function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {
 function valid_reseller() {
 	
 	// Check to see if user has valid reseller account
+	$current_user = wp_get_current_user();
 	
-	if ( current_user_can( 'reseller' ) ) {
-		
-		$current_user = wp_get_current_user();
+	if ( !$current_user || !$current_user->roles ) {
+           
+            return false;
+    
+    }
+    
+	
+	if ( current_user_can( 'reseller' ) && !current_user_can( 'administrator' ) {
 		
 		$tz = new DateTimeZone('America/Los_Angeles');
 		
