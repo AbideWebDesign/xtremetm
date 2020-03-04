@@ -1496,36 +1496,40 @@ function get_variation_parent_ids_from_term( $term, $taxonomy, $type ){
 	
 }
 
-add_action( 'clear_inventory_hook', 'clear_rehv_inventory', 10, 0 );
+add_action( 'clear_inventory_hook', 'clear_inventory', 10, 0 );
 
-function clear_rehv_inventory() {
+function clear_inventory() {
 
-	$cat_name = 'rehv';
+	$cat_names = array( 'rehv', 'rally-contract', 'rallycross' );
 	
-	$query = new WP_Query( array(
-	    'post_type'       => 'product_variation',
-	    'post_status'     => 'publish',
-	    'posts_per_page'  => 300,
-	    'post_parent__in' => get_variation_parent_ids_from_term( $cat_name, 'product_cat', 'name' ), // Variations
-	) );
-
-	while ( $query->have_posts() ) {
+	foreach ( $cat_names as $cat_name ) {
 		
-		$query->the_post();
-
-		$variation = new WC_Product_Variation( get_the_id() );
-		
-		$variation->set_stock_status('outofstock');
-		
-		$variation->set_stock_quantity(0);
-		
-		$variation->save();
-		
-		echo "SKU: " . $variation->get_sku() . "<br>";
+		$query = new WP_Query( array(
+		    'post_type'       => 'product_variation',
+		    'post_status'     => 'publish',
+		    'posts_per_page'  => 300,
+		    'post_parent__in' => get_variation_parent_ids_from_term( $cat_name, 'product_cat', 'name' ), // Variations
+		) );
 	
-		echo "Stock: " . $variation->get_stock_quantity() . "<br>";
+		while ( $query->have_posts() ) {
+			
+			$query->the_post();
+	
+			$variation = new WC_Product_Variation( get_the_id() );
+			
+			$variation->set_stock_status('outofstock');
+			
+			$variation->set_stock_quantity(0);
+			
+			$variation->save();
+			
+			echo "SKU: " . $variation->get_sku() . "<br>";
 		
-		echo "Stock Status: " . $variation->get_stock_status() . "<br><br>";		
+			echo "Stock: " . $variation->get_stock_quantity() . "<br>";
+			
+			echo "Stock Status: " . $variation->get_stock_status() . "<br><br>";		
+		}
+		
 	}
 	
 }

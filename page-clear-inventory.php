@@ -1,12 +1,12 @@
 <?php
 /**
- * Template Name: Clear Rehv Inventory
+ * Template Name: Clear Tire Inventory
  *
  * @package xtremetm
  */
 
 wp_head();
 
-clear_rehv_inventory();
+clear_inventory();
 
 wp_footer();
