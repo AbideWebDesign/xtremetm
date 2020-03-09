@@ -40,7 +40,7 @@
 			}
 	
 		} );
-				
+		
 		$( '#ship-to-event-checkbox' ).click( function(e) {
 	        
 	        if ( $(this).is(':checked') ) {
@@ -58,7 +58,6 @@
 	        }
     	
     	} );
-    	
 
     	$( '#customer_login #resale_certificate_number_field' ).hide(); 
     	$( '#customer_login #resale_state_field' ).hide();

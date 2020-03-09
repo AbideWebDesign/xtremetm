@@ -1141,8 +1141,16 @@ function ship_to_event_field( $checkout ) {
 		
 		$events[$event_name] = $event_name;
 	}
-	
-	echo '<div id="ship-to-event" class="mt-1" style="display: none;">';
+
+	if ( WC()->session->get( 'ship_to_event') == 'true' ) {
+		
+		echo '<div id="ship-to-event" class="mt-1">';
+		
+	} else {
+		
+		echo '<div id="ship-to-event" class="mt-1" style="display: none;">';
+		
+	}
 	
 	woocommerce_form_field('ship_to_event_list', array(
 		'type' => 'select',
@@ -1150,7 +1158,8 @@ function ship_to_event_field( $checkout ) {
 		'placeholder' => __('Select an Event') ,
 		'options' => $events,
 		'required' => false,
-		'input_class' => array('form-check')
+		'input_class' => array('form-check'),
+		'default' => WC()->session->get( 'ship_to_event_name')
 	), $checkout->get_value('ship_to_event_list'));
 	
 	echo '</div>';
@@ -1173,7 +1182,7 @@ function set_event_session() {
 	
 	}
 	
-	WC()->session->set( 'ship_to_event', $_POST['status'] );	
+	WC()->session->set( 'ship_to_event', $_POST['status'] );
 	
 	wp_send_json_success( array('message' => 'success') );
 }
@@ -1193,13 +1202,16 @@ function get_event_address() {
 	
 		the_row();
 	
-		if (get_sub_field('event_name') == $_POST['eventname']) {
+		if ( get_sub_field('event_name') == $_POST['eventname'] ) {
+			
 			$event['event_name'] = get_sub_field('event_name');
 			$event['street'] = get_sub_field('event_address_street');
 			$event['city'] = get_sub_field('event_address_city');
 			$event['state'] = get_sub_field('event_address_state');
 			$event['zip'] = get_sub_field('event_address_zip');
-				
+			
+			WC()->session->set( 'ship_to_event_name', $event['event_name'] );	
+
 			wp_send_json_success( array('message' => 'success', 'address' => $event) );
 		}
 	}
@@ -1215,6 +1227,7 @@ add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields' 
 function xtremetm_override_checkout_fields( $fields ) {
     
      $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
+     
      return $fields;
      
 }
@@ -1227,7 +1240,7 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_change_flat_rates_cost', 10, 
 function xtremetm_change_flat_rates_cost( $rates, $package ) {
 
 	// Make sure flat rate is available. Note: Production is flat_rate:4
-	if ( isset( $rates['flat_rate:4']) && WC()->session->get( 'ship_to_event') == 'true' ) {
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
 	
 		// Set the cost to free
 	

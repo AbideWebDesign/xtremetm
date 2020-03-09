@@ -3,15 +3,18 @@ $( '#ship-to-event-checkbox' ).click( function(){
 	if ( $( this ).is(":checked")) {
 		
 		var checked = 'true';
-		
+		var event = $( "select#ship_to_event_list" ).val();
+
 	} else {
 		
 		var checked = 'false';
+		var event = '';
 		
 	}
 	
 	var data = {
 		status: checked,
+		event: event,
 		action: 'set_event_session',
 		security: ajax_object.ajax_nonce
 	};
@@ -21,7 +24,7 @@ $( '#ship-to-event-checkbox' ).click( function(){
 		url: ajax_object.ajax_url,
 		data: data,
 		success : function( response ) {
-			
+			$(document.body).trigger('update_checkout');
         },
 		fail : function( response ) {
 			console.log( 'failure' );
