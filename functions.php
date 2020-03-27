@@ -431,7 +431,7 @@ add_action( 'admin_init' , function() {
 });
 
 /**
- * Add custom fields
+ * Add custom fields to registration
  */
 
 add_action( 'woocommerce_register_form', 'xtremetm_add_register_fields_woocommerce', 15 );
@@ -541,7 +541,7 @@ function xtremetm_custom_setup_fields() {
 }
 
 /**
- * Validate registration fields
+ * Validate custom registration fields
  */ 
  
 add_action( 'woocommerce_register_post', 'xtremetm_validate_extra_register_fields', 10, 3 );
@@ -605,7 +605,7 @@ function xtremetm_custom_validations( $validation_errors ) {
 }
 
 /**
- * Save custom fields
+ * Save custom registration fields
  */ 
  
 add_action( 'woocommerce_created_customer', 'xtremetm_save_extra_register_fields' );
@@ -1144,23 +1144,23 @@ function ship_to_event_field( $checkout ) {
 
 	if ( WC()->session->get( 'ship_to_event') == 'true' ) {
 		
-		echo '<div id="ship-to-event" class="mt-1">';
+		echo '<div id="ship-to-event" class="bg-light">';
 		
 	} else {
 		
-		echo '<div id="ship-to-event" class="mt-1" style="display: none;">';
+		echo '<div id="ship-to-event" class="bg-light" style="display: none;">';
 		
 	}
 	
-	woocommerce_form_field('ship_to_event_list', array(
+	woocommerce_form_field( 'ship_to_event_list', array(
 		'type' => 'select',
-		'label' => __('') ,
+		'label' => __('Event') ,
 		'placeholder' => __('Select an Event') ,
 		'options' => $events,
-		'required' => false,
+		'required' => true,
 		'input_class' => array('form-check'),
 		'default' => WC()->session->get( 'ship_to_event_name')
-	), $checkout->get_value('ship_to_event_list'));
+	), $checkout->get_value( 'ship_to_event_list' ) );
 	
 	echo '</div>';
 
@@ -1176,15 +1176,25 @@ add_action( 'wp_ajax_nopriv_set_event_session', 'set_event_session' );
 
 function set_event_session() {
 
-	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce') ) {
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
 
-		wp_send_json_error( array('message' => 'Nonce is invalid.') );
+		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
 	
+	}
+	
+	if ( $_POST['status'] ) {
+		
+		if ( WC()->session->get( 'ship_rush' ) ) {
+			
+			WC()->session->set( 'ship_rush', 'false' );
+			
+		}
+		
 	}
 	
 	WC()->session->set( 'ship_to_event', $_POST['status'] );
 	
-	wp_send_json_success( array('message' => 'success') );
+	wp_send_json_success( array( 'message' => 'success' ) );
 }
 
 add_action( 'wp_ajax_get_event_address', 'get_event_address' );
@@ -1192,13 +1202,13 @@ add_action( 'wp_ajax_nopriv_get_event_address', 'get_event_address' );
 
 function get_event_address() {  
 
-	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce') ) {
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
 	
-		wp_send_json_error( array('message' => 'Nonce is invalid.') );
+		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
 	
 	}
 	
-	while ( have_rows('event_shipping', 'options') ) {
+	while ( have_rows( 'event_shipping', 'options' ) ) {
 	
 		the_row();
 	
@@ -1212,12 +1222,185 @@ function get_event_address() {
 			
 			WC()->session->set( 'ship_to_event_name', $event['event_name'] );	
 
-			wp_send_json_success( array('message' => 'success', 'address' => $event) );
+			wp_send_json_success( array( 'message' => 'success', 'address' => $event ) );
 		}
 	}
 	
-	wp_send_json_error( array('message' => 'No event found.') );
+	wp_send_json_error( array( 'message' => 'No event found.' ) );
 } 
+
+/*
+ * Clear event session on order complete
+*/ 
+add_action( 'woocommerce_thankyou', 'clear_event_session_order_complete' );
+
+function clear_event_session_order_complete( $order_id ) {
+	
+	WC()->session->__unset( 'ship_to_event_name' );
+	WC()->session->__unset( 'ship_to_event' );
+	WC()->session->__unset( 'ship_rush' );
+	
+}
+
+/**
+ * Custom rush shipping field
+ */
+add_action( 'woocommerce_after_order_notes', 'xtremetm_rush_checkout_fields' );
+
+function xtremetm_rush_checkout_fields( $checkout ) {
+    
+    echo '<div id="ship-rush-wrap" class="bg-light"' . ( WC()->session->get( 'ship_to_event' ) == 'true' ? 'style="display: none;"' : '') . '>';
+
+	// Rush Delivery
+	woocommerce_form_field( 'ship-rush-checkbox', array (
+		'type' 				=> 'checkbox',
+		'label' 			=> __( 'Do you need these to arrive within 10 days?' ),
+	), $checkout->get_value( 'ship-rush-checkbox' ) );
+
+	echo '</div>';
+
+	echo '<div id="ship-date-wrap" class="bg-light"' . ( WC()->session->get( 'ship_rush' ) == 'true' && WC()->session->get( 'ship_to_event' ) == 'false' ? '' : 'style="display: none;"') . '>';
+	 
+	// Delivery Date if Rush Delivery
+    $today = strtotime('today');
+    $tomorrow = strtotime('tomorrow');
+    $dayAfterTomorrow = strtotime('+10 days');
+    $dates[] = strtotime('today');
+    
+    for ( $x = 1; $x < 10; $x++ ) {
+	    
+	    $dates[] = strtotime( '+' . $x . ' days' );
+	    
+    }
+
+    woocommerce_form_field( 'delivery_date', array (
+        'type'          => 'select',
+        'label'         => __( 'Delivery Date' ),
+        'class'         => array( 'form-row-wide' ),
+        'options'     	=> array(
+			date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
+			date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
+			date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
+			date( get_option('date_format'), $dates[3] ) => date( get_option('date_format'), $dates[3] ),
+			date( get_option('date_format'), $dates[4] ) => date( get_option('date_format'), $dates[4] ),
+			date( get_option('date_format'), $dates[5] ) => date( get_option('date_format'), $dates[5] ),
+			date( get_option('date_format'), $dates[6] ) => date( get_option('date_format'), $dates[6] ),
+			date( get_option('date_format'), $dates[7] ) => date( get_option('date_format'), $dates[7] ),
+			date( get_option('date_format'), $dates[8] ) => date( get_option('date_format'), $dates[8] ),
+			date( get_option('date_format'), $dates[9] ) => date( get_option('date_format'), $dates[9] ),
+        ) ), $checkout->get_value( 'delivery_date' ) );
+        
+    echo '</div>';
+}
+/**
+ * Ajax function to set rush session
+ */ 
+add_action( 'wp_ajax_set_rush_session', 'set_rush_session' );
+add_action( 'wp_ajax_nopriv_set_rush_session', 'set_rush_session' );
+
+function set_rush_session() {
+
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+
+		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
+	
+	}
+	
+	WC()->session->set( 'ship_rush', $_POST['status'] );
+	
+	wp_send_json_success( array( 'status' => WC()->session->get( 'ship_rush' ) ) );
+}
+
+
+/**
+ * Calculate custom rush order fee
+ */
+add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_fush_fee', 10, 1 );
+
+function xtremetm_add_fush_fee( $cart ) {
+	
+	// Only on checkout
+    if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || is_cart() )
+    	return;
+    
+    $fee = 750;
+        
+	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
+		
+		WC()->cart->add_fee( 'Rush', $fee, true );
+		
+	} else {
+		
+		if ( WC()->session->get( 'ship_rush' ) ) {
+			
+			WC()->cart->add_fee( 'Rush', 0, true );
+			
+		}
+		
+	}
+}
+/**
+ * Update the order meta with custom field value
+ */
+add_action( 'woocommerce_checkout_update_order_meta', 'xtremetm_rush_checkout_field_update_order_meta' );
+
+function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
+
+	if ( ! empty( $_POST['ship_to_event_list'] ) && $_POST['ship_to_event_list'] != 'blank' ) {
+	
+		update_post_meta( $order_id, 'Ship to Event', sanitize_text_field( $_POST['ship_to_event_list'] ) );
+	
+	}
+	
+	if ( ! empty( $_POST['delivery_date'] ) && $_POST['ship-rush-checkbox'] ) {
+		
+		update_post_meta( $order_id, 'rush_delivery', true );
+		
+		update_post_meta( $order_id, 'rush_delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
+	
+	}
+}
+
+/**
+ * Display custom field on the order edit page
+ */
+add_action( 'woocommerce_admin_order_data_after_shipping_address', 'xtremetm_rush_checkout_field_display_admin_order_meta', 10, 1 );
+
+function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
+
+	if ( ! empty( get_post_meta( $order->id, 'Ship to Event', true ) ) ) {
+		
+		echo '<p><strong>'.__('Ship to Event').':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '</p>';
+	
+	}
+
+	if ( ! empty( get_post_meta( $order->id, 'rush_delivery', true ) ) ) {
+		
+		echo '<p><strong>'.__('Rush Delivery').':</strong> Yes</p>';
+		
+		echo '<p><strong>'.__('Rush Delivery Date').':</strong> ' . get_post_meta( $order->id, 'rush_delivery_date', true ) . '</p>';
+	
+	}
+}
+
+/*
+ * Add rush delivery field to emails
+*/
+add_action( 'woocommerce_email_order_meta', 'xtremetm_email_order_meta_fields', 10, 3 );
+
+function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_text ) {
+	
+	$is_rush = get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true );
+ 
+	// we won't display anything if it is not rush
+	if( empty( $is_rush ) )
+		return;
+	
+	$date = get_post_meta( $order_obj->get_order_number(), 'rush_delivery_date', true );
+	
+	echo '<h2>Rush Delivery Date</h2><strong>' . $date . '</strong><br><br>';
+
+}
 
 /**
  * Override company name label

@@ -41,20 +41,40 @@
 	
 		} );
 		
+		// Checkout Functions
+		    	
 		$( '#ship-to-event-checkbox' ).click( function(e) {
 	        
 	        if ( $(this).is(':checked') ) {
 		    
 		        $('#ship-to-event').slideDown('fast');
+		        $('#ship-rush-wrap').slideUp('fast');
+		        $('#ship-date-wrap').slideUp('fast');
+		        $('#ship-rush-checkbox').prop('checked', false);
 		        $('.shipping_address .address-field').hide();
 		        $('.shipping_address #shipping_company_field').hide();
 	        
 	        } else {
 		    
 		        $('#ship-to-event').slideUp('fast');
+		        $('#ship-rush-wrap').slideDown('fast');
 		        $('.shipping_address .address-field').show();
 		        $('.shipping_address #shipping_company_field').show();
 	        
+	        }
+    	
+    	} );
+    	
+    	$( '#ship-rush-checkbox' ).click( function(e) {
+	        
+	        if ( $(this).is(':checked') ) {
+		    
+		        $('#ship-date-wrap').slideDown('fast');
+		        	        
+	        } else {
+		    
+		        $('#ship-date-wrap').slideUp('fast');
+		        
 	        }
     	
     	} );

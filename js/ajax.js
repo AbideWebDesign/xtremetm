@@ -60,3 +60,36 @@ $( '#ship_to_event_list' ).change( function(){
           }
 	} );
 } );
+
+$( '#ship-rush-checkbox' ).click( function() {
+
+	if ( $( this ).is( ':checked') ) {
+		
+		var checked = 'true';
+
+	} else {
+		
+		var checked = 'false';
+		
+	}
+	
+	var data = {
+		status: checked,
+		action: 'set_rush_session',
+		security: ajax_object.ajax_nonce
+	};
+
+	$.ajax({
+		type: 'POST',
+		url: ajax_object.ajax_url,
+		data: data,
+		success : function( response ) {
+			console.log(response);
+			$( document.body ).trigger( 'update_checkout' );
+        },
+		fail : function( response ) {
+			console.log( 'failure' );
+		},
+	} );	
+	
+} );
