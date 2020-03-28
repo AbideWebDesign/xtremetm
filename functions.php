@@ -1153,13 +1153,13 @@ function ship_to_event_field( $checkout ) {
 	}
 	
 	woocommerce_form_field( 'ship_to_event_list', array(
-		'type' => 'select',
-		'label' => __('Event') ,
-		'placeholder' => __('Select an Event') ,
-		'options' => $events,
-		'required' => true,
-		'input_class' => array('form-check'),
-		'default' => WC()->session->get( 'ship_to_event_name')
+		'type' 			=> 'select',
+		'label' 		=> __('Event') ,
+		'placeholder' 	=> __('Select an Event') ,
+		'options' 		=> $events,
+		'required' 		=> true,
+		'input_class' 	=> array('form-check'),
+		'default' 		=> WC()->session->get( 'ship_to_event_name')
 	), $checkout->get_value( 'ship_to_event_list' ) );
 	
 	echo '</div>';
@@ -1249,17 +1249,19 @@ add_action( 'woocommerce_after_order_notes', 'xtremetm_rush_checkout_fields' );
 
 function xtremetm_rush_checkout_fields( $checkout ) {
     
-    echo '<div id="ship-rush-wrap" class="bg-light"' . ( WC()->session->get( 'ship_to_event' ) == 'true' ? 'style="display: none;"' : '') . '>';
+    echo '<div id="ship-rush-wrap" class="bg-light">';
 
 	// Rush Delivery
+	$checked =  WC()->session->get( 'ship_rush' ) == 'true' ? 1 : 0;
+
 	woocommerce_form_field( 'ship-rush-checkbox', array (
-		'type' 				=> 'checkbox',
-		'label' 			=> __( 'Do you need these to arrive within 10 days?' ),
-	), $checkout->get_value( 'ship-rush-checkbox' ) );
+		'type'	=> 'checkbox',
+		'label'	=> __( 'Do you need these to arrive within 10 days?' ),
+	), $checked );
 
 	echo '</div>';
 
-	echo '<div id="ship-date-wrap" class="bg-light"' . ( WC()->session->get( 'ship_rush' ) == 'true' && WC()->session->get( 'ship_to_event' ) == 'false' ? '' : 'style="display: none;"') . '>';
+	echo '<div id="ship-date-wrap" class="bg-light"' . ( WC()->session->get( 'ship_rush' ) == 'false' ? 'style="display: none;"' : '') . '>';
 	 
 	// Delivery Date if Rush Delivery
     $today = strtotime('today');
@@ -1274,10 +1276,10 @@ function xtremetm_rush_checkout_fields( $checkout ) {
     }
 
     woocommerce_form_field( 'delivery_date', array (
-        'type'          => 'select',
-        'label'         => __( 'Delivery Date' ),
-        'class'         => array( 'form-row-wide' ),
-        'options'     	=> array(
+        'type'		=> 'select',
+        'label'		=> __( 'Delivery Date' ),
+        'class'		=> array( 'form-row-wide' ),
+        'options'	=> array(
 			date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
 			date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
 			date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
