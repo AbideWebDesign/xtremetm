@@ -1437,6 +1437,18 @@ body {
 			display: none;
 		}
 	}
+	#ship-date-wrap {
+		background-color: #4F555A;
+		margin-bottom: 10px;
+		padding: 1em;
+		
+		p {
+			margin-bottom: .5em;
+		}
+		.form-row select {
+			width: auto;
+		}
+	}
 }
 .woocommerce-account {
 	

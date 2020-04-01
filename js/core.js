@@ -60,7 +60,6 @@
 		        $('#ship-rush-wrap').slideDown('fast');
 		        $('.shipping_address .address-field').show();
 		        $('.shipping_address #shipping_company_field').show();
-	        
 	        }
     	
     	} );
@@ -74,7 +73,7 @@
 	        } else {
 		    
 		        $('#ship-date-wrap').slideUp('fast');
-		        
+
 	        }
     	
     	} );

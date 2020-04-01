@@ -1248,51 +1248,59 @@ function clear_event_session_order_complete( $order_id ) {
 add_action( 'woocommerce_after_order_notes', 'xtremetm_rush_checkout_fields' );
 
 function xtremetm_rush_checkout_fields( $checkout ) {
-    
-    echo '<div id="ship-rush-wrap" class="bg-light">';
 
 	// Rush Delivery
-	$checked =  WC()->session->get( 'ship_rush' ) == 'true' ? 1 : 0;
-
-	woocommerce_form_field( 'ship-rush-checkbox', array (
-		'type'	=> 'checkbox',
-		'label'	=> __( 'Do you need these to arrive within 10 days?' ),
-	), $checked );
-
-	echo '</div>';
-
-	echo '<div id="ship-date-wrap" class="bg-light"' . ( WC()->session->get( 'ship_rush' ) == 'false' ? 'style="display: none;"' : '') . '>';
-	 
-	// Delivery Date if Rush Delivery
-    $today = strtotime('today');
-    $tomorrow = strtotime('tomorrow');
-    $dayAfterTomorrow = strtotime('+10 days');
-    $dates[] = strtotime('today');
-    
-    for ( $x = 1; $x < 10; $x++ ) {
+	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	
+		echo '<div id="ship-rush-wrap" class="bg-light">';
+		  
+		$checked =  WC()->session->get( 'ship_rush' ) == 'true' ? 1 : 0;
+	
+		woocommerce_form_field( 'ship-rush-checkbox', array (
+			'type'	=> 'checkbox',
+			'label'	=> __( 'Do you need these to arrive within 10 days?' ),
+		), $checked );
+	
+		echo '</div>';
+	
+		echo '<div id="ship-date-wrap" class="text-white"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
+		 
+		echo '<label>Preferred Arrival Date</label><div class="text-sm mb-1">' . get_field('rush_shipping_message', 'options') . '</div>';
+		
+		// Delivery Date if Rush Delivery
+	    $today = strtotime('today');
+	    $tomorrow = strtotime('tomorrow');
+	    $dayAfterTomorrow = strtotime('+10 days');
+	    $dates[] = strtotime('today');
 	    
-	    $dates[] = strtotime( '+' . $x . ' days' );
-	    
-    }
-
-    woocommerce_form_field( 'delivery_date', array (
-        'type'		=> 'select',
-        'label'		=> __( 'Delivery Date' ),
-        'class'		=> array( 'form-row-wide' ),
-        'options'	=> array(
-			date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
-			date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
-			date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
-			date( get_option('date_format'), $dates[3] ) => date( get_option('date_format'), $dates[3] ),
-			date( get_option('date_format'), $dates[4] ) => date( get_option('date_format'), $dates[4] ),
-			date( get_option('date_format'), $dates[5] ) => date( get_option('date_format'), $dates[5] ),
-			date( get_option('date_format'), $dates[6] ) => date( get_option('date_format'), $dates[6] ),
-			date( get_option('date_format'), $dates[7] ) => date( get_option('date_format'), $dates[7] ),
-			date( get_option('date_format'), $dates[8] ) => date( get_option('date_format'), $dates[8] ),
-			date( get_option('date_format'), $dates[9] ) => date( get_option('date_format'), $dates[9] ),
-        ) ), $checkout->get_value( 'delivery_date' ) );
-        
-    echo '</div>';
+	    for ( $x = 1; $x < 10; $x++ ) {
+		    
+		    $dates[] = strtotime( '+' . $x . ' days' );
+		    
+	    }
+		
+	    woocommerce_form_field( 'delivery_date', array (
+	        'type'		=> 'select',
+	        'label'		=> __( '' ),
+	        'class'		=> array( 'form-row-wide' ),
+	        'options'	=> array(
+		        'Select a Date',
+				date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
+				date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
+				date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
+				date( get_option('date_format'), $dates[3] ) => date( get_option('date_format'), $dates[3] ),
+				date( get_option('date_format'), $dates[4] ) => date( get_option('date_format'), $dates[4] ),
+				date( get_option('date_format'), $dates[5] ) => date( get_option('date_format'), $dates[5] ),
+				date( get_option('date_format'), $dates[6] ) => date( get_option('date_format'), $dates[6] ),
+				date( get_option('date_format'), $dates[7] ) => date( get_option('date_format'), $dates[7] ),
+				date( get_option('date_format'), $dates[8] ) => date( get_option('date_format'), $dates[8] ),
+				date( get_option('date_format'), $dates[9] ) => date( get_option('date_format'), $dates[9] ),
+	        ) ), $checkout->get_value( 'delivery_date' ) );
+	        
+	    echo '</div>';
+	
+	}
+	
 }
 /**
  * Ajax function to set rush session
@@ -1312,7 +1320,6 @@ function set_rush_session() {
 	
 	wp_send_json_success( array( 'status' => WC()->session->get( 'ship_rush' ) ) );
 }
-
 
 /**
  * Calculate custom rush order fee
@@ -1402,6 +1409,28 @@ function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_te
 	
 	echo '<h2>Rush Delivery Date</h2><strong>' . $date . '</strong><br><br>';
 
+}
+
+/*
+ * Utility function that checks if at least a cart items remains to a product category
+*/
+function has_product_category_in_cart( $product_category ) {
+    
+    // Loop through cart items
+    
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+    
+        // If any product category is found in cart items
+    
+        if ( has_term( $product_category, 'product_cat', $cart_item['product_id'] ) ) {
+    
+            return true;
+    
+        }
+    
+    }
+    
+    return false;
 }
 
 /**

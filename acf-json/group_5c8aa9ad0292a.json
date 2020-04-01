@@ -22,6 +22,25 @@
             "append": ""
         },
         {
+            "key": "field_5e84cb7112b46",
+            "label": "Rush Shipping Message",
+            "name": "rush_shipping_message",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5cbf74541f228",
             "label": "Event Shipping",
             "name": "event_shipping",
@@ -155,5 +174,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1556119567
+    "modified": 1585761154
 }
