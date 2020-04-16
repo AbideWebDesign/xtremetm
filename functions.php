@@ -812,6 +812,7 @@ add_filter( 'woocommerce_product_tabs', 'xtremetm_remove_product_tabs', 98 );
 function xtremetm_remove_product_tabs( $tabs ) {
   
     unset( $tabs['additional_information'] ); 
+    
     return $tabs;
 
 }
@@ -1447,22 +1448,52 @@ function xtremetm_override_checkout_fields( $fields ) {
 }
 
 /**
- * Set custom shipping on pick up at event
+ * Custom shipping method logic
  */
-add_filter( 'woocommerce_package_rates', 'xtremetm_change_flat_rates_cost', 10, 2 );
+add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
-function xtremetm_change_flat_rates_cost( $rates, $package ) {
+function xtremetm_shipping_methods( $rates ) {
 
-	// Make sure flat rate is available. Note: Production is flat_rate:4
+	// Set free shipping for shipping to events
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
+		
+		$free = array();
+		
+		foreach ( $rates as $rate_id => $rate ) {
+		
+			if ( 'flat_rate' === $rate->method_id ) {
+			
+				$free[ $rate_id ] = $rate;
+			
+				break;
+			}
+		}
 	
-		// Set the cost to free
-	
-		$rates['flat_rate:4']->cost = 0;
-	
+		return ! empty( $free ) ? $free : $rates;
+		
+	} else {
+		
+		// Remove free shipping method
+		unset( $rates['flat_rate:4'] );
+		
+		if ( WC()->cart->get_cart_contents_count() >= 8 ) {
+			
+			unset( $rates['fedex:7:FEDEX_GROUND'] );
+			unset( $rates['fedex:7:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:7:FEDEX_2_DAY'] );
+			unset( $rates['fedex:7:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:7:PRIORITY_OVERNIGHT'] );
+			
+		} else {
+			
+			unset( $rates['odfl'] );
+			
+		}
+		
+		return $rates;
+		
 	}
-
-	return $rates;
+	
 }
 
 /**
