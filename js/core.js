@@ -64,6 +64,8 @@
     	
     	} );
     	
+    	$('#delivery_date').select2({width: 200});
+    	
     	$( '#ship-rush-checkbox' ).click( function(e) {
 	        
 	        if ( $(this).is(':checked') ) {

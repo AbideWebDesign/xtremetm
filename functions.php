@@ -1285,7 +1285,6 @@ function xtremetm_rush_checkout_fields( $checkout ) {
 	        'label'		=> __( '' ),
 	        'class'		=> array( 'form-row-wide' ),
 	        'options'	=> array(
-		        'Select a Date',
 				date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
 				date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
 				date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
@@ -1303,6 +1302,7 @@ function xtremetm_rush_checkout_fields( $checkout ) {
 	}
 	
 }
+
 /**
  * Ajax function to set rush session
  */ 
