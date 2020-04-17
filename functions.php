@@ -1195,7 +1195,7 @@ function set_event_session() {
 	
 	WC()->session->set( 'ship_to_event', $_POST['status'] );
 	
-	wp_send_json_success( array( 'message' => 'success' ) );
+	wp_send_json_success( array( 'message' => 'success', 'status' => WC()->session->get( 'ship_to_event' ) ) );
 }
 
 add_action( 'wp_ajax_get_event_address', 'get_event_address' );
@@ -1454,35 +1454,40 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
 
-	// Set free shipping for shipping to events
+	// Set free shipping for shipping to events. NOTE: production is fedex:8 and free_shipping:9, dev is fedex:7 and free_shipping:8
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
 		
-		$free = array();
+		unset( $rates['free_shipping:9'] );
+		unset( $rates['odfl'] );
+		unset( $rates['fedex:8:FEDEX_GROUND'] );
+		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+		unset( $rates['fedex:8:FEDEX_2_DAY'] );
+		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+				
+	} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
-		foreach ( $rates as $rate_id => $rate ) {
-		
-			if ( 'flat_rate' === $rate->method_id ) {
-			
-				$free[ $rate_id ] = $rate;
-			
-				break;
-			}
-		}
-	
-		return ! empty( $free ) ? $free : $rates;
+		unset( $rates['flat_rate:4'] );
+		unset( $rates['odfl'] );
+		unset( $rates['fedex:8:FEDEX_GROUND'] );
+		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+		unset( $rates['fedex:8:FEDEX_2_DAY'] );
+		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
 		
 	} else {
-		
-		// Remove free shipping method
+
+		// Remove free shipping methods
 		unset( $rates['flat_rate:4'] );
+		unset( $rates['free_shipping:9'] );
 		
 		if ( WC()->cart->get_cart_contents_count() >= 8 ) {
 			
-			unset( $rates['fedex:7:FEDEX_GROUND'] );
-			unset( $rates['fedex:7:FEDEX_EXPRESS_SAVER'] );
-			unset( $rates['fedex:7:FEDEX_2_DAY'] );
-			unset( $rates['fedex:7:STANDARD_OVERNIGHT'] );
-			unset( $rates['fedex:7:PRIORITY_OVERNIGHT'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 			
 		} else {
 			
@@ -1490,9 +1495,9 @@ function xtremetm_shipping_methods( $rates ) {
 			
 		}
 		
-		return $rates;
-		
 	}
+	
+	return $rates;
 	
 }
 

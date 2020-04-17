@@ -667,7 +667,11 @@ h3 {
 	width: 100%;
 }
 .woocommerce {
-	
+	.woocommerce-shipping-totals {
+		.woocommerce-shipping-destination {
+			margin-top: 1em;
+		}
+	}
 	#resale_account {
 		width: 100px;
 	}
@@ -678,6 +682,9 @@ h3 {
 	}
 	#shipping_country_field {
 		display: none;
+	}
+	ul#shipping_method li:last-child {
+		margin-bottom: 0;
 	}
 	.quantity_select {
 		min-width: 70px;
