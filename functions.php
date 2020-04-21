@@ -1763,7 +1763,7 @@ add_action( 'clear_inventory_hook', 'clear_inventory', 10, 0 );
 
 function clear_inventory() {
 
-	$cat_names = array( 'rehv', 'rally-contract', 'rallycross' );
+	$cat_names = array( 'rehv', 'rally-contract', 'rallycross', 'dotr' );
 	
 	foreach ( $cat_names as $cat_name ) {
 		
