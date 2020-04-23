@@ -1737,62 +1737,38 @@ function valid_reseller() {
  *  Function to clear inventory for import.
  */
 
-// Utility function to get the parent variable product IDs for a any term of a taxonomy
-
-function get_variation_parent_ids_from_term( $term, $taxonomy, $type ){
-	
-	global $wpdb;
-	
-	return $wpdb->get_col( "
-	    SELECT DISTINCT p.ID
-	    FROM {$wpdb->prefix}posts as p
-	    INNER JOIN {$wpdb->prefix}posts as p2 ON p2.post_parent = p.ID
-	    INNER JOIN {$wpdb->prefix}term_relationships as tr ON p.ID = tr.object_id
-	    INNER JOIN {$wpdb->prefix}term_taxonomy as tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-	    INNER JOIN {$wpdb->prefix}terms as t ON tt.term_id = t.term_id
-	    WHERE p.post_type = 'product'
-	    AND p.post_status = 'publish'
-	    AND p2.post_status = 'publish'
-	    AND tt.taxonomy = '$taxonomy'
-	    AND t.$type = '$term'
-	" );
-	
-}
-
 add_action( 'clear_inventory_hook', 'clear_inventory', 10, 0 );
 
 function clear_inventory() {
+	
+	$query = new WP_Query( array(
+	    'post_type'       	=> 'product_variation',
+	    'post_status'     	=> 'publish',
+	    'posts_per_page' 	=> -1,
+	    'numberposts'   	=> -1,
+	    'post_parent__not_in' 	=> array('554', '543', '532', '516', '513', '510', '487', '496', '493', '490')
+	) );
 
-	$cat_names = array( 'rehv', 'rally-contract', 'rallycross', 'dotr' );
-	
-	foreach ( $cat_names as $cat_name ) {
+	while ( $query->have_posts() ) {
 		
-		$query = new WP_Query( array(
-		    'post_type'       => 'product_variation',
-		    'post_status'     => 'publish',
-		    'posts_per_page'  => 300,
-		    'post_parent__in' => get_variation_parent_ids_from_term( $cat_name, 'product_cat', 'name' ), // Variations
-		) );
-	
-		while ( $query->have_posts() ) {
-			
-			$query->the_post();
-	
-			$variation = new WC_Product_Variation( get_the_id() );
-			
-			$variation->set_stock_status('outofstock');
-			
-			$variation->set_stock_quantity(0);
-			
-			$variation->save();
-			
-			echo "SKU: " . $variation->get_sku() . "<br>";
+		$query->the_post();
+
+		the_title();
 		
-			echo "Stock: " . $variation->get_stock_quantity() . "<br>";
-			
-			echo "Stock Status: " . $variation->get_stock_status() . "<br><br>";		
-		}
+		$variation = new WC_Product_Variation( get_the_id() );
 		
+		$variation->set_stock_status('outofstock');
+		
+		$variation->set_stock_quantity(0);
+		
+		$variation->save();
+		
+		echo "<br>SKU: " . $variation->get_sku() . "<br>";
+	
+		echo "Stock: " . $variation->get_stock_quantity() . "<br>";
+		
+		echo "Stock Status: " . $variation->get_stock_status() . "<br><br>";	
+			
 	}
 	
 }
