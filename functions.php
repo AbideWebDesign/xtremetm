@@ -1325,9 +1325,9 @@ function set_rush_session() {
 /**
  * Calculate custom rush order fee
  */
-add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_fush_fee', 10, 1 );
+add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_rush_fee', 10, 1 );
 
-function xtremetm_add_fush_fee( $cart ) {
+function xtremetm_add_rush_fee( $cart ) {
 	
 	// Only on checkout
     if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || is_cart() )
@@ -1349,6 +1349,27 @@ function xtremetm_add_fush_fee( $cart ) {
 		
 	}
 }
+
+/**
+ * Function to calculate order weight
+ */
+function get_order_weight( $order_id ) {
+	
+	$order = wc_get_order( $order_id );
+	$total_weight = 0;
+	
+	foreach ( $order->get_items() as $item_id => $product_item ) {
+		
+		$quantity = $product_item->get_quantity(); // get quantity
+		$product = $product_item->get_product(); // get the WC_Product object
+		$product_weight = $product->get_weight(); // get the product weight
+		// Add the line item weight to the total weight calculation
+		$total_weight += floatval( $product_weight * $quantity );
+		
+	}	
+	
+	return ( $total_weight );
+}
 /**
  * Update the order meta with custom field value
  */
@@ -1369,6 +1390,11 @@ function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
 		update_post_meta( $order_id, 'rush_delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
 	
 	}
+
+	// Calculate order weight
+	$total_weight = get_order_weight( $order_id );
+	
+	add_post_meta( $order->id, 'order_weight', $total_weight, false );
 }
 
 /**
@@ -1377,18 +1403,31 @@ function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
 add_action( 'woocommerce_admin_order_data_after_shipping_address', 'xtremetm_rush_checkout_field_display_admin_order_meta', 10, 1 );
 
 function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
+	
+	// Total order weight
+	if ( !metadata_exists( 'post', $order->id, 'order_weight' ) ) {
+		
+		$total_weight = get_order_weight( $order->id );
+	
+		add_post_meta( $order->id, 'order_weight', $total_weight, false );
+		
+	} 
+	
+	echo '<p><strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong><br>' . get_post_meta( $order->id, 'order_weight', true ) . 'kg</p>';	
 
+	// Check ship to event
 	if ( ! empty( get_post_meta( $order->id, 'Ship to Event', true ) ) ) {
 		
-		echo '<p><strong>'.__('Ship to Event').':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '</p>';
+		echo '<p><strong>' . __('Ship to Event', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '</p>';
 	
 	}
 
+	// Check rush delivery
 	if ( ! empty( get_post_meta( $order->id, 'rush_delivery', true ) ) ) {
 		
-		echo '<p><strong>'.__('Rush Delivery').':</strong> Yes</p>';
+		echo '<p><strong>' . __('Rush Delivery', 'xtremetm') . ':</strong> Yes</p>';
 		
-		echo '<p><strong>'.__('Rush Delivery Date').':</strong> ' . get_post_meta( $order->id, 'rush_delivery_date', true ) . '</p>';
+		echo '<p><strong>' . __('Rush Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'rush_delivery_date', true ) . '</p>';
 	
 	}
 }
