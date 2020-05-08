@@ -1819,3 +1819,13 @@ add_filter( 'jetpack_just_in_time_msgs', '_return_false' );
  * Woocommerce - turn off upsell ads
  */
 add_filter( 'woocommerce_helper_suppress_admin_notices', '__return_true' );
+
+/**
+ * Woocommerce - turn off marketing tab
+ */
+add_filter( 'woocommerce_marketing_menu_items', 'xtremetm_hide_marketing_tab' );
+function xtremetm_hide_marketing_tab( $marketing_pages ) {
+	
+	return array();
+
+}
