@@ -1829,3 +1829,8 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	return array();
 
 }
+
+/**
+ * Woocommerce - turn off analytics tab
+ */
+add_filter( 'woocommerce_admin_disabled', '__return_true' );
