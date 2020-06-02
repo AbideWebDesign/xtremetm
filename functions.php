@@ -1111,13 +1111,18 @@ add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' );
  
 function xtremetm_cart_refresh_update_qty() { 
     
-    if ( is_cart() ) { 
+    if ( is_cart() ) {
+	     
         ?> 
+        
         <script type="text/javascript"> 
+           
             jQuery('div.woocommerce').on('change', '.qty', function(){ 
                 jQuery("[name='update_cart']").trigger("click"); 
             }); 
+            
         </script> 
+        
         <?php 
     }
      
@@ -1246,27 +1251,26 @@ function clear_event_session_order_complete( $order_id ) {
 /**
  * Custom rush shipping field
  */
-add_action( 'woocommerce_after_order_notes', 'xtremetm_rush_checkout_fields' );
+add_action( 'woocommerce_cart_totals_after_shipping', 'xtremetm_rush_checkout_fields' );
 
 function xtremetm_rush_checkout_fields( $checkout ) {
 
 	// Rush Delivery
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 	
-		echo '<div id="ship-rush-wrap" class="bg-light">';
+		echo '<tr id="ship-rush-wrap"><th>Rush Shipping</th><td>';
 		  
 		$checked =  WC()->session->get( 'ship_rush' ) == 'true' ? 1 : 0;
 	
 		woocommerce_form_field( 'ship-rush-checkbox', array (
 			'type'	=> 'checkbox',
 			'label'	=> __( 'Do you need these to arrive within 10 days?' ),
+			'class' => array('mb-0'),
 		), $checked );
-	
-		echo '</div>';
-	
-		echo '<div id="ship-date-wrap" class="text-white"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
+		
+		echo '<div id="ship-date-wrap" class="bg-primary text-white p-2"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
 		 
-		echo '<label>Preferred Arrival Date</label><div class="text-sm mb-1">' . get_field('rush_shipping_message', 'options') . '</div>';
+		echo '<h5 class="text-white mb-1">Preferred Arrival Date</h5><div class="text-sm mb-1">' . get_field('rush_shipping_message', 'options') . '</div>';
 		
 		// Delivery Date if Rush Delivery
 	    $today = strtotime('today');
@@ -1283,7 +1287,7 @@ function xtremetm_rush_checkout_fields( $checkout ) {
 	    woocommerce_form_field( 'delivery_date', array (
 	        'type'		=> 'select',
 	        'label'		=> __( '' ),
-	        'class'		=> array( 'form-row-wide' ),
+	        'class'		=> array( 'mb-0' ),
 	        'options'	=> array(
 				date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
 				date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
@@ -1295,9 +1299,9 @@ function xtremetm_rush_checkout_fields( $checkout ) {
 				date( get_option('date_format'), $dates[7] ) => date( get_option('date_format'), $dates[7] ),
 				date( get_option('date_format'), $dates[8] ) => date( get_option('date_format'), $dates[8] ),
 				date( get_option('date_format'), $dates[9] ) => date( get_option('date_format'), $dates[9] ),
-	        ) ), $checkout->get_value( 'delivery_date' ) );
+	        ) ) );
 	        
-	    echo '</div>';
+	    echo '</td></tr>';
 	
 	}
 	
@@ -1531,6 +1535,15 @@ function xtremetm_shipping_methods( $rates ) {
 		} else {
 			
 			unset( $rates['odfl'] );
+			
+			if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	
+				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+				unset( $rates['fedex:8:FEDEX_2_DAY'] );
+				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
+				
+			}
 			
 		}
 		

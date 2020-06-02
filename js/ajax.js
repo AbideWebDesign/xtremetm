@@ -84,8 +84,6 @@ $( '#ship-rush-checkbox' ).click( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success : function( response ) {
-			console.log(response);
-			$( document.body ).trigger( 'update_checkout' );
         },
 		fail : function( response ) {
 			console.log( 'failure' );
