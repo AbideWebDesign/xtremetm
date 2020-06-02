@@ -1237,6 +1237,14 @@ h3 {
 		}
 	}
 }
+body {
+	.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected] {
+		background-color: #999;
+	}
+	.select2-results__option {
+		font-size: 13.4px;
+	}
+}
 .woocommerce-cart {
 	table.cart {
 		.product-thumbnail {
