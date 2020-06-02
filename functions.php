@@ -1268,7 +1268,7 @@ function xtremetm_rush_checkout_fields( $checkout ) {
 			'class' => array('mb-0'),
 		), $checked );
 		
-		echo '<div id="ship-date-wrap" class="bg-primary text-white p-2"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
+		echo '<div id="ship-date-wrap" class="bg-primary text-white p-1"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
 		 
 		echo '<h5 class="text-white mb-1">Preferred Arrival Date</h5><div class="text-sm mb-1">' . get_field('rush_shipping_message', 'options') . '</div>';
 		
@@ -1517,6 +1517,16 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:FEDEX_2_DAY'] );
 		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
+		
+	} elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_cart_contents_count() >= 20 ) {
+	
+		unset( $rates['free_shipping:9'] );
+		unset( $rates['odfl'] );
+		unset( $rates['fedex:8:FEDEX_GROUND'] );
+		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+		unset( $rates['fedex:8:FEDEX_2_DAY'] );
+		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 		
 	} else {
 

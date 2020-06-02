@@ -1236,6 +1236,17 @@ h3 {
 			border: none;
 		}
 	}
+	.shipping-calculator-form {
+		input {
+			font-size: 13.4px;
+		}
+		button {
+			@extend .btn-sm;
+		}
+		#calc_shipping_country_field {
+			display: none;
+		}
+	}
 }
 body {
 	.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected] {
@@ -1243,6 +1254,9 @@ body {
 	}
 	.select2-results__option {
 		font-size: 13.4px;
+	}
+	.select2-container .select2-selection--single .select2-selection__rendered {
+		padding-left: .75rem;
 	}
 }
 .woocommerce-cart {
