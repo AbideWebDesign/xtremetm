@@ -1341,13 +1341,13 @@ function xtremetm_add_rush_fee( $cart ) {
         
 	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
-		WC()->cart->add_fee( 'Rush', $fee, true );
+		WC()->cart->add_fee( 'Rush', $fee, false );
 		
 	} else {
 		
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
-			WC()->cart->add_fee( 'Rush', 0, true );
+			WC()->cart->add_fee( 'Rush', 0, false );
 			
 		}
 		
