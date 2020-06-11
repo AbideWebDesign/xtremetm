@@ -84,8 +84,8 @@ if (is_shop() && !is_product_category() && !is_search()) {
 
 	<?php endif; ?>
 	
-	<div class="row">
-		<div class="col-lg-3">		
+	<div class="row justify-content-center">
+		<div id="sidebar-filter" class="col-lg-3">		
 			<?php
 			/**
 			 * Hook: woocommerce_sidebar.
@@ -102,8 +102,6 @@ if (is_shop() && !is_product_category() && !is_search()) {
 				<h1 class="mb-1 text-center text-sm-left"><?php echo $term->name; ?> Tires</h1>
 			
 			<?php endif; ?>
-			
-			<?php get_sidebar('filter-notes'); ?>
 			
 			<?php
 			if ( woocommerce_product_loop() ) {
@@ -130,14 +128,20 @@ if (is_shop() && !is_product_category() && !is_search()) {
 						 */
 						do_action( 'woocommerce_shop_loop' );
 						
-						if ($store->slug == 'contract') {
-							
-							wc_get_template_part( 'content', 'product-contract' );
+						$product = wc_get_product( get_the_id() );
 						
-						} else {
-							
-							wc_get_template_part( 'content', 'product' );
+						if ( $product->get_stock_status() != 'outofstock' ) {
 						
+							if ($store->slug == 'contract') {
+								
+								wc_get_template_part( 'content', 'product-contract' );
+							
+							} else {
+								
+								wc_get_template_part( 'content', 'product' );
+							
+							}
+							
 						}
 						
 					}

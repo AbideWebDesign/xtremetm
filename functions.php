@@ -1667,8 +1667,18 @@ function xtremetm_searchwp_search_woocommerce_sku_redirect() {
 	if ( is_search() ) {
       
         global $wp_query;
-    
+
         if ( $wp_query->post_count == 1 ) {
+	        
+	        $product = wc_get_product( get_the_id() );
+
+			if ( $product->get_stock_status() == 'outofstock' ) {
+				
+				wp_redirect( home_url('/out-of-stock/') );
+				
+				exit;
+								
+			}
 	        
 	        $sku = get_search_query();
 
@@ -1696,12 +1706,30 @@ function xtremetm_searchwp_search_woocommerce_sku_redirect() {
 				if ( !empty( $attributes ) ) {
 
 					$permalink = add_query_arg( $attributes, get_permalink( $wp_query->posts['0']->ID ) );
+					
 					wp_redirect( $permalink );
 				
 				} 
 			}
-        } 
+        }
+        
     }
+}
+
+add_action( 'woocommerce_no_products_found', 'xtremetm_no_stock_message', 9);
+
+function xtremetm_no_stock_message() {
+    
+    global $wp_query;
+    
+    $store_url = home_url('/store/') . $wp_query->queried_object->slug;
+    
+	remove_action( 'woocommerce_no_products_found', 'wc_no_products_found', 10 );
+	
+	$message = __( 'Whoops! Looks like that’s not a product we carry…please try your search one more time!', 'woocommerce' );
+	
+	echo '<div class="bg-white p-3 mt-2 mb-2 text-center"><h2 class="text-center mb-2">No Products Found</h2><p>' . $message .'</p><a href="' . $store_url . '" class="btn btn-primary"><span>Shop <i class="fas fa-chevron-right"></i></span></a></div>';
+    
 }
 
 /**
@@ -1886,6 +1914,7 @@ add_filter( 'woocommerce_helper_suppress_admin_notices', '__return_true' );
  * Woocommerce - turn off marketing tab
  */
 add_filter( 'woocommerce_marketing_menu_items', 'xtremetm_hide_marketing_tab' );
+
 function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	
 	return array();

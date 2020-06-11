@@ -663,6 +663,11 @@ h3 {
 /* 
 ** Plugin - Woocommerce
 */
+.search-no-results {
+	#sidebar-filter {
+		display: none;
+	}
+}
 .wc_payment_method payment_method_stripe label {
 	width: 100%;
 }
@@ -922,7 +927,12 @@ h3 {
 				margin-top: 1.5em;
 				@extend .justify-content-between;
 				display: block;
-			}	
+			}
+			.price.outofstock {
+				@extend .text-sm;
+				color: $brand-xtreme;
+				text-transform: uppercase;
+			}
 			.woocommerce-loop-product__title {
 				font-size: $font-size-sm;
 				text-transform: uppercase;
