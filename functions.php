@@ -989,6 +989,8 @@ function xtremetm_close_div() {
 	}
 }
 
+add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
+
 /**
  * Remove the breadcrumbs on archive pages
  */
@@ -1171,12 +1173,10 @@ function ship_to_event_field( $checkout ) {
 	echo '</div>';
 
 }
-add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
 
 /**
  * Ajax function to return event shipping address meta values
  */ 
-
 add_action( 'wp_ajax_set_event_session', 'set_event_session' );
 add_action( 'wp_ajax_nopriv_set_event_session', 'set_event_session' );
 
@@ -1195,6 +1195,12 @@ function set_event_session() {
 			WC()->session->set( 'ship_rush', 'false' );
 			
 		}
+		
+	}
+	
+	if ( $_POST['event'] ) {
+		
+		WC()->session->set( 'ship_to_event_name',  $_POST['event'] );
 		
 	}
 	
@@ -1229,11 +1235,49 @@ function get_event_address() {
 			WC()->session->set( 'ship_to_event_name', $event['event_name'] );	
 
 			wp_send_json_success( array( 'message' => 'success', 'address' => $event ) );
+			
 		}
 	}
 	
 	wp_send_json_error( array( 'message' => 'No event found.' ) );
-} 
+}
+
+
+/**
+ * Ajax function to check if supplied shipping zip matches event
+ */ 
+add_action( 'wp_ajax_check_for_event', 'check_for_event' );
+add_action( 'wp_ajax_nopriv_check_for_event', 'check_for_event' );
+
+function check_for_event() {
+
+	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+	
+		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
+	
+	}	
+
+	while ( have_rows('event_shipping', 'options') ) {
+		
+		the_row();
+		
+		if ( get_sub_field('event_address_zip') == $_POST['zip'] ) {
+			
+			$event['event_name'] = get_sub_field('event_name');
+			$event['street'] = get_sub_field('event_address_street');
+			$event['city'] = get_sub_field('event_address_city');
+			$event['state'] = get_sub_field('event_address_state');
+			$event['zip'] = get_sub_field('event_address_zip');
+			
+			wp_send_json_success( array( 'message' => 'success', 'address' => $event ) );
+			
+		}
+		
+	}
+	
+	wp_send_json_error( array( 'message' => 'No event found.' ) );
+
+}
 
 /*
  * Clear event session on order complete
@@ -1324,6 +1368,7 @@ function set_rush_session() {
 	WC()->session->set( 'ship_rush', $_POST['status'] );
 	
 	wp_send_json_success( array( 'status' => WC()->session->get( 'ship_rush' ) ) );
+	
 }
 
 /**
@@ -1374,6 +1419,7 @@ function get_order_weight( $order_id ) {
 	
 	return ( $total_weight );
 }
+
 /**
  * Update the order meta with custom field value
  */
@@ -1478,15 +1524,38 @@ function has_product_category_in_cart( $product_category ) {
 }
 
 /**
- * Override company name label
+ * Customize all fields
  */
-add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields' );
+add_filter( 'woocommerce_form_field' , 'xtremetm_override_fields', 10, 4 );
 
-function xtremetm_override_checkout_fields( $fields ) {
+function xtremetm_override_fields( $field, $key, $args, $value ) {
+	
+	// Remove optional label
+	$optional = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'woocommerce' ) . ')</span>';
+	$field = str_replace( $optional, '', $field );
     
-     $fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
-     
-     return $fields;
+    return $field;
+}
+
+/**
+ * Customize checkout fields
+ */
+add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields', 100 );
+
+function xtremetm_override_checkout_fields( $checkout_fields ) {
+    
+    // Change labels
+	$checkout_fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
+	$checkout_fields['shipping']['shipping_state']['class']	= array('address-field', 'form-row-first');
+	$checkout_fields['shipping']['shipping_postcode']['class'] = array('address-field', 'form-row-last');
+
+	$checkout_fields['billing']['billing_country']['priority'] = 91;
+	$checkout_fields['billing']['billing_state']['class'] = array('form-row-first');
+	$checkout_fields['billing']['billing_postcode']['class'] = array('form-row-last');
+	$checkout_fields['billing']['billing_phone']['class'] = array('form-row-first');
+	$checkout_fields['billing']['billing_email']['class'] = array('form-row-last');
+	
+	return $checkout_fields;
      
 }
 

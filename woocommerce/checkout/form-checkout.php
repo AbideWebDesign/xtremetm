@@ -96,3 +96,45 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 </form>
 
 <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>
+
+<!-- Event Select Modal -->
+<div class="modal fade" id="eventSelectModal" tabindex="-1" role="dialog" aria-labelledby="eventSelectModal" aria-hidden="true">
+	
+	<div class="modal-dialog modal-dialog-centered" role="document">
+    
+    	<div class="modal-content">
+			
+			<div class="modal-header bg-primary">
+				
+				<h4>Ship to Event?</h4>
+				
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				
+			</div>
+			
+			<div class="modal-body">
+			
+				<h3>Event Details</h3>
+				
+				<div id="eventSelectDetails"></div>
+			
+			</div>
+
+			<div class="modal-footer text-left">
+				
+				<button id="ship_to_event" type="button" class="btn btn-primary"><span>Ship to Event</span></button>
+						
+				<input type="hidden" id="event_name" />
+				<input type="hidden" id="event_shipping_address_1" />
+				<input type="hidden" id="event_shipping_address_2" />
+				<input type="hidden" id="event_shipping_city" />
+				<input type="hidden" id="event_shipping_state" />
+				<input type="hidden" id="event_shipping_postcode" />
+				
+			</div>
+	
+		</div>
+		
+	</div>
+	
+</div>

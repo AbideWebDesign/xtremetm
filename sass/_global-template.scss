@@ -686,7 +686,7 @@ h3 {
 		padding-top: 0em !important;
 	}
 	#shipping_country_field {
-		display: none;
+		display: none !important;
 	}
 	ul#shipping_method li:last-child {
 		margin-bottom: 0;
@@ -1209,6 +1209,7 @@ h3 {
 	}
 	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"], select, textarea,  {
 		@extend .form-control;
+		color: #000;
 	}
 	.select2-container--default .select2-selection--single {
 		border-color: #ced4da;
@@ -1218,9 +1219,10 @@ h3 {
 	}
 	.select2-container--default .select2-selection--single .select2-selection__rendered {
 		line-height: 40px;
+		color: #000;
 	}
 	.select2-container--default .select2-selection--single .select2-selection__placeholder {
-		color: #444;
+		color: #000;
 	}
 	.woocommerce-table__line-item {
 		td {
@@ -1353,6 +1355,10 @@ body {
 	}
 }
 .woocommerce-checkout {
+	label {
+		font-size: $font-size-sm;
+		margin-bottom: .3rem;
+	}
 	.box {
 		.woocommerce-error, .woocommerce-message {
 			box-shadow: none;
@@ -1465,19 +1471,20 @@ body {
 		background-color: white;
 	}
 	#ship-option, #ship-to-event, #ship-rush-wrap, #ship-date-wrap {
-		padding: .5em 1em;
+		padding: 1em;
 		
 		.form-row  {
 			margin: 0;
 			padding: 0;
 		}
 	}
-	#ship-to-event, #ship-rush-wrap, #ship-date-wrap {
-		margin-top: .25em;
-		
+	#ship-to-event, #ship-rush-wrap, #ship-date-wrap {		
 		.optional {
 			display: none;
 		}
+	}
+	#ship-to-event {
+		padding-top: 0;
 	}
 	#ship-date-wrap {
 		background-color: #4F555A;
@@ -1491,6 +1498,16 @@ body {
 			width: auto;
 		}
 	}
+/*
+	.woocommerce-billing-fields__field-wrapper {
+	  display: flex;
+	  flex-wrap: wrap;
+	}
+	.form-row {
+	  display: inline-block;
+	}
+*/
+	
 }
 .woocommerce-account {
 	
@@ -2474,5 +2491,24 @@ body {
 		.ubermenu-row:last-child {
 			border-bottom: 4px solid $brand-xtreme;
 		}
+	}
+}
+#eventSelectModal {
+	.modal-content {
+		border: none;
+		
+		h4 {
+			color: white;
+			text-transform: uppercase;
+			font-size: $font-size-base;
+			font-weight: bold;
+			padding-top: 6px;
+		}
+		.close {
+			color: white;
+		}
+	}
+	.modal-footer {
+		justify-content: center;
 	}
 }

@@ -47,15 +47,16 @@
 	        
 	        if ( $(this).is(':checked') ) {
 		    
-		        $('#ship-to-event').slideDown('fast');
-		        $('.shipping_address .address-field').hide();
-		        $('.shipping_address #shipping_company_field').hide();
+		        $( '#ship-to-event' ).slideDown( 'fast' );
+		        $( '.shipping_address .address-field' ).hide();
+		        $( '.shipping_address #shipping_company_field' ).hide();
 	        
 	        } else {
 		    
-		        $('#ship-to-event').slideUp('fast');
-		        $('.shipping_address .address-field').show();
-		        $('.shipping_address #shipping_company_field').show();
+		        $( '#ship-to-event' ).slideUp( 'fast' );
+		        $( '#shipping_country_field' ).hide();
+		        $( '.shipping_address .address-field' ).show();
+		        $( '.shipping_address #shipping_company_field' ).show();
 	        }
     	
     	} );
@@ -99,7 +100,7 @@
     		}
     		
     	});
-    
+
     } );
     
     $( document.body ).on( 'change', "input[name='payment_method']", function() {
@@ -107,6 +108,5 @@
 		$( 'body' ).trigger( 'update_checkout' );
 	
 	} );
-	
-			
+				
 } )( jQuery );
