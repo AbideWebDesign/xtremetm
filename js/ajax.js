@@ -191,9 +191,7 @@ $( '#ship_to_event' ).click( function() {
 			$( '#shipping_postcode_field' ).hide();
 			$( '#ship_to_event_list' ).val( $( '#event_name' ).val() );
 			$( '#ship-to-event-checkbox' ).prop( 'checked', true );
-			
 			$( '#ship-to-event' ).show();
-			
 			$( document.body ).trigger( 'update_checkout' );
 			
 		},

@@ -45,18 +45,21 @@
 		    	
 		$( '#ship-to-event-checkbox' ).click( function(e) {
 	        
-	        if ( $(this).is(':checked') ) {
+	        if ( $(this).is( ':checked' ) ) {
 		    
 		        $( '#ship-to-event' ).slideDown( 'fast' );
-		        $( '.shipping_address .address-field' ).hide();
 		        $( '.shipping_address #shipping_company_field' ).hide();
-	        
+		        $( '.shipping_address .address-field' ).hide();
+		        $( '#shipping_phone_field' ).hide();
+		        
 	        } else {
 		    
 		        $( '#ship-to-event' ).slideUp( 'fast' );
 		        $( '#shipping_country_field' ).hide();
-		        $( '.shipping_address .address-field' ).show();
 		        $( '.shipping_address #shipping_company_field' ).show();
+		        $( '.shipping_address .address-field' ).show();
+		        $( '#shipping_phone_field' ).show();
+		        
 	        }
     	
     	} );
