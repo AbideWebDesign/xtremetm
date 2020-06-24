@@ -1207,6 +1207,7 @@ function set_event_session() {
 	WC()->session->set( 'ship_to_event', $_POST['status'] );
 	
 	wp_send_json_success( array( 'message' => 'success', 'status' => WC()->session->get( 'ship_to_event' ) ) );
+	
 }
 
 add_action( 'wp_ajax_get_event_address', 'get_event_address' );
@@ -1240,6 +1241,7 @@ function get_event_address() {
 	}
 	
 	wp_send_json_error( array( 'message' => 'No event found.' ) );
+	
 }
 
 
@@ -1261,7 +1263,10 @@ function check_for_event() {
 		
 		the_row();
 		
-		if ( get_sub_field('event_address_zip') == $_POST['zip'] ) {
+		$event_zip = strtok( get_sub_field('event_address_zip'), '-' );
+		$provided_zip = sanitize_text_field( $_POST['zip'] );
+		
+		if ( $event_zip == $provided_zip ) {
 			
 			$event['event_name'] = get_sub_field('event_name');
 			$event['street'] = get_sub_field('event_address_street');
@@ -1276,7 +1281,7 @@ function check_for_event() {
 	}
 	
 	wp_send_json_error( array( 'message' => 'No event found.' ) );
-
+		
 }
 
 /*
@@ -1397,6 +1402,7 @@ function xtremetm_add_rush_fee( $cart ) {
 		}
 		
 	}
+	
 }
 
 /**
@@ -1418,6 +1424,7 @@ function get_order_weight( $order_id ) {
 	}	
 	
 	return ( $total_weight );
+	
 }
 
 /**
@@ -1445,6 +1452,7 @@ function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
 	$total_weight = get_order_weight( $order_id );
 	
 	add_post_meta( $order->id, 'order_weight', $total_weight, false );
+	
 }
 
 /**
@@ -1480,11 +1488,12 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 		echo '<p><strong>' . __('Rush Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'rush_delivery_date', true ) . '</p>';
 	
 	}
+	
 }
 
 /*
  * Add rush delivery field to emails
-*/
+ */
 add_action( 'woocommerce_email_order_meta', 'xtremetm_email_order_meta_fields', 10, 3 );
 
 function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_text ) {
@@ -1492,7 +1501,7 @@ function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_te
 	$is_rush = get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true );
  
 	// we won't display anything if it is not rush
-	if( empty( $is_rush ) )
+	if ( empty( $is_rush ) )
 		return;
 	
 	$date = get_post_meta( $order_obj->get_order_number(), 'rush_delivery_date', true );
@@ -1503,15 +1512,14 @@ function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_te
 
 /*
  * Utility function that checks if at least a cart items remains to a product category
-*/
+ */
 function has_product_category_in_cart( $product_category ) {
     
     // Loop through cart items
-    
     foreach ( WC()->cart->get_cart() as $cart_item ) {
     
         // If any product category is found in cart items
-    
+
         if ( has_term( $product_category, 'product_cat', $cart_item['product_id'] ) ) {
     
             return true;
@@ -1535,6 +1543,7 @@ function xtremetm_override_fields( $field, $key, $args, $value ) {
 	$field = str_replace( $optional, '', $field );
     
     return $field;
+    
 }
 
 /**
@@ -1675,7 +1684,7 @@ add_filter( 'woocommerce_cart_shipping_method_full_label', 'xtremetm_shipping_la
 
 function xtremetm_shipping_labels( $full_label, $method ) {
     
-    $full_label = str_replace("Shipping: ", "", $full_label);
+    $full_label = str_replace( 'Shipping: ', '', $full_label );
 
 	return $full_label;
 
@@ -1693,6 +1702,7 @@ function xtremetm_searchwp_index_woocommerce_variation_skus( $extra_meta, $post_
 		return $extra_meta;
 	
 	}
+	
 	// retrieve all the product variations
 	$args = array(
 		'post_type'       => 'product_variation',
@@ -1718,6 +1728,7 @@ function xtremetm_searchwp_index_woocommerce_variation_skus( $extra_meta, $post_
 	}
 	
 	return $extra_meta;
+	
 }
 
 add_filter( 'searchwp_custom_field_keys', 'xtremetm_searchwp_custom_field_keys_variation_skus', 10, 1 );
@@ -1727,8 +1738,12 @@ function xtremetm_searchwp_custom_field_keys_variation_skus( $keys ) {
   $keys[] = 'xtremetm_product_variation_skus';
   
   return $keys;
+  
 }
 
+/**
+ * Redirect sku searches to go directly to product page with options selected
+ */
 add_action('template_redirect', 'xtremetm_searchwp_search_woocommerce_sku_redirect');
 
 function xtremetm_searchwp_search_woocommerce_sku_redirect() {
@@ -1778,13 +1793,19 @@ function xtremetm_searchwp_search_woocommerce_sku_redirect() {
 					
 					wp_redirect( $permalink );
 				
-				} 
+				}
+				 
 			}
+			
         }
         
     }
+    
 }
 
+/**
+ * Change out of stock message
+ */
 add_action( 'woocommerce_no_products_found', 'xtremetm_no_stock_message', 9);
 
 function xtremetm_no_stock_message() {
@@ -1818,7 +1839,7 @@ function xtremetm_no_tax_for_user() {
 }
 
 /**
- * Function that filters the variable product hash based on user
+ * Filter the variable product hash based on user
  */
 add_filter( 'woocommerce_get_variation_prices_hash', 'xtremetm_get_variation_prices_hash_filter', 1, 3 );
 
@@ -1829,10 +1850,12 @@ function xtremetm_get_variation_prices_hash_filter( $hash, $item, $display ) {
 
 		// clear key 2, which is where taxes are
 		$hash['2'] = array();
+		
 	}
 
 	// return the hash
 	return $hash;
+	
 }
 
 /**
@@ -1847,10 +1870,12 @@ function xtremetm_get_price_suffix_filter( $price_display_suffix, $item ) {
 
 		// return blank if it matches
 		return '';
+		
 	}
 
 	// return if unmatched
 	return $price_display_suffix;
+	
 }
 
 function valid_reseller() {
@@ -1890,12 +1915,12 @@ function valid_reseller() {
 		return false;
 		
 	}
+	
 }
 
 /**
  *  Function to clear inventory for import.
  */
-
 add_action( 'clear_inventory_hook', 'clear_inventory', 10, 0 );
 
 function clear_inventory() {
@@ -1958,16 +1983,18 @@ add_action( 'admin_init', function() {
     
     }
     
-});
+} );
 
-add_action('admin_head', 'xtremetm_hide_yoast_profile');
+add_action( 'admin_head', 'xtremetm_hide_yoast_profile' );
 
 function xtremetm_hide_yoast_profile() {
+	
   echo '<style>
           form#your-profile > h3, form#your-profile .user-profile-picture, form#your-profile .user-description-wrap, form#your-profile .user-display-name-wrap, form#your-profile .user-nickname-wrap, form#your-profile .show-admin-bar, .user-comment-shortcuts-wrap, form#your-profile .yoast-settings, form#your-profile .user-rich-editing-wrap, form#your-profile .user-admin-color-wrap, form#your-profile .user-url-wrap, form#your-profile .user-facebook-wrap, form#your-profile .user-instagram-wrap, form#your-profile .user-linkedin-wrap, form#your-profile .user-myspace-wrap, form#your-profile .user-pinterest-wrap, form#your-profile .user-soundcloud-wrap, form#your-profile .user-tumblr-wrap, form#your-profile .user-twitter-wrap, form#your-profile .user-youtube-wrap, form#your-profile .user-wikipedia-wrap  {
                display: none;
           }
         </style>';
+        
 }
 /**
  * Jetpack - turn off upsell ads
