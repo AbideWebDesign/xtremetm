@@ -116,17 +116,16 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 				<h3>Event Details</h3>
 				
-				<div id="eventSelectDetails"></div>
+				<div id="events"></div>
 			
 			</div>
 
 			<div class="modal-footer text-left">
 				
-				<button id="ship_to_event" type="button" class="btn btn-primary"><span>Ship to Event</span></button>
+				<button id="ship_to_event" type="button" class="btn btn-primary" disabled><span>Ship to Event</span></button>
 						
 				<input type="hidden" id="event_name" />
 				<input type="hidden" id="event_shipping_address_1" />
-				<input type="hidden" id="event_shipping_address_2" />
 				<input type="hidden" id="event_shipping_city" />
 				<input type="hidden" id="event_shipping_state" />
 				<input type="hidden" id="event_shipping_postcode" />

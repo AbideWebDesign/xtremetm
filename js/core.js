@@ -1,6 +1,6 @@
 ( function($) {
 	
-	$( document ).ready(function(){
+	$( document ).ready( function() {
 		
 		// Move coupon box from top of page to sidebar
 		
@@ -64,19 +64,42 @@
     	
     	} );
     	
-    	$( '#ship-rush-checkbox' ).click( function(e) {
+    	$( '#ship-rush-checkbox' ).click( function() {
 	        
-	        if ( $(this).is(':checked') ) {
+	        if ( $( this ).is( ':checked' ) ) {
 		    
-		        $('#ship-date-wrap').slideDown('fast');
+		        $( '#ship-date-wrap' ).slideDown( 'fast' );
 		        	        
 	        } else {
 		    
-		        $('#ship-date-wrap').slideUp('fast');
+		        $( '#ship-date-wrap' ).slideUp( 'fast' );
 
 	        }
-	            	
+	        	            	
     	} );
+    	
+    	
+    	// Functions for event selection modal
+    	
+		$( '#events' ).on('click', '.list-group-item', function(){
+
+			$( this ).addClass( 'active' );
+			$( '#ship_to_event' ).removeAttr( 'disabled' );
+			$( '#event_name' ).val( $( this ).find( '.en' ).html() );
+			$( '#event_shipping_address_1' ).val( $( this ).find( '.ea' ).html() );
+			$( '#event_shipping_city' ).val( $( this ).find( '.ec' ).html() );
+			$( '#event_shipping_state' ).val( $( this ).find( '.es' ).html() );
+			$( '#event_shipping_postcode' ).val( $( this ).find( '.ez' ).html() );
+		
+		} );
+		
+		$( '#eventSelectModal' ).on( 'hidden.bs.modal', function (e) {
+		
+			$( '#ship_to_event' ).prop('disabled', true);
+  
+		});
+    	
+    	// Add select2 to delivery date select
     	
     	$('#delivery_date').select2( { width: 300 } );
 

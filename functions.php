@@ -1259,28 +1259,41 @@ function check_for_event() {
 	
 	}	
 
+	$events = array();
+	$count = 0;
+	$provided_zip = sanitize_text_field( $_POST['zip'] );
+	
 	while ( have_rows('event_shipping', 'options') ) {
 		
 		the_row();
 		
 		$event_zip = strtok( get_sub_field('event_address_zip'), '-' );
-		$provided_zip = sanitize_text_field( $_POST['zip'] );
-		
-		if ( $event_zip == $provided_zip ) {
+	
+		if ( $event_zip == $provided_zip || get_sub_field('event_address_zip') == $provided_zip ) {
 			
+			$count++;
+						
 			$event['event_name'] = get_sub_field('event_name');
 			$event['street'] = get_sub_field('event_address_street');
 			$event['city'] = get_sub_field('event_address_city');
 			$event['state'] = get_sub_field('event_address_state');
 			$event['zip'] = get_sub_field('event_address_zip');
 			
-			wp_send_json_success( array( 'message' => 'success', 'address' => $event ) );
+			$events[] = $event;
 			
 		}
 		
 	}
 	
-	wp_send_json_error( array( 'message' => 'No event found.' ) );
+	if ( !empty( $events ) ) {
+	
+		wp_send_json_success( array( 'message' => 'success', 'events' => $events ) );
+	
+	} else {
+		
+		wp_send_json_error( array( 'message' => 'No event found.' ) );
+		
+	}
 		
 }
 

@@ -57,7 +57,7 @@ h3 {
 	border-color: $brand-xtreme;
 	color: white;
 }
-.btn:hover, .btn:active, .btn-primary:not(:disabled):not(.disabled):active {
+.btn:not(:disabled):not(.disabled):hover, .btn:active, .btn-primary:not(:disabled):not(.disabled):active {
 	background-color: white;
 	border-color: $brand-xtreme;
 	color: $brand-xtreme;
