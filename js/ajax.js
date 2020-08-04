@@ -133,17 +133,21 @@ $( '#shipping_postcode' ).change( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success: function( response ) {
-			console.log(response);
-			var event_details = '';
-
-			$.each( response.data.events, function ( key, value ) {
-
-				event_details += '<button type="button" class="list-group-item list-group-item-action" data-toggle="list"><span class="en">' + value.event_name + '</span><br><span class="ea">' + value.street + '</span><br><span class="ec">' + value.city + '</span>, <span class="es">' + value.state + '</span> <span class="ez">' + value.zip + '</span></button>';
-				
-			} );
 			
-			$( '#events' ).html( event_details );
-			$( '#eventSelectModal' ).modal( 'show' );
+			if ( response.success ) {
+
+				var event_details = '';
+	
+				$.each( response.data.events, function ( key, value ) {
+	
+					event_details += '<button type="button" class="list-group-item list-group-item-action" data-toggle="list"><span class="en">' + value.event_name + '</span><br><span class="ea">' + value.street + '</span><br><span class="ec">' + value.city + '</span>, <span class="es">' + value.state + '</span> <span class="ez">' + value.zip + '</span></button>';
+					
+				} );
+				
+				$( '#events' ).html( event_details );
+				$( '#eventSelectModal' ).modal( 'show' );
+				
+			}
         
         },
 		fail: function( response ) {

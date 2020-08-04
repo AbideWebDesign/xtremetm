@@ -1269,7 +1269,7 @@ function check_for_event() {
 		
 		$event_zip = strtok( get_sub_field('event_address_zip'), '-' );
 	
-		if ( $event_zip == $provided_zip || get_sub_field('event_address_zip') == $provided_zip ) {
+		if ( $event_zip == $provided_zip ) {
 			
 			$count++;
 						
