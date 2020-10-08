@@ -237,28 +237,33 @@ function show_pagination_links() {
 /*
  * Check if store front
  */
-function is_store($slug) {
+function is_store( $slug ) {
 	
-	if (is_home()) {
+	if ( is_home() ) {
 		
 		return false;
 	
-	} elseif (is_product_category()) {
+	} elseif ( is_product_category() ) {
 		
 		$term = get_queried_object();
+		
 		$store = get_top_level($term);
 
-	} elseif (is_product()) {
+	} elseif ( is_product() ) {
 		
 		$product = get_queried_object();
-		$terms = get_the_terms($product->ID, 'product_cat');
-		$store = get_product_store($terms);
+		
+		$terms = get_the_terms( $product->ID, 'product_cat' );
+		
+		$store = get_product_store( $terms );
 		
 	} else {
+		
 		return false;
+	
 	}
 	
-	if ($slug == $store->slug) {
+	if ( $slug == $store->slug ) {
 			
 		return true;		
 	
@@ -344,6 +349,7 @@ function xtremetm_hide_update_notifications_users() {
 function xtremetm_disable_update_notifications() {
 	
     global $wp_version;
+    
     return (object) array( 'last_checked' => time(), 'version_checked' => $wp_version, );
     
 }
@@ -362,17 +368,11 @@ function dequeue_stylesandscripts() {
 	
 	wp_dequeue_style( 'wc-block-style' );
 	wp_dequeue_style( 'wp-block-library' );
-	
-    if ( !is_woocommerce() && !is_cart() && !is_checkout() ) {
+	wp_dequeue_style( 'selectWoo' );
+	wp_deregister_style( 'selectWoo' );
+	wp_dequeue_script( 'selectWoo');
+	wp_deregister_script('selectWoo');
         
-        wp_dequeue_style( 'selectWoo' );
-        wp_deregister_style( 'selectWoo' );
- 
-        wp_dequeue_script( 'selectWoo');
-        wp_deregister_script('selectWoo');
-
-    } 
-    
     if ( !is_product_category() ) {
 	    
 	    // Remove product filter plugin scripts
@@ -889,6 +889,7 @@ function get_top_level( $term ) {
 /**
  * Return top level store categories
  */
+ 
 function get_parent_cats() {
 	
 	global $wp_query;
@@ -932,9 +933,11 @@ function get_parent_cats() {
 /**
  * Return top level store for product
  */
+ 
 function get_product_store( $terms ) {
 	
 	if ( $terms ) {
+		
 		foreach( $terms as $term ) {
 			
 			if ( $term->parent == 0 ) {
@@ -949,6 +952,7 @@ function get_product_store( $terms ) {
 /**
  * Opening div for content wrapper
  */
+ 
 add_action( 'woocommerce_before_main_content', 'xtremetm_open_div', 5 );
 
 function xtremetm_open_div() {
@@ -960,6 +964,7 @@ function xtremetm_open_div() {
 /**
  * Closing content for after content wrapper
  */
+ 
 add_action( 'woocommerce_after_main_content', 'xtremetm_close_div', 50 );
 
 function xtremetm_close_div() {
@@ -980,11 +985,11 @@ function xtremetm_close_div() {
     	
 		include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
     	
-	} elseif (is_search()) {
+	} elseif ( is_search() ) {
 		
 		$store = get_queried_object();
 		
-		include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
+		include( locate_template( '/store-parts/section-footer-value-bar.php', false, false ) );
 		
 	}
 }
@@ -994,6 +999,7 @@ add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
 /**
  * Remove the breadcrumbs on archive pages
  */
+ 
 add_action( 'woocommerce_before_main_content', 'xtremetm_remove_wc_breadcrumbs' );
  
 function xtremetm_remove_wc_breadcrumbs() {
@@ -1005,6 +1011,7 @@ function xtremetm_remove_wc_breadcrumbs() {
 /**
  * Reposition WooCommerce breadcrumb
  */
+ 
 add_action( 'xtremetm_custom_breadcrumb', 'woocommerce_custom_breadcrumb' );
 
 function woocommerce_custom_breadcrumb() {
@@ -1023,6 +1030,7 @@ function woocommerce_custom_breadcrumb() {
 /**
  * Remove term descriptions from post editor
  */
+ 
 function xtremetm_hide_cat_desc() { ?>
 
     <style type="text/css">
@@ -1046,6 +1054,7 @@ add_action( 'admin_head-edit-tags.php', 'xtremetm_hide_cat_desc' );
 /**
  * Modify loop price output for variable products
  */
+ 
 add_filter( 'woocommerce_variable_sale_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
 add_filter( 'woocommerce_variable_price_html', 'xtremetm_product_minmax_price_html', 10, 2 );
 
@@ -1076,6 +1085,7 @@ function xtremetm_product_minmax_price_html( $price, $product ) {
 /**
  * Remove "Select options" button from (variable) products on the main WooCommerce shop page.
  */
+ 
 add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
 
 	global $product;
@@ -1101,6 +1111,7 @@ add_filter( 'woocommerce_loop_add_to_cart_link', function( $product ) {
 /**
  * Remove reset variations from displaying
  */
+ 
 add_filter( 'woocommerce_reset_variations_link', 'filter_woocommerce_reset_variations_link', 10, 1 ); 
 
 function filter_woocommerce_reset_variations_link( $link ) { 
@@ -1109,30 +1120,10 @@ function filter_woocommerce_reset_variations_link( $link ) {
 
 }; 
 
-add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
- 
-function xtremetm_cart_refresh_update_qty() { 
-    
-    if ( is_cart() ) {
-	     
-        ?> 
-        
-        <script type="text/javascript"> 
-           
-            jQuery('div.woocommerce').on('change', '.qty', function(){ 
-                jQuery("[name='update_cart']").trigger("click"); 
-            }); 
-            
-        </script> 
-        
-        <?php 
-    }
-     
-}
-
 /**
  * Add ship to event field on checkout page
  */ 
+ 
 add_action('woocommerce_after_order_notes', 'ship_to_event_field');
 
 function ship_to_event_field( $checkout ) {
@@ -1177,6 +1168,7 @@ function ship_to_event_field( $checkout ) {
 /**
  * Ajax function to return event shipping address meta values
  */ 
+
 add_action( 'wp_ajax_set_event_session', 'set_event_session' );
 add_action( 'wp_ajax_nopriv_set_event_session', 'set_event_session' );
 
@@ -1189,13 +1181,19 @@ function set_event_session() {
 	}
 	
 	if ( $_POST['status'] ) {
-		
+
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
 			WC()->session->set( 'ship_rush', 'false' );
 			
 		}
 		
+	}
+	
+	if ( $_POST['status'] == 'false' ) {
+		
+		WC_Cache_Helper::get_transient_version( 'shipping', true ); // Reset shipping methods 
+						
 	}
 	
 	if ( $_POST['event'] ) {
@@ -1295,19 +1293,6 @@ function check_for_event() {
 		
 	}
 		
-}
-
-/*
- * Clear event session on order complete
-*/ 
-add_action( 'woocommerce_thankyou', 'clear_event_session_order_complete' );
-
-function clear_event_session_order_complete( $order_id ) {
-	
-	WC()->session->__unset( 'ship_to_event_name' );
-	WC()->session->__unset( 'ship_to_event' );
-	WC()->session->__unset( 'ship_rush' );
-	
 }
 
 /**
@@ -1562,20 +1547,34 @@ function xtremetm_override_fields( $field, $key, $args, $value ) {
 /**
  * Customize checkout fields
  */
-add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields', 100 );
+add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields', 40, 2 );
 
 function xtremetm_override_checkout_fields( $checkout_fields ) {
     
     // Change labels
 	$checkout_fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
+	$checkout_fields['shipping']['shipping_city']['label'] = 'City';
+	$checkout_fields['shipping']['shipping_country']['priority'] = 91;
 	$checkout_fields['shipping']['shipping_state']['class']	= array('address-field', 'form-row-first');
 	$checkout_fields['shipping']['shipping_postcode']['class'] = array('address-field', 'form-row-last');
 
 	$checkout_fields['billing']['billing_country']['priority'] = 91;
+	$checkout_fields['billing']['billing_city']['label'] = 'City';
 	$checkout_fields['billing']['billing_state']['class'] = array('form-row-first');
 	$checkout_fields['billing']['billing_postcode']['class'] = array('form-row-last');
 	$checkout_fields['billing']['billing_phone']['class'] = array('form-row-first');
 	$checkout_fields['billing']['billing_email']['class'] = array('form-row-last');
+	
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
+		
+		$checkout_fields['shipping']['shipping_company']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
+	
+	}
 	
 	return $checkout_fields;
      
@@ -1589,7 +1588,8 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 function xtremetm_shipping_methods( $rates ) {
 
 	// Set free shipping for shipping to events. NOTE: production is fedex:8 and free_shipping:9, dev is fedex:7 and free_shipping:8
-	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
+	
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {		
 		
 		unset( $rates['free_shipping:9'] );
 		unset( $rates['odfl'] );
@@ -1600,7 +1600,7 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 				
 	} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
-		
+			
 		unset( $rates['flat_rate:4'] );
 		unset( $rates['odfl'] );
 		unset( $rates['fedex:8:FEDEX_GROUND'] );
@@ -1626,7 +1626,7 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['free_shipping:9'] );
 		
 		if ( WC()->cart->get_cart_contents_count() >= 8 ) {
-			
+						
 			unset( $rates['fedex:8:FEDEX_GROUND'] );
 			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
 			unset( $rates['fedex:8:FEDEX_2_DAY'] );
@@ -1634,11 +1634,11 @@ function xtremetm_shipping_methods( $rates ) {
 			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 			
 		} else {
-			
+
 			unset( $rates['odfl'] );
 			
 			if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
-	
+			
 				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
 				unset( $rates['fedex:8:FEDEX_2_DAY'] );
 				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
@@ -1646,6 +1646,19 @@ function xtremetm_shipping_methods( $rates ) {
 				
 			}
 			
+		}
+		
+	}
+	
+	// Add Fedex Surcharge
+	foreach ( $rates as $rate_key => $rate ) {
+
+		if ( $rate->method_id == 'fedex' ) {
+		
+			$surcharge = WC()->cart->cart_contents_count * 4;
+	
+			$rate->cost = $rate->cost + $surcharge;	
+	
 		}
 		
 	}
@@ -1970,6 +1983,140 @@ function clear_inventory() {
 	
 }
 
+/*
+ * Refresh cart on quantity change
+*/ 
+add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
+ 
+function xtremetm_cart_refresh_update_qty() { 
+    
+    if ( is_cart() ) {
+	     
+        ?> 
+        
+        <script type="text/javascript"> 
+           
+            jQuery('div.woocommerce').on('change', '.qty', function(){ 
+                jQuery("[name='update_cart']").trigger("click"); 
+            }); 
+            
+        </script> 
+        
+        <?php 
+    }
+     
+}
+
+/*
+ * Clear event session on order complete
+*/ 
+add_action( 'woocommerce_thankyou', 'clear_event_session_order_complete' );
+
+function clear_event_session_order_complete( $order_id ) {
+	
+	WC()->session->__unset( 'ship_to_event_name' );
+	WC()->session->__unset( 'ship_to_event' );
+	WC()->session->__unset( 'ship_rush' );
+	
+}
+/**
+  * Get state conversion
+  */
+function convertState( $name ) {
+   
+   $states = array(
+      array('name'=>'Alabama', 'abbr'=>'AL'),
+      array('name'=>'Alaska', 'abbr'=>'AK'),
+      array('name'=>'Arizona', 'abbr'=>'AZ'),
+      array('name'=>'Arkansas', 'abbr'=>'AR'),
+      array('name'=>'California', 'abbr'=>'CA'),
+      array('name'=>'Colorado', 'abbr'=>'CO'),
+      array('name'=>'Connecticut', 'abbr'=>'CT'),
+      array('name'=>'Delaware', 'abbr'=>'DE'),
+      array('name'=>'Florida', 'abbr'=>'FL'),
+      array('name'=>'Georgia', 'abbr'=>'GA'),
+      array('name'=>'Hawaii', 'abbr'=>'HI'),
+      array('name'=>'Idaho', 'abbr'=>'ID'),
+      array('name'=>'Illinois', 'abbr'=>'IL'),
+      array('name'=>'Indiana', 'abbr'=>'IN'),
+      array('name'=>'Iowa', 'abbr'=>'IA'),
+      array('name'=>'Kansas', 'abbr'=>'KS'),
+      array('name'=>'Kentucky', 'abbr'=>'KY'),
+      array('name'=>'Louisiana', 'abbr'=>'LA'),
+      array('name'=>'Maine', 'abbr'=>'ME'),
+      array('name'=>'Maryland', 'abbr'=>'MD'),
+      array('name'=>'Massachusetts', 'abbr'=>'MA'),
+      array('name'=>'Michigan', 'abbr'=>'MI'),
+      array('name'=>'Minnesota', 'abbr'=>'MN'),
+      array('name'=>'Mississippi', 'abbr'=>'MS'),
+      array('name'=>'Missouri', 'abbr'=>'MO'),
+      array('name'=>'Montana', 'abbr'=>'MT'),
+      array('name'=>'Nebraska', 'abbr'=>'NE'),
+      array('name'=>'Nevada', 'abbr'=>'NV'),
+      array('name'=>'New Hampshire', 'abbr'=>'NH'),
+      array('name'=>'New Jersey', 'abbr'=>'NJ'),
+      array('name'=>'New Mexico', 'abbr'=>'NM'),
+      array('name'=>'New York', 'abbr'=>'NY'),
+      array('name'=>'North Carolina', 'abbr'=>'NC'),
+      array('name'=>'North Dakota', 'abbr'=>'ND'),
+      array('name'=>'Ohio', 'abbr'=>'OH'),
+      array('name'=>'Oklahoma', 'abbr'=>'OK'),
+      array('name'=>'Oregon', 'abbr'=>'OR'),
+      array('name'=>'Pennsylvania', 'abbr'=>'PA'),
+      array('name'=>'Rhode Island', 'abbr'=>'RI'),
+      array('name'=>'South Carolina', 'abbr'=>'SC'),
+      array('name'=>'South Dakota', 'abbr'=>'SD'),
+      array('name'=>'Tennessee', 'abbr'=>'TN'),
+      array('name'=>'Texas', 'abbr'=>'TX'),
+      array('name'=>'Utah', 'abbr'=>'UT'),
+      array('name'=>'Vermont', 'abbr'=>'VT'),
+      array('name'=>'Virginia', 'abbr'=>'VA'),
+      array('name'=>'Washington', 'abbr'=>'WA'),
+      array('name'=>'West Virginia', 'abbr'=>'WV'),
+      array('name'=>'Wisconsin', 'abbr'=>'WI'),
+      array('name'=>'Wyoming', 'abbr'=>'WY'),
+      array('name'=>'Virgin Islands', 'abbr'=>'V.I.'),
+      array('name'=>'Guam', 'abbr'=>'GU'),
+      array('name'=>'Puerto Rico', 'abbr'=>'PR')
+   );
+
+   $return = false;   
+   $strlen = strlen( $name );
+
+   foreach ( $states as $state ) {
+      
+      if ( $strlen < 2 ) {
+      
+         return false;
+      
+      } else if ( $strlen == 2 ) {
+      
+         if ( strtolower( $state['abbr'] ) == strtolower( $name) ) {
+      
+            $return = $state['name'];
+      
+            break;
+      
+         }   
+      
+      } else {
+       
+         if ( strtolower( $state['name'] ) == strtolower( $name ) ) {
+       
+            $return = strtoupper( $state['abbr'] );
+       
+            break;
+       
+         }         
+      
+      }
+   
+   }
+   
+   return $return;
+   
+} 
+
 /**
  * Gravity Forms
  */
@@ -2029,6 +2176,11 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	return array();
 
 }
+
+/**
+ * Woocommerce - Defer transactional emails till after order is completed. Speeds up process for end-user.
+ */
+add_filter( 'woocommerce_defer_transactional_emails', '__return_true' );
 
 /**
  * Woocommerce - turn off analytics tab

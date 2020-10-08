@@ -7,11 +7,14 @@
 		if ( $('body').hasClass('woocommerce-checkout') ) {
 			
 			var coupon = $('#woocommerce-coupon-code');
+			
 			coupon.insertAfter('.shop_table.woocommerce-checkout-review-order-table');
+			
 			coupon.removeClass('d-none'); 
+			
 			$('.checkout_coupon').addClass('d-block');
+			
 		}
-
 
 		// Change brand images
 		
@@ -45,20 +48,13 @@
 		    	
 		$( '#ship-to-event-checkbox' ).click( function(e) {
 	        
-	        if ( $(this).is( ':checked' ) ) {
+	        if ( $( this ).is( ':checked' ) ) {
 		    
 		        $( '#ship-to-event' ).slideDown( 'fast' );
-		        $( '.shipping_address #shipping_company_field' ).hide();
-		        $( '.shipping_address .address-field' ).hide();
-		        $( '#shipping_phone_field' ).hide();
 		        
 	        } else {
 		    
 		        $( '#ship-to-event' ).slideUp( 'fast' );
-		        $( '#shipping_country_field' ).hide();
-		        $( '.shipping_address #shipping_company_field' ).show();
-		        $( '.shipping_address .address-field' ).show();
-		        $( '#shipping_phone_field' ).show();
 		        
 	        }
     	
@@ -81,7 +77,7 @@
     	
     	// Functions for event selection modal
     	
-		$( '#events' ).on('click', '.list-group-item', function(){
+		$( '#events' ).on( 'click', '.list-group-item', function(){
 
 			$( this ).addClass( 'active' );
 			$( '#ship_to_event' ).removeAttr( 'disabled' );
@@ -98,11 +94,7 @@
 			$( '#ship_to_event' ).prop('disabled', true);
   
 		});
-    	
-    	// Add select2 to delivery date select
-    	
-    	$('#delivery_date').select2( { width: 300 } );
-
+    	    	
 		// Reseller Fields
 		
     	$( '#customer_login #resale_certificate_number_field' ).hide(); 

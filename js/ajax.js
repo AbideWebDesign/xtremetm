@@ -1,13 +1,15 @@
 $( '#ship-to-event-checkbox' ).click( function() {
 
-	if ( $( this ).is( ":checked" ) ) {
+	if ( $( this ).is( ':checked' ) ) {
 		
 		var checked = 'true';
-		var event = $( "select#ship_to_event_list" ).val();
+		
+		var event = $( 'select#ship_to_event_list' ).val();
 
 	} else {
 		
 		var checked = 'false';
+		
 		var event = '';
 		
 	}
@@ -27,9 +29,19 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success: function( response ) {
-	
-			$( document.body ).trigger( 'update_checkout' );
-    
+			
+			if ( response.data.status == 'false' ) { // Checkbox has been unchecked
+				
+				$( '#shipping_company' ).removeAttr( 'readonly' );
+				$( '#shipping_address_1' ).removeAttr( 'readonly' );
+				$( '#shipping_address_2' ).removeAttr( 'readonly' );
+				$( '#shipping_city' ).removeAttr( 'readonly' );
+				$( '#shipping_state' ).removeAttr( 'readonly' );
+				$( '#shipping_postcode' ).removeAttr( 'readonly' );
+				$( document.body ).trigger( 'update_checkout' );
+				
+			}
+ 			
         },
 		fail: function( response ) {
 	
@@ -60,12 +72,18 @@ $( '#ship_to_event_list' ).change( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success: function( response ) {
-			
-			$( '#shipping_company') .val( response.data.address.event_name );
+
+			$( '#shipping_company' ) .val( response.data.address.event_name );
 			$( '#shipping_address_1' ).val( response.data.address.street );
 			$( '#shipping_city' ).val( response.data.address.city );
-			$( "#shipping_state" ).val(response.data.address.state).trigger('change');
+			$( '#shipping_state' ).val( response.data.address.state );
 			$( '#shipping_postcode' ).val( response.data.address.zip );
+			$( '#shipping_company' ).attr( 'readonly','readonly' );
+			$( '#shipping_address_1' ).attr( 'readonly','readonly' );
+			$( '#shipping_address_2' ).attr( 'readonly','readonly' );
+			$( '#shipping_city' ).attr( 'readonly','readonly' );
+			$( '#shipping_state' ).attr( 'readonly','readonly' );
+			$( '#shipping_postcode' ).attr( 'readonly','readonly' );
 			$( document.body ).trigger( 'update_checkout' );
           
 		},
@@ -140,7 +158,7 @@ $( '#shipping_postcode' ).change( function() {
 	
 				$.each( response.data.events, function ( key, value ) {
 	
-					event_details += '<button type="button" class="list-group-item list-group-item-action" data-toggle="list"><span class="en">' + value.event_name + '</span><br><span class="ea">' + value.street + '</span><br><span class="ec">' + value.city + '</span>, <span class="es">' + value.state + '</span> <span class="ez">' + value.zip + '</span></button>';
+					event_details += '<button type="button" class="list-group-item list-group-item-action" data-toggle="list"><span class="en">' + value.event_name + '</span><br><span class="ea">' + value.street + '</span><br><span class="ec">' + value.city + '</span>, <span class="es">' + value.state + '</span> <span class="ez">' + value.zip + '</span> <span class="badge badge-primary badge-pill"></span></button>';
 					
 				} );
 				
@@ -187,13 +205,6 @@ $( '#ship_to_event' ).click( function() {
 			$( '#shipping_city' ).val( $( '#event_shipping_city' ).val() );
 			$( '#shipping_state' ).val( $( '#event_shipping_state' ).val() );
 			$( '#shipping_postcode' ).val( $( '#event_shipping_postcode' ).val() );	
-			$( '#shipping_company_field').hide();
-			$( '#shipping_address_1_field' ).hide();
-			$( '#shipping_address_2_field' ).hide();
-			$( '#shipping_city_field' ).hide();
-			$( '#shipping_state_field' ).hide();
-			$( '#shipping_postcode_field' ).hide();
-			$( '#shipping_phone_field' ).hide();
 			$( '#ship_to_event_list' ).val( $( '#event_name' ).val() );
 			$( '#ship-to-event-checkbox' ).prop( 'checked', true );
 			$( '#ship-to-event' ).show();

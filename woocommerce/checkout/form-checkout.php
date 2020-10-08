@@ -116,6 +116,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 				<h3>Event Details</h3>
 				
+				<p>Select the event you would like to ship to.</p>
+				
 				<div id="events"></div>
 			
 			</div>
