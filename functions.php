@@ -2178,11 +2178,6 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 }
 
 /**
- * Woocommerce - Defer transactional emails till after order is completed. Speeds up process for end-user.
- */
-add_filter( 'woocommerce_defer_transactional_emails', '__return_true' );
-
-/**
  * Woocommerce - turn off analytics tab
  */
 add_filter( 'woocommerce_admin_disabled', '__return_true' );

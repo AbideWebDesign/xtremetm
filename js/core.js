@@ -120,9 +120,9 @@
     	});
 
     } );
-    
-    $( document.body ).on( 'change', "input[name='payment_method']", function() {
-	    
+
+    $( document ).on( 'change', 'input[name="payment_method"]', function() { 
+
 		$( 'body' ).trigger( 'update_checkout' );
 	
 	} );
