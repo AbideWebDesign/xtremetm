@@ -118,7 +118,7 @@ function xtremetm_scripts() {
 
 	wp_enqueue_script( 'xtremetm-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '', true );
 	
-	wp_enqueue_script( 'core', get_template_directory_uri() . '/js/core.js', array(), '', false );	
+	wp_enqueue_script( 'core', get_template_directory_uri() . '/js/core.js', array(), null, false );	
 
 	wp_enqueue_script( 'popper.min', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '', true );
 	
@@ -1132,7 +1132,7 @@ function ship_to_event_field( $checkout ) {
 	
 	$events['blank'] = 'Select an Event';
 	
-	while ( have_rows('event_shipping', 'options') ) {
+	while ( have_rows( 'event_shipping', 'options' ) ) {
 		
 		the_row();
 		
@@ -1158,7 +1158,7 @@ function ship_to_event_field( $checkout ) {
 		'options' 		=> $events,
 		'required' 		=> true,
 		'input_class' 	=> array('form-check'),
-		'default' 		=> WC()->session->get( 'ship_to_event_name')
+ 		'default' 		=> WC()->session->get( 'ship_to_event_name')
 	), $checkout->get_value( 'ship_to_event_list' ) );
 	
 	echo '</div>';
@@ -1552,12 +1552,12 @@ add_filter( 'woocommerce_checkout_fields' , 'xtremetm_override_checkout_fields',
 function xtremetm_override_checkout_fields( $checkout_fields ) {
     
     // Change labels
-	$checkout_fields['shipping']['shipping_company']['label'] = 'Company/Event Name';
+	$checkout_fields['shipping']['shipping_company']['label'] = 'Company Name';
 	$checkout_fields['shipping']['shipping_city']['label'] = 'City';
 	$checkout_fields['shipping']['shipping_country']['priority'] = 91;
 	$checkout_fields['shipping']['shipping_state']['class']	= array('address-field', 'form-row-first');
 	$checkout_fields['shipping']['shipping_postcode']['class'] = array('address-field', 'form-row-last');
-
+	
 	$checkout_fields['billing']['billing_country']['priority'] = 91;
 	$checkout_fields['billing']['billing_city']['label'] = 'City';
 	$checkout_fields['billing']['billing_state']['class'] = array('form-row-first');
@@ -1567,17 +1567,84 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 	
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
 		
+		$checkout_fields['shipping']['shipping_company']['label'] = 'Event Name';
 		$checkout_fields['shipping']['shipping_company']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
-	
+
+		while ( have_rows( 'event_shipping', 'options' ) ) {
+		
+			the_row();
+		
+			if ( get_sub_field('event_name') == WC()->session->get( 'ship_to_event_name' ) ) {
+				
+				$_POST['shipping_company'] = get_sub_field('event_name');
+				$_POST['shipping_address_1'] = get_sub_field('event_address_street');
+				$_POST['shipping_address_2'] = '';
+				$_POST['shipping_city'] = get_sub_field('event_address_city');
+				$_POST['shipping_state'] = get_sub_field('event_address_state');
+				$_POST['shipping_postcode'] = get_sub_field('event_address_zip');
+			}
+		}
+		
 	}
 	
 	return $checkout_fields;
      
+}
+
+/**
+ * Change labels controlled by locale
+ */
+add_filter( 'woocommerce_get_country_locale', 'change_labels_locale' );
+
+function change_labels_locale( $locale ) {
+
+    $locale['GB']['city']['label'] = __('Town / City', 'woocommerce');
+	$locale['US']['city']['label'] = __('City', 'woocommerce');
+    $locale['US']['country']['label'] = __('Country', 'woocommerce');
+    $locale['US']['address_1']['placeholder'] = __('', 'woocommerce');
+	$locale['US']['address_2']['placeholder'] = __('', 'woocommerce');
+	$locale['US']['state']['placeholder'] = __('Select...', 'woocommerce');
+    return $locale;
+    
+}
+
+/**
+ * Change select option... text
+ */
+add_filter( 'gettext', 'customizing_product_variation_message', 10, 3 );
+function customizing_product_variation_message( $translated_text, $untranslated_text, $domain )
+{
+if ($untranslated_text == 'Select an option...') {
+    $translated_text = __( 'PAST YOUR TEXT HERE', $domain );
+}
+    if ($untranslated_text == 'None') {
+    $translated_text = __( 'PAST YOUR TEXT HERE', $domain );
+}
+return $translated_text;
+}
+
+/**
+ * Change the default country on the checkout for non-existing users only
+ */
+add_filter( 'default_checkout_billing_country', 'change_default_checkout_country', 10, 1 );
+add_filter( 'default_checkout_shipping_country', 'change_default_checkout_country', 10, 1 );
+
+function change_default_checkout_country( $country ) {
+
+	// If the user already exists, don't override country
+	if ( WC()->customer->get_is_paying_customer() ) {
+
+	    return $country;
+
+	}
+	
+	return 'US';
+
 }
 
 /**

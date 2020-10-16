@@ -1,5 +1,5 @@
 $( '#ship-to-event-checkbox' ).click( function() {
-
+	
 	if ( $( this ).is( ':checked' ) ) {
 		
 		var checked = 'true';
@@ -11,6 +11,9 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		var checked = 'false';
 		
 		var event = '';
+		
+		$( 'select#ship_to_event_list' ).val('Select an Event');
+		$( 'select#ship_to_event_list' ).attr('placeholder', 'Select an Event');
 		
 	}
 	
@@ -32,11 +35,19 @@ $( '#ship-to-event-checkbox' ).click( function() {
 			
 			if ( response.data.status == 'false' ) { // Checkbox has been unchecked
 				
+				$( '#shipping_company_field label' ).text('Company Name');
+				$( '#shipping_company' ).val(''); 
+				$( '#shipping_address_1' ).val('');
+				$( '#shipping_address_2' ).val('');
+				$( '#shipping_city' ).val('');
+				$( '#shipping_state' ).val('');
+				$( '#shipping_postcode' ).val('');
 				$( '#shipping_company' ).removeAttr( 'readonly' );
 				$( '#shipping_address_1' ).removeAttr( 'readonly' );
 				$( '#shipping_address_2' ).removeAttr( 'readonly' );
 				$( '#shipping_city' ).removeAttr( 'readonly' );
 				$( '#shipping_state' ).removeAttr( 'readonly' );
+				$( '#shipping_state option:not(:selected)' ).attr( 'disabled', '');
 				$( '#shipping_postcode' ).removeAttr( 'readonly' );
 				$( document.body ).trigger( 'update_checkout' );
 				
@@ -72,7 +83,8 @@ $( '#ship_to_event_list' ).change( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success: function( response ) {
-
+			
+			$( '#shipping_company_field label' ).text('Event');
 			$( '#shipping_company' ) .val( response.data.address.event_name );
 			$( '#shipping_address_1' ).val( response.data.address.street );
 			$( '#shipping_city' ).val( response.data.address.city );
@@ -83,6 +95,7 @@ $( '#ship_to_event_list' ).change( function() {
 			$( '#shipping_address_2' ).attr( 'readonly','readonly' );
 			$( '#shipping_city' ).attr( 'readonly','readonly' );
 			$( '#shipping_state' ).attr( 'readonly','readonly' );
+			$( '#shipping_state option:not(:selected)' ).attr( 'disabled', 'disabled');
 			$( '#shipping_postcode' ).attr( 'readonly','readonly' );
 			$( document.body ).trigger( 'update_checkout' );
           
