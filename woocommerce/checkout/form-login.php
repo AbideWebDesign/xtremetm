@@ -11,8 +11,8 @@
  * the readme will list any important changes.
  *
  * @see https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 3.4.0
+ * @package WooCommerce\Templates
+ * @version 3.8.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,12 +24,12 @@ if ( is_user_logged_in() || 'no' === get_option( 'woocommerce_enable_checkout_lo
 ?>
 <div class="woocommerce-form-login-toggle">
 	<?php 
-		wc_print_notice( apply_filters( 'woocommerce_checkout_login_message', __( '', 'woocommerce' ) ) . ' <a href="#" class="showlogin">' . __( 'Returning customer? Click here to login', 'woocommerce' ) . '</a>', 'notice' ); 
+		wc_print_notice( apply_filters( 'woocommerce_checkout_login_message', esc_html__( 'Returning customer?', 'woocommerce' ) ) . ' <a href="#" class="showlogin">' . esc_html__( 'Click here to login', 'woocommerce' ) . '</a>', 'notice' );
 	
 		woocommerce_login_form(
 			array(
 				'message'  => __( 'If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.', 'woocommerce' ),
-				'redirect' => wc_get_page_permalink( 'checkout' ),
+				'redirect' => wc_get_checkout_url(),
 				'hidden'   => true,
 			)
 		);

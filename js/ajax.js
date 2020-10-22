@@ -14,6 +14,20 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		
 		$( 'select#ship_to_event_list' ).val('Select an Event');
 		$( 'select#ship_to_event_list' ).attr('placeholder', 'Select an Event');
+		$( '#shipping_company_field label' ).text('Company Name');
+		$( '#shipping_company' ).val(''); 
+		$( '#shipping_address_1' ).val('');
+		$( '#shipping_address_2' ).val('');
+		$( '#shipping_city' ).val('');
+		$( '#shipping_state' ).val('');
+		$( '#shipping_postcode' ).val('');
+		$( '#shipping_company' ).removeAttr( 'readonly' );
+		$( '#shipping_address_1' ).removeAttr( 'readonly' );
+		$( '#shipping_address_2' ).removeAttr( 'readonly' );
+		$( '#shipping_city' ).removeAttr( 'readonly' );
+		$( '#shipping_state' ).removeAttr( 'readonly' );
+		$( '#shipping_state option:not(:selected)' ).attr( 'disabled', '');
+		$( '#shipping_postcode' ).removeAttr( 'readonly' );
 		
 	}
 	
@@ -33,22 +47,8 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		data: data,
 		success: function( response ) {
 			
-			if ( response.data.status == 'false' ) { // Checkbox has been unchecked
-				
-				$( '#shipping_company_field label' ).text('Company Name');
-				$( '#shipping_company' ).val(''); 
-				$( '#shipping_address_1' ).val('');
-				$( '#shipping_address_2' ).val('');
-				$( '#shipping_city' ).val('');
-				$( '#shipping_state' ).val('');
-				$( '#shipping_postcode' ).val('');
-				$( '#shipping_company' ).removeAttr( 'readonly' );
-				$( '#shipping_address_1' ).removeAttr( 'readonly' );
-				$( '#shipping_address_2' ).removeAttr( 'readonly' );
-				$( '#shipping_city' ).removeAttr( 'readonly' );
-				$( '#shipping_state' ).removeAttr( 'readonly' );
-				$( '#shipping_state option:not(:selected)' ).attr( 'disabled', '');
-				$( '#shipping_postcode' ).removeAttr( 'readonly' );
+			if ( response.data.status == 'false' ) { // Checkbox has been unchecked	
+	
 				$( document.body ).trigger( 'update_checkout' );
 				
 			}

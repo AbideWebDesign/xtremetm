@@ -11,8 +11,8 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 3.6.0
+ * @package WooCommerce\Templates
+ * @version 4.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,40 +27,38 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 	<div class="col-md-6">
 
-<?php endif; ?>
+<?php endif; ?>		
 
-		
+	<form class="woocommerce-form woocommerce-form-login login h-100" method="post">
+		<h2 class="mb-1"><?php esc_html_e( 'Login', 'woocommerce' ); ?></h2>
+		<?php do_action( 'woocommerce_login_form_start' ); ?>
 
-		<form class="woocommerce-form woocommerce-form-login login h-100" method="post">
-			<h2 class="mb-1"><?php esc_html_e( 'Login', 'woocommerce' ); ?></h2>
-			<?php do_action( 'woocommerce_login_form_start' ); ?>
+		<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+			<label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+			<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
+		</p>
+		<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+			<label for="password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+			<input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" />
+		</p>
 
-			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-				<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
-			</p>
-			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-				<label for="password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-				<input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" />
-			</p>
+		<?php do_action( 'woocommerce_login_form' ); ?>
 
-			<?php do_action( 'woocommerce_login_form' ); ?>
+		<p class="form-row">
+			<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
+			<button type="submit" class="woocommerce-Button button" name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
+			<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline">
+				<input class="woocommerce-form__input woocommerce-form__input-checkbox ml-md-1" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'woocommerce' ); ?></span>
+			</label>
+		</p>
+		<h3>Lost Your Password?</h3>
+		<p class="woocommerce-LostPassword lost_password">
+			<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Click here to request password reset', 'woocommerce' ); ?></a>
+		</p>
 
-			<p class="form-row">
-				<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
-				<button type="submit" class="woocommerce-Button button" name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
-				<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline">
-					<input class="woocommerce-form__input woocommerce-form__input-checkbox ml-md-1" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'woocommerce' ); ?></span>
-				</label>
-			</p>
-			<h3>Lost Your Password?</h3>
-			<p class="woocommerce-LostPassword lost_password">
-				<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Click here to request password reset', 'woocommerce' ); ?></a>
-			</p>
+		<?php do_action( 'woocommerce_login_form_end' ); ?>
 
-			<?php do_action( 'woocommerce_login_form_end' ); ?>
-
-		</form>
+	</form>
 
 <?php if ( get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes' ) : ?>
 

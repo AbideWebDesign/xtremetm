@@ -12,8 +12,8 @@
  *
  * @see 	https://docs.woocommerce.com/document/template-structure/
  * @author  WooThemes
- * @package WooCommerce/Templates
- * @version 3.7.0
+ * @package WooCommerce\Templates
+ * @version 4.6.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -105,6 +105,7 @@ if ( $show_downloads ) {
 		
 			<?php do_action( 'woocommerce_order_details_after_order_table', $order ); ?>
 		</section>
+		<?php do_action( 'woocommerce_after_order_details', $order ); ?>
 	</div>
 	<div class="col-lg-4">
 		<?php

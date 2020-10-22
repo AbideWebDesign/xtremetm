@@ -1614,21 +1614,6 @@ function change_labels_locale( $locale ) {
 }
 
 /**
- * Change select option... text
- */
-add_filter( 'gettext', 'customizing_product_variation_message', 10, 3 );
-function customizing_product_variation_message( $translated_text, $untranslated_text, $domain )
-{
-if ($untranslated_text == 'Select an option...') {
-    $translated_text = __( 'PAST YOUR TEXT HERE', $domain );
-}
-    if ($untranslated_text == 'None') {
-    $translated_text = __( 'PAST YOUR TEXT HERE', $domain );
-}
-return $translated_text;
-}
-
-/**
  * Change the default country on the checkout for non-existing users only
  */
 add_filter( 'default_checkout_billing_country', 'change_default_checkout_country', 10, 1 );
