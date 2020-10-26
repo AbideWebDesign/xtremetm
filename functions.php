@@ -1377,19 +1377,20 @@ function set_rush_session() {
 /**
  * Calculate custom rush order fee
  */
-add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_rush_fee', 10, 1 );
+add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_fees', 10, 1 );
 
-function xtremetm_add_rush_fee( $cart ) {
+function xtremetm_add_fees( $cart ) {
 	
 	// Only on checkout
-    if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || is_cart() )
-    	return;
-    
-    $fee = 750;
-        
+	if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || is_cart() )
+		return;
+	   
+	// Add rush shipping fee if applicable
 	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
-		WC()->cart->add_fee( 'Rush', $fee, false );
+		$rushfee = 750;
+		
+		WC()->cart->add_fee( 'Rush', $rushfee, false );
 		
 	} else {
 		
@@ -1398,6 +1399,27 @@ function xtremetm_add_rush_fee( $cart ) {
 			WC()->cart->add_fee( 'Rush', 0, false );
 			
 		}
+		
+	}
+	
+	// Add tire fee if applicable
+	foreach ( $cart->get_cart() as $cart_item ) {
+	
+		if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
+		
+			$tirefee += $cart_item['quantity'] * 3;
+			
+		}
+		
+	}
+	
+	if ( isset( $tirefee ) ) {
+		
+		WC()->cart->add_fee( 'Tire Disposal', $tirefee, false );
+		
+	} else {
+		
+		WC()->cart->add_fee( 'Tire Disposal', 0, false );
 		
 	}
 	
@@ -1722,6 +1744,7 @@ function xtremetm_shipping_methods( $rates ) {
 /**
  * Add custom discount for ACH payment method purchases
  */
+/*
 add_action('woocommerce_cart_calculate_fees' , 'woocommerce_add_ach_discount');
 
 function woocommerce_add_ach_discount( WC_Cart $cart ){
@@ -1754,6 +1777,7 @@ function woocommerce_add_ach_discount( WC_Cart $cart ){
 	}
 	
 }
+*/
 
 /**
  * Change shipping method label
