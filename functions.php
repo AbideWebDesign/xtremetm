@@ -1130,7 +1130,7 @@ function ship_to_event_field( $checkout ) {
 	
 	$events = array();
 	
-	$events['blank'] = 'Select an Event';
+	$events['blank'] = 'Select Event or Warehouse';
 	
 	while ( have_rows( 'event_shipping', 'options' ) ) {
 		
