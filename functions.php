@@ -1154,7 +1154,7 @@ function ship_to_event_field( $checkout ) {
 	woocommerce_form_field( 'ship_to_event_list', array(
 		'type' 			=> 'select',
 		'label' 		=> __('Event') ,
-		'placeholder' 	=> __('Select an Event') ,
+		'placeholder' 	=> __('Select Event or Warehouse') ,
 		'options' 		=> $events,
 		'required' 		=> true,
 		'input_class' 	=> array('form-check'),
