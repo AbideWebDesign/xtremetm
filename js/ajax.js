@@ -26,7 +26,6 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		$( '#shipping_address_2' ).removeAttr( 'readonly' );
 		$( '#shipping_city' ).removeAttr( 'readonly' );
 		$( '#shipping_state' ).removeAttr( 'readonly' );
-		$( '#shipping_state option:not(:selected)' ).attr( 'disabled', '');
 		$( '#shipping_postcode' ).removeAttr( 'readonly' );
 		
 	}
@@ -95,7 +94,6 @@ $( '#ship_to_event_list' ).change( function() {
 			$( '#shipping_address_2' ).attr( 'readonly','readonly' );
 			$( '#shipping_city' ).attr( 'readonly','readonly' );
 			$( '#shipping_state' ).attr( 'readonly','readonly' );
-			$( '#shipping_state option:not(:selected)' ).attr( 'disabled', 'disabled');
 			$( '#shipping_postcode' ).attr( 'readonly','readonly' );
 			$( document.body ).trigger( 'update_checkout' );
           
@@ -110,18 +108,22 @@ $( '#ship_to_event_list' ).change( function() {
 
 } );
 
-$( '#ship-rush-checkbox' ).click( function() {
-
-	if ( $( this ).is( ':checked') ) {
+$( '#datepicker' ).change( function() {
+	
+	var rush_date = new Date(); 
+	rush_date.setDate( rush_date.getDate() + 9 );
+	var deliver_date = new Date( $( this ).val() );
+	
+	if ( rush_date > deliver_date ) {
 		
-		var checked = 'true';
-
+		checked = 'true';
+		
 	} else {
 		
-		var checked = 'false';
+		checked = 'false';
 		
 	}
-	
+
 	var data = {
 		
 		status: checked,
@@ -135,14 +137,18 @@ $( '#ship-rush-checkbox' ).click( function() {
 		type: 'POST',
 		url: ajax_object.ajax_url,
 		data: data,
-		success: function( response ) {},
+		success: function( response ) {
+			
+			$( document.body ).trigger( 'update_checkout' );
+			
+		},
 		fail: function( response ) {
 			
 			console.log( 'failure' );
 		
 		},
 		
-	} );	
+	} );		
 	
 } );
 

@@ -130,6 +130,7 @@ function xtremetm_scripts() {
 add_action( 'wp_enqueue_scripts', 'xtremetm_scripts' );
 
 function ajax_site_scripts() {
+	
     // Enqueue our JS file
     wp_enqueue_script( 'ajax_appjs', get_template_directory_uri() . '/js/ajax.js', array( 'jquery' ), filemtime( get_template_directory() . '/js/ajax.js'), true);
     
@@ -364,6 +365,7 @@ remove_theme_support( 'wc-product-gallery-zoom' );
 
 // Remove unused scripts
 add_action( 'wp_enqueue_scripts', 'dequeue_stylesandscripts', 100 );
+
 function dequeue_stylesandscripts() {
 	
 	wp_dequeue_style( 'wc-block-style' );
@@ -372,7 +374,8 @@ function dequeue_stylesandscripts() {
 	wp_deregister_style( 'selectWoo' );
 	wp_dequeue_script( 'selectWoo');
 	wp_deregister_script('selectWoo');
-        
+    wp_enqueue_script( 'jquery-ui-datepicker' );    
+    
     if ( !is_product_category() ) {
 	    
 	    // Remove product filter plugin scripts
@@ -380,7 +383,6 @@ function dequeue_stylesandscripts() {
 	    wp_dequeue_script( 'wcpf-plugin-script' );
 	    wp_dequeue_script( 'accounting' );
 	    wp_dequeue_script( 'wcpf-plugin-polyfills-script' );
-	    
 	    wp_dequeue_style( 'wcpf-plugin-style' );
 
 	}
@@ -394,17 +396,6 @@ function dequeue_stylesandscripts() {
 	}
 
 } 
-
-// Register main datepicker jQuery plugin script
-add_action( 'wp_enqueue_scripts', 'enabling_date_picker' );
-function enabling_date_picker() {
-
-    // Only on front-end and checkout page
-    if( is_admin() || !is_account_page() ) return;
-
-    // Load the datepicker jQuery-ui plugin script
-    wp_enqueue_script( 'jquery-ui-datepicker' );
-}
 
 /**
  * Remove product tags
@@ -1298,60 +1289,51 @@ function check_for_event() {
 /**
  * Custom rush shipping field
  */
-add_action( 'woocommerce_cart_totals_after_shipping', 'xtremetm_rush_checkout_fields' );
+add_action( 'woocommerce_after_order_notes', 'xtremetm_delivery_field', 10, 1 );
 
-function xtremetm_rush_checkout_fields( $checkout ) {
+function xtremetm_delivery_field( $checkout ) {
 
 	// Rush Delivery
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 	
-		echo '<tr id="ship-rush-wrap"><th>Rush Shipping</th><td>';
-		  
-		$checked =  WC()->session->get( 'ship_rush' ) == 'true' ? 1 : 0;
-	
-		woocommerce_form_field( 'ship-rush-checkbox', array (
-			'type'	=> 'checkbox',
-			'label'	=> __( 'Do you need these to arrive within 10 days?' ),
-			'class' => array('mb-0'),
-		), $checked );
+		date_default_timezone_set( 'America/Los_Angeles' );
 		
-		echo '<div id="ship-date-wrap" class="bg-primary text-white p-1"' . ( WC()->session->get( 'ship_rush' ) == 'true' ? '' : 'style="display: none;"' ) . '>';
-		 
-		echo '<h5 class="text-white mb-1">Preferred Arrival Date</h5><div class="text-sm mb-1">' . get_field('rush_shipping_message', 'options') . '</div>';
+		$dateoptions = array( '' => __( 'Select Delivery Date', 'woocommerce' ) );
 		
-		// Delivery Date if Rush Delivery
-	    $today = strtotime('today');
-	    $tomorrow = strtotime('tomorrow');
-	    $dayAfterTomorrow = strtotime('+10 days');
-	    $dates[] = strtotime('today');
-	    
-	    for ( $x = 1; $x < 10; $x++ ) {
-		    
-		    $dates[] = strtotime( '+' . $x . ' days' );
-		    
-	    }
+		echo '<div class="mt-1">';
 		
-	    woocommerce_form_field( 'delivery_date', array (
-	        'type'		=> 'select',
-	        'label'		=> __( '' ),
-	        'class'		=> array( 'mb-0' ),
-	        'options'	=> array(
-				date( get_option('date_format'), $dates[0] ) => date( get_option('date_format'), $dates[0] ),
-				date( get_option('date_format'), $dates[1] ) => date( get_option('date_format'), $dates[1] ),
-				date( get_option('date_format'), $dates[2] ) => date( get_option('date_format'), $dates[2] ),
-				date( get_option('date_format'), $dates[3] ) => date( get_option('date_format'), $dates[3] ),
-				date( get_option('date_format'), $dates[4] ) => date( get_option('date_format'), $dates[4] ),
-				date( get_option('date_format'), $dates[5] ) => date( get_option('date_format'), $dates[5] ),
-				date( get_option('date_format'), $dates[6] ) => date( get_option('date_format'), $dates[6] ),
-				date( get_option('date_format'), $dates[7] ) => date( get_option('date_format'), $dates[7] ),
-				date( get_option('date_format'), $dates[8] ) => date( get_option('date_format'), $dates[8] ),
-				date( get_option('date_format'), $dates[9] ) => date( get_option('date_format'), $dates[9] ),
-	        ) ) );
-	        
-	    echo '</td></tr>';
-	
+		woocommerce_form_field( 'delivery_date', array(
+			'type'          => 'text',
+			'label'         => __('Delivery Date'),
+			'placeholder' 	=> __('Select Delivery Date'),
+			'options'     	=> $dateoptions,
+			'required'      => true,
+			'id'            => 'datepicker',
+		), $checkout->get_value( 'delivery_date' ) );
+		
+		echo '</div>';	
+
 	}
 	
+}
+
+/**
+ * Rush shipping checkout validation notice
+ */
+add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process');
+
+function rush_shipping_checkout_field_process() {
+	
+	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+		
+		if ( !$_POST['delivery_date'] ) {
+		    
+		    wc_add_notice( '<strong>Delivery Date</strong> ' . __( 'is a required field.', 'woocommerce' ), 'error' );
+		    
+		}   
+		
+	}
+        
 }
 
 /**
@@ -1375,7 +1357,7 @@ function set_rush_session() {
 }
 
 /**
- * Calculate custom rush order fee
+ * Calculate custom order fees
  */
 add_filter( 'woocommerce_cart_calculate_fees', 'xtremetm_add_fees', 10, 1 );
 
@@ -1383,6 +1365,7 @@ function xtremetm_add_fees( $cart ) {
 	
 	// Only on checkout
 	if ( ( is_admin() && ! defined( 'DOING_AJAX' ) ) || is_cart() )
+	
 		return;
 	   
 	// Add rush shipping fee if applicable
@@ -1450,9 +1433,9 @@ function get_order_weight( $order_id ) {
 /**
  * Update the order meta with custom field value
  */
-add_action( 'woocommerce_checkout_update_order_meta', 'xtremetm_rush_checkout_field_update_order_meta' );
+add_action( 'woocommerce_checkout_update_order_meta', 'xtremetm_checkout_field_update_order_meta' );
 
-function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
+function xtremetm_checkout_field_update_order_meta( $order_id ) {
 
 	if ( ! empty( $_POST['ship_to_event_list'] ) && $_POST['ship_to_event_list'] != 'blank' ) {
 	
@@ -1460,11 +1443,15 @@ function xtremetm_rush_checkout_field_update_order_meta( $order_id ) {
 	
 	}
 	
-	if ( ! empty( $_POST['delivery_date'] ) && $_POST['ship-rush-checkbox'] ) {
+	if ( ! empty( $_POST['delivery_date'] ) ) {
+				
+		update_post_meta( $order_id, 'delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
 		
-		update_post_meta( $order_id, 'rush_delivery', true );
-		
-		update_post_meta( $order_id, 'rush_delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
+		if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
+			
+			update_post_meta( $order_id, 'rush_delivery', true );
+			
+		}
 	
 	}
 
@@ -1482,8 +1469,10 @@ add_action( 'woocommerce_admin_order_data_after_shipping_address', 'xtremetm_rus
 
 function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 	
+	echo '<p>';
+	
 	// Total order weight
-	if ( !metadata_exists( 'post', $order->id, 'order_weight' ) ) {
+	if ( ! metadata_exists( 'post', $order->id, 'order_weight' ) ) {
 		
 		$total_weight = get_order_weight( $order->id );
 	
@@ -1491,23 +1480,30 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 		
 	} 
 	
-	echo '<p><strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong><br>' . get_post_meta( $order->id, 'order_weight', true ) . 'kg</p>';	
+	echo '<strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong>' . get_post_meta( $order->id, 'order_weight', true ) . 'kg<br />';	
 
 	// Check ship to event
 	if ( ! empty( get_post_meta( $order->id, 'Ship to Event', true ) ) ) {
 		
-		echo '<p><strong>' . __('Ship to Event', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '</p>';
+		echo '<strong>' . __('Ship to Event', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '<br />';
 	
 	}
 
 	// Check rush delivery
 	if ( ! empty( get_post_meta( $order->id, 'rush_delivery', true ) ) ) {
 		
-		echo '<p><strong>' . __('Rush Delivery', 'xtremetm') . ':</strong> Yes</p>';
 		
-		echo '<p><strong>' . __('Rush Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'rush_delivery_date', true ) . '</p>';
+		echo '<strong>' . __('Rush Delivery', 'xtremetm') . ':</strong> Yes <br />';
 	
 	}
+	
+	// Check delivery date
+	if ( ! empty( get_post_meta( $order->id, 'delivery_date', true ) ) ) {
+		
+		echo '<strong>' . __('Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'delivery_date', true );
+	}
+	
+	echo '</p>';
 	
 }
 
@@ -1517,16 +1513,18 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 add_action( 'woocommerce_email_order_meta', 'xtremetm_email_order_meta_fields', 10, 3 );
 
 function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_text ) {
-	
-	$is_rush = get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true );
  
-	// we won't display anything if it is not rush
-	if ( empty( $is_rush ) )
-		return;
+	if ( !empty( get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true ) ) ) {
+			
+		echo '<h2>Rush Delivery</h2><strong>Yes</strong><br>';
+		
+	}
 	
-	$date = get_post_meta( $order_obj->get_order_number(), 'rush_delivery_date', true );
+	if ( !empty( get_post_meta( $order_obj->get_order_number(), 'deliver_date', true ) ) ) {
 	
-	echo '<h2>Rush Delivery Date</h2><strong>' . $date . '</strong><br><br>';
+		echo '<h2>Delivery Date</h2><strong>' . get_post_meta( $order_obj->get_order_number(), 'delivery_date', true ). '</strong><br><br>';
+		
+	}
 
 }
 
@@ -2243,6 +2241,11 @@ add_filter( 'jetpack_just_in_time_msgs', '_return_false' );
 add_filter( 'woocommerce_helper_suppress_admin_notices', '__return_true' );
 
 /**
+ * Woocommerce - turn off analytics tab
+ */
+add_filter( 'woocommerce_admin_disabled', '__return_true' );
+
+/**
  * Woocommerce - turn off marketing tab
  */
 add_filter( 'woocommerce_marketing_menu_items', 'xtremetm_hide_marketing_tab' );
@@ -2252,8 +2255,3 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	return array();
 
 }
-
-/**
- * Woocommerce - turn off analytics tab
- */
-add_filter( 'woocommerce_admin_disabled', '__return_true' );

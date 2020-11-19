@@ -8,6 +8,7 @@ body {
 	a {
 		transition: all .3s ease-in-out;
 	}
+	input:-internal-autofill-selected,
 	input:-webkit-autofill,
 	input:-webkit-autofill:hover, 
 	input:-webkit-autofill:focus,
@@ -18,9 +19,10 @@ body {
 	select:-webkit-autofill:hover,
 	select:-webkit-autofill:focus {
 		border: 1px solid #ced4da !important;
-		background-color: white !important;
-		-webkit-text-fill-color: #495057;
-		-webkit-box-shadow: none;
+		background-color: #ffffff !important;
+		-webkit-text-fill-color: $body-color !important;
+		-webkit-box-shadow: none !important;
+		-webkit-background-clip: text;
 		transition: none;
 	}
 	select {
@@ -676,23 +678,15 @@ h3 {
 }
 .woocommerce {
 	.blockUI.blockOverlay:before, .loader:before {
-		border: 4px solid rgba(255, 255, 255, 0.5);
-		border-left: 4px solid rgba(32, 55, 109, 0.9);
+		margin-left: 20px;
+		border: 4px solid rgba(255, 255, 255, 0.3);
+		border-left: 4px solid rgba(32, 55, 109, 0.7);
 		animation: spinner 1.1s infinite linear;
 		border-radius: 50%;
 		width: 30px;
 		height: 30px;
-		position: fixed;
-		margin-left: -.5em;
-		margin-top: -.5em;
-		display: block;
 		content: "";
 		background-image: none !important;
-		background-position: center center;
-		background-size: cover;
-		line-height: 1;
-		text-align: center;
-		font-size: 2em;
 	}
 	@keyframes spinner {
 		0% {
@@ -1943,51 +1937,6 @@ body {
 }
 
 /* 
-** Plugin: Stripe ACH
-*/
-.ui-widget.ui-widget-content {
-	border: none;
-	background-color: $brand-xtreme;
-	
-	.ui-dialog-content {
-		padding: 1em;
-	}
-	h3 {
-		color: white;
-		text-align: center;
-		font-size: 16px;
-		margin-bottom: 1em;
-	}
-	p {
-		color: white;
-		font-size: 14px;
-		margin-bottom: 0;
-	}
-	label {
-		color: white;
-	}
-	.ui-widget-header {
-		display: none;
-	}
-	.ui-dialog-buttonpane {
-		border: none;
-		background-color: transparent;
-		padding: 0;
-		
-		.ui-dialog-buttonset {
-			float: none;
-			
-			button {
-				margin: 0 0 1em 0;
-				@extend .btn;
-				@extend .btn-white;
-				@extend .btn-sm;
-			}
-		}
-	}
-}
-
-/* 
 ** Plugin: Ubermenu 
 */
 
@@ -2541,4 +2490,182 @@ body {
 	.modal-footer {
 		justify-content: center;
 	}
+}
+
+/* Date Picker */
+#ui-datepicker-note strong:before {
+    content: '';
+    background-color: #18386E;
+    height: 5px;
+    width: 9px;
+    margin-right: .5em;
+    padding-right: 1.2em;
+}
+.ui-datepicker {
+  background-color: #fff;
+  border: 1px solid $gray-200;
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(102, 175, 233, .6);
+  display: none;
+  margin-top: 4px;
+  padding: 10px;
+  width: 350px;
+  font-size: $font-size-sm;
+}
+.ui-datepicker-rushdate {
+	background-color: $primary;
+	
+	a {
+		color: white;
+	}
+}
+.ui-datepicker-year, .ui-datepicker-month {
+	border: none;
+	font-weight: bold;
+	font-size: $font-size-base;
+	color: $primary;
+}
+.ui-datepicker-month {
+	margin-right: .5em;
+}
+.ui-datepicker a,
+.ui-datepicker a:hover {
+  text-decoration: none;
+}
+
+.ui-datepicker a:hover,
+.ui-datepicker td:hover a {
+  color: #2A6496;
+  -webkit-transition: color 0.1s ease-in-out;
+  -moz-transition: color 0.1s ease-in-out;
+  -o-transition: color 0.1s ease-in-out;
+  transition: color 0.1s ease-in-out;
+}
+
+.ui-datepicker .ui-datepicker-header {
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title {
+  font-weight: 700;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+  cursor: pointer;
+  font-family: 'Glyphicons Halflings';
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: normal;
+  height: 20px;
+  line-height: 1;
+  margin-top: 2px;
+  width: 30px;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+  float: left;
+  text-align: left;
+}
+
+.ui-datepicker .ui-datepicker-next {
+  float: right;
+  text-align: right;
+}
+
+.ui-datepicker .ui-icon {
+  display: none;
+}
+
+.ui-datepicker .ui-datepicker-calendar {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.ui-datepicker .ui-datepicker-calendar th,
+.ui-datepicker .ui-datepicker-calendar td {
+  text-align: center;
+  padding: 4px 0;
+}
+
+.ui-datepicker .ui-datepicker-calendar td {
+  -webkit-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+  -moz-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+  -o-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+  transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-color: #f7f7f7;
+  cursor: pointer;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-rushdate a {
+	color: white;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-rushdate:hover {
+	background-color: darken($primary, 10);
+}
+.ui-datepicker a:hover, .ui-datepicker td:hover a {
+	color: $body-color;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a {
+  text-decoration: none;
+  font-weight: bold;
+  color: $body-color;
+}
+
+.ui-datepicker .ui-datepicker-current-day {
+  background-color: #4289cc;
+  color: #fff;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-current-day:hover {
+	background-color: #4289cc;
+}
+.ui-datepicker .ui-datepicker-current-day a {
+  color: #fff !important;
+}
+
+
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-unselectable {
+  background-color: #eff0f1;
+  cursor: default;
+  border-radius: 0;
+}
+
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-unselectable:hover {
+  background-color: #eff0f1;
+  cursor: default;
+}
+
+
+.ui-datepicker-prev span {
+  display: none;
+}
+
+.ui-datepicker-prev:before {
+  display: inline-block !important;
+  font: normal normal normal 14px/1 FontAwesome !important;
+  font-size: 14px !important;
+  font-size: inherit !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  content: '\f060';
+}
+
+.ui-datepicker-next span {
+  display: none;
+}
+
+.ui-datepicker-next:after {
+  display: inline-block !important;
+  font: normal normal normal 14px/1 FontAwesome !important;
+  font-size: 14px !important;
+  font-size: inherit !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  content: '\f061';
 }
