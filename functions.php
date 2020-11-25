@@ -1379,11 +1379,13 @@ function xtremetm_add_fees( $cart ) {
 		
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
-			WC()->cart->add_fee( 'Rush', 0, false );
+			WC()->cart->add_fee( 'Rush', 0, false ); // Reset fee only if previously added
 			
 		}
 		
 	}
+	
+	$tirefee = 0;
 	
 	// Add tire fee if applicable
 	foreach ( $cart->get_cart() as $cart_item ) {
@@ -1396,13 +1398,17 @@ function xtremetm_add_fees( $cart ) {
 		
 	}
 	
-	if ( isset( $tirefee ) ) {
+	if ( $tirefee > 0 ) {
 		
 		WC()->cart->add_fee( 'Tire Disposal', $tirefee, false );
 		
 	} else {
 		
-		WC()->cart->add_fee( 'Tire Disposal', 0, false );
+		if ( WC()->session->get( 'Tire Disposal' ) ) {
+			
+			WC()->cart->add_fee( 'Tire Disposal', 0, false );
+			
+		}
 		
 	}
 	
@@ -1427,6 +1433,23 @@ function get_order_weight( $order_id ) {
 	}	
 	
 	return ( $total_weight );
+	
+}
+
+function is_cart_weight_free() {
+	
+	$total_weight = 0;
+	
+	foreach ( WC()->cart->get_cart() as $cart_item ) {
+	
+		$quantity = $cart_item['quantity'];
+		$product = $cart_item['data'];
+		$product_weight = $product->get_weight();
+		$total_weight += floatval( $product_weight * $quantity );
+		
+	}
+	
+	return ( ( $total_weight >=  2000 ) ? true : false );
 	
 }
 
@@ -1472,25 +1495,25 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 	echo '<p>';
 	
 	// Total order weight
-	if ( ! metadata_exists( 'post', $order->id, 'order_weight' ) ) {
+	if ( ! metadata_exists( 'post', $order->get_id(), 'order_weight' ) ) {
 		
-		$total_weight = get_order_weight( $order->id );
+		$total_weight = get_order_weight( $order->get_id() );
 	
 		add_post_meta( $order->id, 'order_weight', $total_weight, false );
 		
 	} 
 	
-	echo '<strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong>' . get_post_meta( $order->id, 'order_weight', true ) . 'kg<br />';	
+	echo '<strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong>' . get_post_meta( $order->get_id(), 'order_weight', true ) . 'kg<br />';	
 
 	// Check ship to event
-	if ( ! empty( get_post_meta( $order->id, 'Ship to Event', true ) ) ) {
+	if ( ! empty( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) ) {
 		
-		echo '<strong>' . __('Ship to Event', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'Ship to Event', true ) . '<br />';
+		echo '<strong>' . __('Ship to Event', 'xtremetm') . ':</strong> ' . get_post_meta( $order->get_id(), 'Ship to Event', true ) . '<br />';
 	
 	}
 
 	// Check rush delivery
-	if ( ! empty( get_post_meta( $order->id, 'rush_delivery', true ) ) ) {
+	if ( ! empty( get_post_meta( $order->get_id(), 'rush_delivery', true ) ) ) {
 		
 		
 		echo '<strong>' . __('Rush Delivery', 'xtremetm') . ':</strong> Yes <br />';
@@ -1498,9 +1521,9 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 	}
 	
 	// Check delivery date
-	if ( ! empty( get_post_meta( $order->id, 'delivery_date', true ) ) ) {
+	if ( ! empty( get_post_meta( $order->get_id(), 'delivery_date', true ) ) ) {
 		
-		echo '<strong>' . __('Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->id, 'delivery_date', true );
+		echo '<strong>' . __('Delivery Date', 'xtremetm') . ':</strong> ' . get_post_meta( $order->get_id(), 'delivery_date', true );
 	}
 	
 	echo '</p>';
@@ -1513,14 +1536,14 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 add_action( 'woocommerce_email_order_meta', 'xtremetm_email_order_meta_fields', 10, 3 );
 
 function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_text ) {
- 
-	if ( !empty( get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true ) ) ) {
+ 	
+	if ( ! empty( get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true ) ) ) {
 			
 		echo '<h2>Rush Delivery</h2><strong>Yes</strong><br>';
 		
 	}
 	
-	if ( !empty( get_post_meta( $order_obj->get_order_number(), 'deliver_date', true ) ) ) {
+	if ( ! empty( get_post_meta( $order_obj->get_order_number(), 'delivery_date', true ) ) ) {
 	
 		echo '<h2>Delivery Date</h2><strong>' . get_post_meta( $order_obj->get_order_number(), 'delivery_date', true ). '</strong><br><br>';
 		
@@ -1660,8 +1683,8 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 function xtremetm_shipping_methods( $rates ) {
 
 	// Set free shipping for shipping to events. NOTE: production is fedex:8 and free_shipping:9, dev is fedex:7 and free_shipping:8
-	
-	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {		
+
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() ) {		
 		
 		unset( $rates['free_shipping:9'] );
 		unset( $rates['odfl'] );

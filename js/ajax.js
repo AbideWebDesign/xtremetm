@@ -12,7 +12,7 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		
 		var event = '';
 		
-		$( 'select#ship_to_event_list' ).val('Select Event or Warehouse');
+		$( 'select#ship_to_event_list' ).val('blank');
 		$( 'select#ship_to_event_list' ).attr('placeholder', 'Select Event or Warehouse');
 		$( '#shipping_company_field label' ).text('Company Name');
 		$( '#shipping_company' ).val(''); 
