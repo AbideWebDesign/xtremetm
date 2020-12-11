@@ -1115,7 +1115,7 @@ function filter_woocommerce_reset_variations_link( $link ) {
  * Add ship to event field on checkout page
  */ 
  
-add_action('woocommerce_after_order_notes', 'ship_to_event_field');
+add_action( 'woocommerce_after_order_notes', 'ship_to_event_field' );
 
 function ship_to_event_field( $checkout ) {
 	
@@ -1324,7 +1324,7 @@ add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process
 
 function rush_shipping_checkout_field_process() {
 	
-	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'usf-2000' ) ) {
 		
 		if ( !$_POST['delivery_date'] ) {
 		    
@@ -2093,9 +2093,11 @@ function xtremetm_cart_refresh_update_qty() {
         
         <script type="text/javascript"> 
            
-            jQuery('div.woocommerce').on('change', '.qty', function(){ 
-                jQuery("[name='update_cart']").trigger("click"); 
-            }); 
+            jQuery( 'div.woocommerce' ).on( 'change', '.qty', function() {
+	             
+                jQuery( "[name='update_cart']" ).trigger( "click" ); 
+            
+            } ); 
             
         </script> 
         
