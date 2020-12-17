@@ -2670,3 +2670,27 @@ body {
   -moz-osx-font-smoothing: grayscale !important;
   content: '\f061';
 }
+
+/* Popup */
+body {
+	.pum-theme-lightbox {
+		.pum-container {
+			border: none;
+			padding: 2em;
+		}
+		.pum-content + .pum-close {
+			box-shadow: none;
+			text-shadow: none;
+			background-color: $primary;
+		}
+		.pum-title {
+			color: $primary;
+			font-weight: bold;
+			font-family: $font-family-alt;
+			text-transform: uppercase;
+		}
+		p {
+			line-height: 26px;
+		}
+	}
+}

@@ -2280,3 +2280,37 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	return array();
 
 }
+
+
+/**
+ * Shop closed functions
+ */
+add_action( 'woocommerce_proceed_to_checkout', 'disable_checkout_button_on_cart', 1 );
+
+function disable_checkout_button_on_cart() { 
+
+	remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
+
+}
+
+add_action( 'template_redirect', 'redirect_checkout_to_cart' );
+
+function redirect_checkout_to_cart() {
+	
+	if ( !is_admin() && is_checkout() ) {
+	
+		wp_redirect( wc_get_cart_url() );
+		
+		exit();
+	
+	}
+
+}
+
+add_action( 'woocommerce_before_cart', 'add_closed_message_to_cart', 1 );
+
+function add_closed_message_to_cart() {
+	
+	echo '<div class="bg-primary p-2 mb-2 text-light"><i class="fa fa-tree"></i> Hi there! Xtreme TM is closed December 22nd through January 3rd – we will not be accepting any orders during this time. You’ll be able to place orders again starting Monday, January 4th. We hope you have a nice holiday season and a happy new year!</div>';
+	
+}
