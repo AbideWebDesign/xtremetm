@@ -1420,14 +1420,17 @@ function xtremetm_add_fees( $cart ) {
 function get_order_weight( $order_id ) {
 	
 	$order = wc_get_order( $order_id );
+	
 	$total_weight = 0;
 	
 	foreach ( $order->get_items() as $item_id => $product_item ) {
 		
 		$quantity = $product_item->get_quantity(); // get quantity
+		
 		$product = $product_item->get_product(); // get the WC_Product object
+		
 		$product_weight = $product->get_weight(); // get the product weight
-		// Add the line item weight to the total weight calculation
+				
 		$total_weight += floatval( $product_weight * $quantity );
 		
 	}	
@@ -1443,8 +1446,11 @@ function is_cart_weight_free() {
 	foreach ( WC()->cart->get_cart() as $cart_item ) {
 	
 		$quantity = $cart_item['quantity'];
+		
 		$product = $cart_item['data'];
+		
 		$product_weight = $product->get_weight();
+		
 		$total_weight += floatval( $product_weight * $quantity );
 		
 	}
@@ -1503,7 +1509,7 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 		
 	} 
 	
-	echo '<strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong>' . get_post_meta( $order->get_id(), 'order_weight', true ) . 'kg<br />';	
+	echo '<strong>' . __( 'Total Order Weight: ', 'xtremetm' ) . '</strong>' . get_post_meta( $order->get_id(), 'order_weight', true ) . 'lb<br />';	
 
 	// Check ship to event
 	if ( ! empty( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) ) {
