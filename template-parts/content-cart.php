@@ -9,6 +9,7 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div id="global-store-container">
 		<div class="container">
+<!--
 			<?php if ( WC()->cart->get_cart_contents_count() != 0 ): ?>
 				<div class="row justify-content-center d-md-none">
 					<div class="col-auto mb-1">
@@ -18,6 +19,7 @@
 					</div>
 				</div>
 			<?php endif; ?>
+-->
 			<div class="box s p-1 p-lg-2">
 				<div class="entry-content">
 					<?php the_content(); ?>
