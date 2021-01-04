@@ -2291,7 +2291,7 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 /**
  * Shop closed functions
  */
-add_action( 'woocommerce_proceed_to_checkout', 'disable_checkout_button_on_cart', 1 );
+//add_action( 'woocommerce_proceed_to_checkout', 'disable_checkout_button_on_cart', 1 );
 
 function disable_checkout_button_on_cart() { 
 
@@ -2299,7 +2299,7 @@ function disable_checkout_button_on_cart() {
 
 }
 
-add_action( 'template_redirect', 'redirect_checkout_to_cart' );
+//add_action( 'template_redirect', 'redirect_checkout_to_cart' );
 
 function redirect_checkout_to_cart() {
 	
@@ -2313,7 +2313,7 @@ function redirect_checkout_to_cart() {
 
 }
 
-add_action( 'woocommerce_before_cart', 'add_closed_message_to_cart', 1 );
+//add_action( 'woocommerce_before_cart', 'add_closed_message_to_cart', 1 );
 
 function add_closed_message_to_cart() {
 	
