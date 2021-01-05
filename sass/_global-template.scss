@@ -1273,15 +1273,20 @@ h3 {
 			border: none;
 		}
 	}
-	.shipping-calculator-form {
-		input {
-			font-size: 13.4px;
+	.woocommerce-shipping-calculator {
+		.shipping-calculator-button:hover {
+			text-decoration: none;
 		}
-		button {
-			@extend .btn-sm;
-		}
-		#calc_shipping_country_field {
-			display: none;
+		.shipping-calculator-form {
+			input, #calc_shipping_state {
+				font-size: 13.4px;
+			}
+			button {
+				@extend .btn-sm;
+			}
+			#calc_shipping_country_field {
+				display: none;
+			}
 		}
 	}
 }
