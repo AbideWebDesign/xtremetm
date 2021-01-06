@@ -678,6 +678,9 @@ h3 {
 	width: 100%;
 }
 .woocommerce {
+	input[readonly][type="text"] {
+		background-color: white;
+	}
 	.blockUI.blockOverlay:before, .loader:before {
 		margin-left: 20px;
 		border: 4px solid rgba(255, 255, 255, 0.3);

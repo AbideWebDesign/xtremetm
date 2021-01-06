@@ -1303,12 +1303,13 @@ function xtremetm_delivery_field( $checkout ) {
 		echo '<div class="mt-1">';
 		
 		woocommerce_form_field( 'delivery_date', array(
-			'type'          => 'text',
-			'label'         => __('Delivery Date'),
-			'placeholder' 	=> __('Select Delivery Date'),
-			'options'     	=> $dateoptions,
-			'required'      => true,
-			'id'            => 'datepicker',
+			'type'          	=> 'text',
+			'label'         	=> __('Delivery Date'),
+			'placeholder' 		=> __('Select Delivery Date'),
+			'options'     		=> $dateoptions,
+			'required'      	=> true,
+			'custom_attributes'	=> array( 'readonly' => 'readonly' ),
+			'id'            	=> 'datepicker',
 		), $checkout->get_value( 'delivery_date' ) );
 		
 		echo '</div>';	
@@ -2286,7 +2287,6 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 	return array();
 
 }
-
 
 /**
  * Shop closed functions

@@ -143,13 +143,13 @@
 				// Setup Rush Dates
 				var today = new Date();
 				
-				var rushDays = [ ( today.getMonth() + 1 ) + '-' + today.getDate() + '-' +  today.getFullYear() ];
+				var rushDays = [ ( '0' + ( today.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + today.getDate() ).slice( -2 ) + '-' +  today.getFullYear() ];
 				
 				for ( var x = 0; x < 9; x++ ) { 
 		
 					var d = new Date( today.setDate( today.getDate() + 1 ) );
 					
-					var newDate = ( d.getMonth() + 1 ) + '-' + d.getDate() + '-' +  d.getFullYear();
+					var newDate = ( '0' + ( d.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + d.getDate() ).slice( -2 ) + '-' +  d.getFullYear();
 		
 					rushDays.push(newDate);
 					
@@ -157,7 +157,7 @@
 				
 				// Check against blackout dates and holidays
 				var current = $.datepicker.formatDate( 'mm-dd-yy', date );
-				
+
  				if ( blackoutDays.indexOf(current) > -1 ) {
 	 				
 	 				return false;
