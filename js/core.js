@@ -122,13 +122,19 @@
     	// Rush Shipping Calendar
 		var today = new Date();
 		
+		var tomorrow = new Date( today );
+		
+		tomorrow.setDate( tomorrow.getDate() + 1 );
+		
 		var todayBlackout = [ ( '0' + ( today.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + today.getDate() ).slice( -2 ) + '-' +  today.getFullYear() ];
+
+		var tomorrowBlackout = [ ( '0' + ( tomorrow.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + tomorrow.getDate() ).slice( -2 ) + '-' +  tomorrow.getFullYear() ];
 
 		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $750 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper\'s order fulfillment system. Yeah, we know it\'s A LOT and that sometimes "last minute" happens in racing. We\'re just letting you know that "last minute" costs a premium.</p></div>';
 		
 		// Format: 11-02-2020
-		var blackoutDays = [ todayBlackout[0], '11-26-2020', '12-25-2020', '01-01-2021', '01-18-2021', '02-15-2021', '05-31-2021', '07-05-2021', '09-06-2021', '11-11-2021', '11-25-2021', '12-24-2021', '12-31-2021'];
-	
+		var blackoutDays = [ todayBlackout[0], tomorrowBlackout[0], '11-26-2020', '12-25-2020', '01-01-2021', '01-18-2021', '02-15-2021', '05-31-2021', '07-05-2021', '09-06-2021', '11-11-2021', '11-25-2021', '12-24-2021', '12-31-2021'];
+
 		// Setup Rush Dates
 		var rushDays = [ ( '1' + ( today.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + today.getDate() ).slice( -2 ) + '-' +  today.getFullYear() ];
 		
