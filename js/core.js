@@ -1,44 +1,44 @@
-( function($) {
+( function( $ ) {
 	
 	$( document ).ready( function() {
 		
 		// Move coupon box from top of page to sidebar
 		
-		if ( $('body').hasClass('woocommerce-checkout') ) {
+		if ( $( 'body' ).hasClass( 'woocommerce-checkout' ) ) {
 			
-			var coupon = $('#woocommerce-coupon-code');
+			var coupon = $( '#woocommerce-coupon-code' );
 			
-			coupon.insertAfter('.shop_table.woocommerce-checkout-review-order-table');
+			coupon.insertAfter( '.shop_table.woocommerce-checkout-review-order-table' );
 			
-			coupon.removeClass('d-none'); 
+			coupon.removeClass( 'd-none' ); 
 			
-			$('.checkout_coupon').addClass('d-block');
+			$( '.checkout_coupon' ).addClass( 'd-block' );
 			
 		}
 
 		// Change brand images
 		
-		if ( $('body').hasClass('store-rehv') ) {
+		if ( $( 'body' ).hasClass( 'store-rehv' ) ) {
 			
-			$('.menu-rehv img').attr('src', 'https://xtremetm.net/wp-content/uploads/2019/09/menu-rehv-dark.png');
-			$('.menu-rehv img').attr('class', 'd-inline-block ubermenu-image ubermenu-image-size-full');
+			$( '.menu-rehv img' ).attr( 'src', 'https://xtremetm.net/wp-content/uploads/2019/09/menu-rehv-dark.png' );
+			$( '.menu-rehv img' ).attr( 'class', 'd-inline-block ubermenu-image ubermenu-image-size-full' );
 			
 		} 
 		
-		$( '#search' ).on('click',( function(e){
+		$( '#search' ).on('click',( function( e ){
 			
-			$('.form-group').addClass('sb-search-open');
-			$('#search-text').show().focus();
+			$( '.form-group' ).addClass( 'sb-search-open' );
+			$( '#search-text' ).show().focus();
 			
 			e.stopPropagation();			
 			
 		} ) );
 			
-		$( document ).on('click', function(e) {
+		$( document ).on('click', function( e ) {
 			
-			if ( $(e.target).is('#search') === false ) {
+			if ( $( e.target ).is( '#search' ) === false ) {
 			
-				$('.form-group').removeClass('sb-search-open');
+				$( '.form-group' ).removeClass( 'sb-search-open' );
 			
 			}
 	
@@ -46,7 +46,7 @@
 		
 		// Checkout/Cart Fields
 		    	
-		$( '#ship-to-event-checkbox' ).click( function(e) {
+		$( '#ship-to-event-checkbox' ).click( function() {
 	        
 	        if ( $( this ).is( ':checked' ) ) {
 		    
@@ -77,7 +77,7 @@
     	
     	// Functions for event selection modal
     	
-		$( '#events' ).on( 'click', '.list-group-item', function(){
+		$( '#events' ).on( 'click', '.list-group-item', function() {
 
 			$( this ).addClass( 'active' );
 			$( '#ship_to_event' ).removeAttr( 'disabled' );
@@ -89,9 +89,9 @@
 		
 		} );
 		
-		$( '#eventSelectModal' ).on( 'hidden.bs.modal', function (e) {
+		$( '#eventSelectModal' ).on( 'hidden.bs.modal', function () {
 		
-			$( '#ship_to_event' ).prop('disabled', true);
+			$( '#ship_to_event' ).prop( 'disabled', true );
   
 		});
     	    	
@@ -103,7 +103,7 @@
     	
     	$( '#customer_login #resale_account' ).change( function() {
     		
-    		if ( $(this).val() == 'yes' ) {
+    		if ( $( this ).val() == 'yes' ) {
 	    		
 				$( '#customer_login #resale_certificate_number_field' ).show();
 				$( '#customer_login #resale_state_field' ).show();
@@ -124,7 +124,7 @@
 		
 		var todayBlackout = [ ( '0' + ( today.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + today.getDate() ).slice( -2 ) + '-' +  today.getFullYear() ];
 
-		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $750 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper’s order fulfillment system. Yeah, we know it’s A LOT and that sometimes “last minute” happens in racing. We’re just letting you know that “last minute” costs a premium.</p></div>';
+		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $750 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper\'s order fulfillment system. Yeah, we know it\'s A LOT and that sometimes "last minute" happens in racing. We\'re just letting you know that "last minute" costs a premium.</p></div>';
 		
 		// Format: 11-02-2020
 		var blackoutDays = [ todayBlackout[0], '11-26-2020', '12-25-2020', '01-01-2021', '01-18-2021', '02-15-2021', '05-31-2021', '07-05-2021', '09-06-2021', '11-11-2021', '11-25-2021', '12-24-2021', '12-31-2021'];
@@ -179,7 +179,7 @@
 			firstDay: 0,
 			minDate: 0,
 			changeMonth: true,
-			changeYear: true,
+			changeYear: true
 		} );
 	
     } );
