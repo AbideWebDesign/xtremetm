@@ -21,25 +21,6 @@
 			</div>
 		</div>
 		<div class="row align-items-stretch justify-content-center">
-			<div class="col-md-6 col-lg-4">
-				<div class="bg-white h-100 s">
-					<a href="<?php echo $brand_1['brand_button_link']; ?>">
-						<div class="bg-img d-flex px-1" style="background-image: url(<?php echo $brand_1_bg_src[0]; ?>)">
-							<div class="bg-overlay"></div>
-							<div class="d-flex align-content-center w-100 text-center position-relative">
-								<h2 class="text-white w-100 text-center align-self-center"><?php echo $brand_1['brand_title']; ?></h2>
-							</div>
-						</div>
-					</a>
-					<div class="bg-img-content px-1 px-sm-2 py-2">
-						<div class="mt-auto">
-							<?php echo wp_get_attachment_image($brand_1['brand_logo']['id'], 'full', false, array('class'=>'img-fluid mb-2', 'style'=>'width: 125px')); ?>
-							<p class="mb-2"><?php echo $brand_1['brand_text']; ?></p>
-							<a href="<?php echo $brand_1['brand_button_link']; ?>" class="btn btn-primary"><span><?php echo $brand_1['brand_button_label']; ?></span></a>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="col-md-6 col-lg-4 mt-2 mt-lg-0">
 				<div class="bg-white h-100 s">
 					<a href="<?php echo $brand_3['brand_button_link']; ?>">
