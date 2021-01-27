@@ -1121,7 +1121,7 @@ function ship_to_event_field( $checkout ) {
 	
 	$events = array();
 	
-	$events['blank'] = 'Select Event or Warehouse';
+	$events['0'] = 'Select Event or Warehouse';
 	
 	while ( have_rows( 'event_shipping', 'options' ) ) {
 		
@@ -1380,7 +1380,7 @@ function xtremetm_add_fees( $cart ) {
 		
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
-			WC()->cart->add_fee( 'Rush', 0, false ); // Reset fee only if previously added
+			WC()->cart->fees_api()->set_fees();
 			
 		}
 		

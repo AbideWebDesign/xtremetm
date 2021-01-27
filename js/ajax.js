@@ -5,6 +5,8 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		var checked = 'true';
 		
 		var event = $( 'select#ship_to_event_list' ).val();
+		
+		$( '#datepicker' ).val('');
 
 	} else {
 		
@@ -12,8 +14,8 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		
 		var event = '';
 		
-		$( 'select#ship_to_event_list' ).val('blank');
-		$( 'select#ship_to_event_list' ).attr('placeholder', 'Select Event or Warehouse');
+		$( '#ship_to_event_list' ).val(0);
+		$( '#ship_to_event_list' ).attr('placeholder', 'Select Event or Warehouse');
 		$( '#shipping_company_field label' ).text('Company Name');
 		$( '#shipping_company' ).val(''); 
 		$( '#shipping_address_1' ).val('');
@@ -27,6 +29,7 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		$( '#shipping_city' ).removeAttr( 'readonly' );
 		$( '#shipping_state' ).removeAttr( 'readonly' );
 		$( '#shipping_postcode' ).removeAttr( 'readonly' );
+		$( '#datepicker' ).val('');
 		
 	}
 	
