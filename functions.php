@@ -1204,7 +1204,7 @@ add_action( 'wp_ajax_nopriv_get_event_address', 'get_event_address' );
 
 function get_event_address() {  
 
-	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+	if ( ! wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
 	
 		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
 	
@@ -1874,10 +1874,14 @@ function xtremetm_searchwp_custom_field_keys_variation_skus( $keys ) {
 /**
  * Redirect sku searches to go directly to product page with options selected
  */
-add_action('template_redirect', 'xtremetm_searchwp_search_woocommerce_sku_redirect');
+add_action('template_redirect', 'xtremetm_redirect_functions');
 
-function xtremetm_searchwp_search_woocommerce_sku_redirect() {
+function xtremetm_redirect_functions() {
 	
+	if ( ! is_checkout() )
+	
+		WC()->session->__unset( 'ship_rush' );
+		
 	if ( is_search() ) {
       
         global $wp_query;
