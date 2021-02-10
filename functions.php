@@ -1165,7 +1165,7 @@ add_action( 'wp_ajax_nopriv_set_event_session', 'set_event_session' );
 
 function set_event_session() {
 
-	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+	if ( ! wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
 
 		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
 	
@@ -1274,7 +1274,7 @@ function check_for_event() {
 		
 	}
 	
-	if ( !empty( $events ) ) {
+	if ( ! empty( $events ) ) {
 	
 		wp_send_json_success( array( 'message' => 'success', 'events' => $events ) );
 	
@@ -1327,7 +1327,7 @@ function rush_shipping_checkout_field_process() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'usf-2000' ) ) {
 		
-		if ( !$_POST['delivery_date'] ) {
+		if ( ! $_POST['delivery_date'] ) {
 		    
 		    wc_add_notice( '<strong>Delivery Date</strong> ' . __( 'is a required field.', 'woocommerce' ), 'error' );
 		    
@@ -1345,13 +1345,15 @@ add_action( 'wp_ajax_nopriv_set_rush_session', 'set_rush_session' );
 
 function set_rush_session() {
 
-	if ( !wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+	if ( ! wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
 
 		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
 	
 	}
 	
 	WC()->session->set( 'ship_rush', $_POST['status'] );
+	
+	WC_Cache_Helper::get_transient_version( 'shipping', true ); // Reset shipping methods 
 	
 	wp_send_json_success( array( 'status' => WC()->session->get( 'ship_rush' ) ) );
 	
@@ -1689,8 +1691,6 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
 
-	// Set free shipping for shipping to events. NOTE: production is fedex:8 and free_shipping:9, dev is fedex:7 and free_shipping:8
-
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() ) {		
 		
 		unset( $rates['free_shipping:9'] );
@@ -1878,9 +1878,17 @@ add_action('template_redirect', 'xtremetm_redirect_functions');
 
 function xtremetm_redirect_functions() {
 	
-	if ( ! is_checkout() )
-	
+	if ( ! is_checkout() ) {
+
 		WC()->session->__unset( 'ship_rush' );
+		
+	}
+	
+	if ( is_user_logged_in() && valid_reseller() ) { // check for the user role
+
+		WC()->customer->set_is_vat_exempt(true); // set the customer object to have no VAT
+		
+	}
 		
 	if ( is_search() ) {
       
@@ -1954,22 +1962,6 @@ function xtremetm_no_stock_message() {
 	
 	echo '<div class="bg-white p-3 mt-2 mb-2 text-center"><h2 class="text-center mb-2">No Products Found</h2><p>' . $message .'</p><a href="' . $store_url . '" class="btn btn-primary"><span>Shop <i class="fas fa-chevron-right"></i></span></a></div>';
     
-}
-
-/**
- * Check for user role and turn off tax for that role
- */
-add_action( 'template_redirect', 'xtremetm_no_tax_for_user', 1 );
-
-function xtremetm_no_tax_for_user() {
-
-	// check for the user role
-	if ( is_user_logged_in() && valid_reseller() ) {
-
-		// set the customer object to have no VAT
-		WC()->customer->set_is_vat_exempt(true);
-	}
-
 }
 
 /**

@@ -113,8 +113,12 @@ $( '#ship_to_event_list' ).change( function() {
 
 $( '#datepicker' ).change( function() {
 	
+	$('#place_order').prop( 'disabled', true );
+	
 	var rush_date = new Date(); 
+	
 	rush_date.setDate( rush_date.getDate() + 9 );
+	
 	var deliver_date = new Date( $( this ).val() );
 	
 	if ( rush_date > deliver_date ) {
@@ -144,6 +148,8 @@ $( '#datepicker' ).change( function() {
 			
 			$( document.body ).trigger( 'update_checkout' );
 			
+			$('#place_order').prop( 'disabled', false );
+						
 		},
 		fail: function( response ) {
 			
