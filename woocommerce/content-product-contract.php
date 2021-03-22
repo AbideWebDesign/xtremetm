@@ -24,26 +24,36 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
 ?>
+
 <div class="col-12 mb-1">
+
 	<div class="product product-lg h-100">
+
 		<div class="row">
+
 			<div class="col-lg-4 align-self-center">
+
 				<?php
+			
 				/**
 				 * Hook: woocommerce_before_shop_loop_item.
 				 *
 				 * @hooked woocommerce_template_loop_product_link_open - 10
 				 */
+			
 				do_action( 'woocommerce_before_shop_loop_item' );
 				
 				?>
+			
 				<?php
+			
 				/**
 				 * Hook: woocommerce_before_shop_loop_item_title.
 				 *
 				 * @hooked woocommerce_show_product_loop_sale_flash - 10
 				 * @hooked woocommerce_template_loop_product_thumbnail - 10
 				 */
+			
 				do_action( 'woocommerce_before_shop_loop_item_title' );
 					
 				/**
@@ -52,10 +62,15 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 				 * @hooked woocommerce_template_loop_product_link_close - 5
 				 * @hooked woocommerce_template_loop_add_to_cart - 10
 				 */
+			
 				do_action( 'woocommerce_after_shop_loop_item' );
+			
 				?>
+			
 			</div>
+			
 			<div class="col-lg-8 align-self-center">
+				
 				<?php
 				
 				
@@ -64,25 +79,35 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 				 *
 				 * @hooked woocommerce_template_loop_product_title - 10
 				 */
-				 ?>
+				?>
+				
 				<a href="<?php the_permalink(); ?>">
+				
 					<?php do_action( 'woocommerce_shop_loop_item_title' ); ?>
+				
 				</a>
+				
 				<?php
+				
 				/**
 				 * Hook: woocommerce_after_shop_loop_item_title.
 				 *
 				 * @hooked woocommerce_template_loop_rating - 5
 				 * @hooked woocommerce_template_loop_price - 10
 				 */
+				
 				do_action( 'woocommerce_after_shop_loop_item_title' );	
 				
 				the_content();
 							
 				?>
 				
-				<a href="<?php the_permalink(); ?>" class="btn btn-primary"><span>View Tire</span></a>
+				<a href="<?php the_permalink(); ?>" class="btn btn-primary"><span><?php _e('View Tire'); ?></span></a>
+
 			</div>
+
 		</div>
+
 	</div>
+
 </div>

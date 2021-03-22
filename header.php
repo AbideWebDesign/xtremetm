@@ -29,6 +29,7 @@ if ( is_search() ) {
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
+
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,25 +37,41 @@ if ( is_search() ) {
 	<link rel="icon" type="image/png" href="<?php the_field('favicon', 'options'); ?>">
 	<?php wp_head(); ?>
 </head>
+
 <body <?php body_class( $store_class ); ?>>
+
 	<div id="header-global">
+
 		<div class="container">
+
 			<div class="row">
+
 				<div class="col-auto d-xl-none align-self-center">
+
 					<?php shiftnav_toggle( 'shiftnav-main' , '' , array( 'icon' => 'bars' , 'class' => 'shiftnav-toggle-button') ); ?>
+
 				</div>
-				<div class="col-auto col-lg-2 align-self-center flex-grow-1 flex-md-grow-0 text-center">
+
+				<div class="col-auto col-lg-3 align-self-center flex-grow-1 flex-md-grow-0 text-center">
+
 					<div id="header-logo">
+
 						<a href="<?php echo home_url(); ?>"><img class="img-fluid" src="<?php echo home_url('/wp-content/uploads/2019/02/logo-xtremetm.png'); ?>" /></a>
+
 					</div>
+
 				</div>
-				<div class="col-auto flex-xl-grow-1 d-none d-xl-block">
-					<div id="header-global-stores" class="d-flex h-100">
-						<!- Staging 307. Production 309 -->
-						<?php ubermenu( 'main' , array( 'menu' => 309 ) ); ?>						
+
+				<div class="col-auto flex-xl-grow-1 d-none d-xl-block align-self-center">
+
+					<div id="header-global-phone">
+
+						<h4 class="text-white mb-0"><?php _e('541.207.3927'); ?></h4>			
 					
 					</div>
+
 				</div>
+
 				<div class="col-auto flex-grow-1 flex-xl-grow-0 align-self-center d-none d-md-block">
 					
 					<?php 
@@ -68,10 +85,17 @@ if ( is_search() ) {
 					?>
 					
 				</div>
-				<div class="col-auto align-self-center">
+
+				<div class="col-auto align-self-center d-none d-md-block">
+
 					<a class="cart-container d-none d-lg-inline-block" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><?php echo WC()->cart->get_cart_total(); ?> <i class="fas fa-chevron-right"></i></a>
+
 					<a class="cart-container d-lg-none" href="<?php echo wc_get_cart_url(); ?>"><img src="<?php echo home_url('wp-content/uploads/2019/02/cart.png'); ?>" /><span class="d-none d-md-inline-block"><?php echo WC()->cart->get_cart_contents_count() ?></span></a>
+
 				</div>
+
 			</div>
+
 		</div>
+
 	</div>

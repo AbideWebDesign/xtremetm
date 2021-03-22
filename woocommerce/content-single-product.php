@@ -17,12 +17,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$post = get_queried_object();
-
-$terms = get_the_terms($post->ID, 'product_cat');
-
-$store = get_product_store($terms);
-
 /**
  * Hook: woocommerce_before_single_product.
  *
@@ -31,13 +25,21 @@ $store = get_product_store($terms);
 do_action( 'woocommerce_before_single_product' );
 
 if ( post_password_required() ) {
+	
 	echo get_the_password_form(); // WPCS: XSS ok.
+	
 	return;
+
 }
+
 ?>
+
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class('product'); ?>>
+
 	<div id="product-top" class="mb-1">
+
 		<div class="row">
+
 			<div class="col-lg-6 col-xl-7 mb-1 mb-lg-0">
 			
 				<?php
@@ -49,9 +51,13 @@ if ( post_password_required() ) {
 					 */
 					do_action( 'woocommerce_before_single_product_summary' );
 				?>
+
 			</div>
+
 			<div class="col-lg-6 col-xl-5 align-self-stretch">
+
 				<div class="summary entry-summary">
+
 					<?php
 						/**
 						 * Hook: woocommerce_single_product_summary.
@@ -67,15 +73,19 @@ if ( post_password_required() ) {
 						 */
 						do_action( 'woocommerce_single_product_summary' );
 					?>
+
 				</div>
+
 			</div>
+
 		</div>
+
 	</div>
-	
-	<?php include(locate_template('/store-parts/section-value-bar.php', false, false)); ?>
 
 	<div id="product-bottom" class="mt-2">
-		<h2 class="mb-2">Product Details</h2>
+
+		<h2 class="mb-2"><?php _e('Product Details'); ?></h2>
+
 		<?php
 			/**
 			 * Hook: woocommerce_after_single_product_summary.
@@ -85,8 +95,11 @@ if ( post_password_required() ) {
 			 * @hooked woocommerce_output_related_products - 20
 			 */
 			do_action( 'woocommerce_after_single_product_summary' );
+
 		?>
+
 	</div>
+
 </div>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>

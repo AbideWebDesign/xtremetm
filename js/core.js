@@ -15,34 +15,6 @@
 			$( '.checkout_coupon' ).addClass( 'd-block' );
 			
 		}
-
-		// Change brand images
-		
-		if ( $( 'body' ).hasClass( 'store-rehv' ) ) {
-			
-			$( '.menu-rehv img' ).attr( 'src', 'https://xtremetm.net/wp-content/uploads/2019/09/menu-rehv-dark.png' );
-			$( '.menu-rehv img' ).attr( 'class', 'd-inline-block ubermenu-image ubermenu-image-size-full' );
-			
-		} 
-		
-		$( '#search' ).on('click',( function( e ){
-			
-			$( '.form-group' ).addClass( 'sb-search-open' );
-			$( '#search-text' ).show().focus();
-			
-			e.stopPropagation();			
-			
-		} ) );
-			
-		$( document ).on('click', function( e ) {
-			
-			if ( $( e.target ).is( '#search' ) === false ) {
-			
-				$( '.form-group' ).removeClass( 'sb-search-open' );
-			
-			}
-	
-		} );
 		
 		// Checkout/Cart Fields
 		    	

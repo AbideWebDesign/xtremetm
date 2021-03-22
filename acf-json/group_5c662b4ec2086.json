@@ -371,7 +371,7 @@
         },
         {
             "key": "field_5c891c2eb0cc2",
-            "label": "Brand Section",
+            "label": "Series Section",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -386,10 +386,10 @@
             "endpoint": 0
         },
         {
-            "key": "field_5c893076d5358",
-            "label": "Brand",
-            "name": "brand_3",
-            "type": "group",
+            "key": "field_603ec1eb4c8e3",
+            "label": "Series Section Title",
+            "name": "series_section_title",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -398,42 +398,41 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5c893076d5358",
+            "label": "Series",
+            "name": "series",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_603ebc4f94a50",
+            "min": 0,
+            "max": 0,
+            "layout": "row",
+            "button_label": "Add Series",
             "sub_fields": [
                 {
-                    "key": "field_5c893076d5359",
-                    "label": "Brand Image",
-                    "name": "brand_image",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "100",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "array",
-                    "preview_size": "thumbnail",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
-                },
-                {
-                    "key": "field_5c893076d535a",
-                    "label": "Brand Title",
-                    "name": "brand_title",
+                    "key": "field_603ebc4f94a50",
+                    "label": "Series Name",
+                    "name": "series_name",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "50",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -444,62 +443,9 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5c893076d535b",
-                    "label": "Brand Text",
-                    "name": "brand_text",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_5c893076d535c",
-                    "label": "Brand Button Label",
-                    "name": "brand_button_label",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "33",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_5c893076d535d",
-                    "label": "Brand Button Link",
-                    "name": "brand_button_link",
-                    "type": "link",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "66",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "url"
-                },
-                {
-                    "key": "field_5c893076d535e",
-                    "label": "Brand Logo",
-                    "name": "brand_logo",
+                    "key": "field_603ebc5394a51",
+                    "label": "Series Image",
+                    "name": "series_image",
                     "type": "image",
                     "instructions": "",
                     "required": 0,
@@ -509,8 +455,8 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "array",
-                    "preview_size": "col-3",
+                    "return_format": "id",
+                    "preview_size": "medium",
                     "library": "all",
                     "min_width": "",
                     "min_height": "",
@@ -519,6 +465,21 @@
                     "max_height": "",
                     "max_size": "",
                     "mime_types": ""
+                },
+                {
+                    "key": "field_603ebc6294a52",
+                    "label": "Series Link",
+                    "name": "series_link",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url"
                 }
             ]
         }
@@ -547,7 +508,6 @@
         "slug",
         "author",
         "format",
-        "page_attributes",
         "featured_image",
         "categories",
         "tags",
@@ -555,5 +515,5 @@
     ],
     "active": true,
     "description": "",
-    "modified": 1611072743
+    "modified": 1614881040
 }

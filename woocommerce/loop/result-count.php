@@ -22,10 +22,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="row justify-content-between align-items-center">
-	
-	<div class="col-auto">
-	
-		<?php get_sidebar('filter-notes'); ?>
-	
-	</div>
+

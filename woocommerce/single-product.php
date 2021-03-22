@@ -20,15 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-$post = get_queried_object();
-
-$terms = get_the_terms($post->ID, 'product_cat');
-
-$store = get_product_store($terms);
-
 get_header( 'shop' ); 
 
-include(locate_template('/store-parts/section-store-cats-nav.php', false, false)); 
+get_template_part('store-parts/section', 'page-header');
+
+get_template_part('store-parts/section', 'series-bar');
 
 do_action('xtremetm_custom_breadcrumb'); 
 
@@ -67,6 +63,8 @@ do_action('xtremetm_custom_breadcrumb');
 		 */
 		do_action( 'woocommerce_sidebar' );
 	?>
+
+<?php get_template_part('store-parts/section', 'tire-links'); ?>
 
 <?php get_footer( 'shop' );
 
