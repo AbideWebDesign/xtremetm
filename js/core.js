@@ -33,7 +33,7 @@
 			e.stopPropagation();			
 			
 		} ) );
-			
+		
 		$( document ).on('click', function( e ) {
 			
 			if ( $( e.target ).is( '#search' ) === false ) {
@@ -45,21 +45,8 @@
 		} );
 		
 		// Checkout/Cart Fields
-		    	
-		$( '#ship-to-event-checkbox' ).click( function() {
-	        
-	        if ( $( this ).is( ':checked' ) ) {
-		    
-		        $( '#ship-to-event' ).slideDown( 'fast' );
-		        
-	        } else {
-		    
-		        $( '#ship-to-event' ).slideUp( 'fast' );
-		        
-	        }
     	
-    	} );
-    	
+/*
     	$( '#ship-rush-checkbox' ).click( function() {
 	        
 	        if ( $( this ).is( ':checked' ) ) {
@@ -73,6 +60,7 @@
 	        }
 	        	            	
     	} );
+*/
     	
     	
     	// Functions for event selection modal

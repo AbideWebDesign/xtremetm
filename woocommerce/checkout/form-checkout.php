@@ -36,7 +36,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 		<div class="row" id="customer_details">
 			<div class="col-12 col-lg-8">
-				<h3 class="">Shipping Details</h3>
+				<h3 class=""><?php _e('Shipping Details'); ?></h3>
 				<div id="ship-option" class="mt-1 bg-light">
 					<p class="form-row m-0 p-0" id="ship-event-wrap">
 						<span class="woocommerce-input-wrapper">

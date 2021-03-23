@@ -1121,7 +1121,7 @@ function ship_to_event_field( $checkout ) {
 	
 	$events = array();
 	
-	$events['0'] = 'Select Event or Warehouse';
+	$events[''] = 'Select Event or Warehouse';
 	
 	while ( have_rows( 'event_shipping', 'options' ) ) {
 		
@@ -1144,8 +1144,8 @@ function ship_to_event_field( $checkout ) {
 	
 	woocommerce_form_field( 'ship_to_event_list', array(
 		'type' 			=> 'select',
-		'label' 		=> __('Event') ,
-		'placeholder' 	=> __('Select Event or Warehouse') ,
+		'label' 		=> __( 'Event' ),
+		'placeholder' 	=> __('Select Event or Warehouse'),
 		'options' 		=> $events,
 		'required' 		=> true,
 		'input_class' 	=> array('form-check'),
@@ -1154,6 +1154,55 @@ function ship_to_event_field( $checkout ) {
 	
 	echo '</div>';
 
+}
+
+/**
+ * Conditionally hide shipping fields
+ */ 
+ 
+add_action( 'woocommerce_after_checkout_form', 'xtreme_conditionally_hide_shipping_fields', 9999 );
+
+function xtreme_conditionally_hide_shipping_fields() {
+    
+  wc_enqueue_js( "
+	
+	jQuery( '#ship-to-event-checkbox' ).change( function() {
+	
+		if ( ! this.checked ) {
+						
+			jQuery( '#ship-to-event' ).hide();
+			
+			jQuery( '#shipping_address_1_field' ).show();
+		        
+	        jQuery( '#shipping_address_2_field' ).show();
+	        
+	        jQuery( '#shipping_city_field' ).show();
+	        
+	        jQuery( '#shipping_state_field' ).show();
+	        
+			jQuery( '#shipping_postcode_field' ).show();
+
+		        
+		} else {
+			
+			jQuery( '#ship-to-event' ).show();
+
+			jQuery( '#shipping_address_1_field' ).hide();
+		        
+	        jQuery( '#shipping_address_2_field' ).hide();
+	        
+	        jQuery( '#shipping_city_field' ).hide();
+	        
+	        jQuery( '#shipping_state_field' ).hide();
+	        
+			jQuery( '#shipping_postcode_field' ).hide();
+				
+		}	
+		
+	} ).change();
+	
+  ");
+       
 }
 
 /**
