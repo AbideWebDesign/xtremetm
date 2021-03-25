@@ -1169,8 +1169,16 @@ function xtreme_conditionally_hide_shipping_fields() {
 	jQuery( '#ship-to-event-checkbox' ).change( function() {
 	
 		if ( ! this.checked ) {
-						
+			
+			jQuery( '#datepicker_field' ).show();
+			
+			jQuery( '#datepicker_field' ).addClass('validate-required');
+			
+			jQuery( '#datepicker' ).show();
+			            			
 			jQuery( '#ship-to-event' ).hide();
+			
+			jQuery( '#ship_to_event_list' ).prop('selectedIndex',0);
 			
 			jQuery( '#shipping_address_1_field' ).show();
 		        
@@ -1185,6 +1193,10 @@ function xtreme_conditionally_hide_shipping_fields() {
 		        
 		} else {
 			
+			jQuery( '#datepicker_field' ).hide();
+			
+			jQuery( '#datepicker' ).val(' ');
+									
 			jQuery( '#ship-to-event' ).show();
 
 			jQuery( '#shipping_address_1_field' ).hide();

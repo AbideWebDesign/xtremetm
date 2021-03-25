@@ -44,25 +44,6 @@
 	
 		} );
 		
-		// Checkout/Cart Fields
-    	
-/*
-    	$( '#ship-rush-checkbox' ).click( function() {
-	        
-	        if ( $( this ).is( ':checked' ) ) {
-		    
-		        $( '#ship-date-wrap' ).slideDown( 'fast' );
-		        	        
-	        } else {
-		    
-		        $( '#ship-date-wrap' ).slideUp( 'fast' );
-
-	        }
-	        	            	
-    	} );
-*/
-    	
-    	
     	// Functions for event selection modal
     	
 		$( '#events' ).on( 'click', '.list-group-item', function() {
