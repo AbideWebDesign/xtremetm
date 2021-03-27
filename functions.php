@@ -1476,6 +1476,29 @@ function xtremetm_add_fees( $cart ) {
 		
 	}
 	
+	// Add California fee	
+	if ( WC()->customer->get_shipping_state() == 'CA' ) {
+		
+		$tirefee = 0;
+		
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		
+			$tirefee += $cart_item['quantity'] * 1.75;
+						
+		}
+		
+		WC()->cart->add_fee( 'Recycling Fee', $tirefee, false );
+		
+	} else {
+		
+		if ( WC()->session->get( 'Recycling Fee' ) ) {
+			
+			WC()->cart->fees_api()->set_fees();
+			
+		}
+		
+	}
+	
 }
 
 /**

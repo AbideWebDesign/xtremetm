@@ -206,6 +206,36 @@ $( '#shipping_postcode' ).change( function() {
 	
 } );
 
+$( '#shipping_state' ).change( function() {
+	
+	var data = {
+		
+		state: $( this ).val(),
+		action: 'set_california_fee',
+		security: ajax_object.ajax_nonce
+		
+	};
+	
+	$.ajax( {
+		
+		type: 'POST',
+		url: ajax_object.ajax_url,
+		data: data,
+		success: function( response ) {
+			
+// 			$( document.body ).trigger( 'update_checkout' );
+			
+		},
+		fail: function( response ) {
+			
+			console.log( 'failure' );
+		
+		},
+		
+	} );
+	
+} );
+
 /**
  * Ajax function to set event shipping details and session when Ship to Event is clicked from modal
  */ 
