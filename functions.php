@@ -1480,10 +1480,14 @@ function xtremetm_add_fees( $cart ) {
 	if ( WC()->customer->get_shipping_state() == 'CA' ) {
 		
 		$tirefee = 0;
-		
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
-		
-			$tirefee += $cart_item['quantity'] * 1.75;
+				
+		foreach ($cart->get_cart() as $cart_item ) {
+	write_log($cart_item);
+			if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
+			
+				$tirefee += $cart_item['quantity'] * 1.75;
+				
+			}
 						
 		}
 		
@@ -1494,11 +1498,11 @@ function xtremetm_add_fees( $cart ) {
 		if ( WC()->session->get( 'Recycling Fee' ) ) {
 			
 			WC()->cart->fees_api()->set_fees();
-			
+
 		}
 		
 	}
-	
+		
 }
 
 /**
