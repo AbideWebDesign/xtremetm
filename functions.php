@@ -1217,6 +1217,23 @@ function xtreme_conditionally_hide_shipping_fields() {
        
 }
 
+add_filter( 'woocommerce_checkout_get_value', 'xtrememe_clear_shipping_autofill', 1, 2 );
+
+function xtrememe_clear_shipping_autofill( $value, $input ){
+	
+	$fields = array('shipping_company', 'shipping_address_1', 'shipping_address_2', 'shipping_city', 'shipping_state', 'shipping_postcode');
+
+	if ( in_array( $input, $fields ) ) {
+		
+		return '';
+		
+	} else {
+		
+		return $value;
+	}
+
+}
+
 /**
  * Ajax function to return event shipping address meta values
  */ 
@@ -1482,7 +1499,7 @@ function xtremetm_add_fees( $cart ) {
 		$tirefee = 0;
 				
 		foreach ($cart->get_cart() as $cart_item ) {
-	write_log($cart_item);
+
 			if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
 			
 				$tirefee += $cart_item['quantity'] * 1.75;
