@@ -114,7 +114,7 @@ function xtremetm_scripts() {
 	
 	wp_enqueue_style( 'xtremetm-style', get_stylesheet_uri(), '', $theme->version );
 	
-	wp_enqueue_style( 'xtremetm-fonts', 'https://fonts.googleapis.com/css?family=Oswald:400,500,700|Roboto:400,700' );
+	wp_enqueue_style( 'xtremetm-fonts', 'https://fonts.googleapis.com/css?family=Oswald:400,500,700|Roboto:400,700|Kanit:ital,wght@0,400;0,500;1,800' );
 
 	wp_enqueue_script( 'xtremetm-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '', true );
 	
@@ -153,6 +153,7 @@ add_image_size('col-5', 542);
 add_image_size('col-6', 650);
 add_image_size('col-7', 759);
 add_image_size('hero banner', 1600, 500, true);
+add_image_size('card', 415, 277, true); 
 
 /**
  * Plugin: ACF Options page
@@ -802,20 +803,25 @@ add_filter( 'woocommerce_product_tabs', 'xtremetm_remove_product_tabs', 98 );
 
 function xtremetm_remove_product_tabs( $tabs ) {
   
-    unset( $tabs['additional_information'] ); 
+    unset( $tabs['additional_information'] );
     
     return $tabs;
 
 }
 
 /**
- * Add a shipping/return tab
+ * Add additional product tabs
  */
 add_filter( 'woocommerce_product_tabs', 'xtremetm_shipping_tab' );
 
 function xtremetm_shipping_tab( $tabs ) {
 	
 	// Adds the new tab
+	$tabs['specs_tab'] = array(
+		'title' 	=> __( 'Specifications', 'woocommerce' ),
+		'priority' 	=> 50,
+		'callback' 	=> 'xtremetm_specs_tab_content'
+	);
 	$tabs['policies_tab'] = array(
 		'title' 	=> __( 'Shipping and Returns', 'woocommerce' ),
 		'priority' 	=> 50,
@@ -825,10 +831,18 @@ function xtremetm_shipping_tab( $tabs ) {
 	return $tabs;
 }
 
+function xtremetm_specs_tab_content() {
+
+	get_template_part('store-parts/tab', 'specs');
+	
+}
+
 function xtremetm_shipping_tab_content() {
 
 	$product = get_queried_object();
+
 	$terms = get_the_terms( $product->ID, 'product_cat' );
+
 	$store = get_product_store( $terms );
 	
 	echo '<h2>Shipping Policy</h2>';
@@ -962,27 +976,6 @@ function xtremetm_close_div() {
    
     echo '</div></div>';
     
-    if ( !is_search() && ( is_product_category() || is_product() ) ) {
-
-		$post = get_queried_object();
-		$terms = get_the_terms($post->ID, 'product_cat');
-		$store = get_product_store($terms);
-		
-		if ( is_product() ) {
-
-	    		include(locate_template('/store-parts/section-footer-top.php', false, false));
-
-    		} 	
-    	
-		include(locate_template('/store-parts/section-footer-value-bar.php', false, false));
-    	
-	} elseif ( is_search() ) {
-		
-		$store = get_queried_object();
-		
-		include( locate_template( '/store-parts/section-footer-value-bar.php', false, false ) );
-		
-	}
 }
 
 add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
