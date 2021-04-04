@@ -4,9 +4,9 @@ if ( is_search() ) {
 	
 	$cat = get_term_by( 'slug', 'indy-lights', 'product_cat' );
 	
-} else if ( has_term( 'dotr', 'product_cat' ) ) {
+} else if ( has_term( 'dot_race', 'product_cat' ) ) {
 	
-	$cat = get_term_by( 'slug', 'dotr', 'product_cat' );
+	$cat = get_term_by( 'slug', 'dot_race', 'product_cat' );
 		
 } else if ( has_term( 'indy-lights', 'product_cat' ) ) {
 	

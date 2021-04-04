@@ -16,7 +16,7 @@
 			
 			<?php while ( have_rows('links', 'options') ): the_row(); ?>
 			
-				<div class="col-lg-3">
+				<div class="col-lg-3 align-self-stretch">
 					
 					<div class="s">
 						
