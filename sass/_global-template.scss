@@ -553,12 +553,13 @@ p.alt {
 	#section-links {
 		background-color: #f1f1f1;
 	}
-	a:hover {
-		text-decoration: none;
-	}
 }
 #section-links {
 	background-color: white;
+	
+	a:hover {
+		text-decoration: none;
+	}
 }
 /* 
 ** Component - Hero Banner 
