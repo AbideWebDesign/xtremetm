@@ -20,6 +20,10 @@ if ( is_search() ) {
 	
 	$cat = get_term_by( 'slug', 'rally', 'product_cat' );
 	
+} else if ( has_term( 'rallycross', 'product_cat' ) ) {
+	
+	$cat = get_term_by( 'slug', 'rallycross', 'product_cat' );
+	
 } else {
 	
 	$cat = get_term_by( 'slug', 'indy-lights', 'product_cat' );

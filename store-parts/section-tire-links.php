@@ -26,7 +26,7 @@
 							
 							<div class="mb-1">
 								
-								<h3 class="mb-0"><a href="<?php the_sub_field('link'); ?>" target="_blank"><?php the_sub_field('title'); ?></a></h3>
+								<a href="<?php the_sub_field('link'); ?>" target="_blank"><h3 class="mb-0"><?php the_sub_field('title'); ?></h3></a>
 								
 							</div>
 							
