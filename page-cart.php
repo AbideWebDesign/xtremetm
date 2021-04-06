@@ -6,9 +6,7 @@
  */
 
 get_header();
-?>
-<?php get_template_part('store-parts/section', 'header-bar'); ?>
-<?php
+
 while ( have_posts() ) :
 	
 	the_post();
@@ -16,7 +14,5 @@ while ( have_posts() ) :
 	get_template_part( 'template-parts/content', 'cart' );
 
 endwhile; // End of the loop.
-?>
 
-<?php
 get_footer();

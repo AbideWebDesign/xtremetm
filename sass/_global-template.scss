@@ -310,6 +310,11 @@ p.alt {
 		}
 	}
 }
+.woocommerce-cart, .woocommerce-checkout, .page-template-page-contact, .page-template-page-account, .page-template-page-schedule, .page-template-default {
+	#header-global {
+		border: none;
+	}
+}
 #header-nav {
 	background-color: $primary;
 	
@@ -387,7 +392,6 @@ p.alt {
 			background-color: #3C5688;
 			border: none;
 			border-radius: 0;
-			color: white;
 		}
 		.sb-search-open #search-text {
 			background-color: $gray-400;
@@ -427,8 +431,6 @@ p.alt {
 		}
 		.form-group.sb-search-open .search-label,
 		.no-js .sb-search .search-label {
-			background: $gray-800;
-			color: #fff;
 			z-index: 11;
 		}
 		.form-group.sb-search-open .form-control-submit,
@@ -2201,8 +2203,19 @@ body {
 			.fas {
 				color: white;
 			}
-			.form-group.sb-search-open .search-label, .no-js .sb-search .search-label {
-				background-color: darken($brand-xtreme, 20);
+			.form-group.sb-search-open .search-label .fas {
+				color: $brand-xtreme;
+			}
+			.form-control {
+				color: White;
+			}
+			.form-control::-webkit-input-placeholder {
+				color: white;
+			}
+			.sb-search-open {
+				.form-control {
+					color: $brand-xtreme;
+				}				
 			}
 		}
 		#header-phone {

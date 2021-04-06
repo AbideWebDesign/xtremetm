@@ -11,19 +11,29 @@
 <?php get_template_part('store-parts/section', 'header-bar'); ?>
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
 	<div id="global-store-container">
+
 		<div class="container">
+
 			<div class="box s p-1 p-lg-2">
+
 				<header class="entry-header">
+
 					<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+
 				</header><!-- .entry-header -->
-			
-			
+							
 				<div class="entry-content">
+
 					<?php the_content(); ?>
 			
 				</div><!-- .entry-content -->
+
 			</div>
+
 		</div>
+
 	</div>
+
 </div>

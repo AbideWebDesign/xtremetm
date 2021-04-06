@@ -20,9 +20,9 @@
 							
 							<li class="list-inline-item <?php echo ( is_product_category( 'rally' ) || has_term( 'rally', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/rally'); ?>"><?php _e('Rally'); ?></a></span></li>
 		
-							<li class="list-inline-item <?php echo ( is_product_category( 'dot_race' ) || has_term( 'dot_race', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/dot_race'); ?>"><?php _e('DOTR'); ?></a></span></li>
+							<li class="list-inline-item <?php echo ( is_product_category( 'dot_race' ) || has_term( 'dot_race', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/dot_race'); ?>"><?php _e('DOT-R'); ?></a></span></li>
 		
-							<li class="list-inline-item <?php echo ( is_product_category( 'rallycross' ) || has_term( 'rallycross', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/rallycross'); ?>"><?php _e('RallyX'); ?></a></span></li>
+							<li class="list-inline-item <?php echo ( is_product_category( 'rallycross' ) || has_term( 'rallycross', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/rallycross'); ?>"><?php _e('Rally-X'); ?></a></span></li>
 							
 						</ul>
 					
@@ -38,7 +38,7 @@
 							
 									<label class="sr-only" for="search-text"><?php _e('Search'); ?></label>
 							
-									<input type="text" id="search-text" class="form-control" placeholder="" name="s">
+									<input type="text" id="search-text" class="form-control" placeholder="Search" name="s">
 							
 									<button type="submit" id="btn-search" class="form-control form-control-submit h-100"></button>
 							
