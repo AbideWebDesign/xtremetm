@@ -28,7 +28,7 @@
 					
 					</div>
 					
-					<div class="align-self-center flex-shrink-1 position-md-relative px-2 px-md-0 d-md-none d-xl-block">
+					<div class="align-self-center flex-shrink-1 position-md-relative d-md-none d-xl-block">
 						
 						<div id="header-search">
 							
