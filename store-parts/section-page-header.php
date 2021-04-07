@@ -16,6 +16,10 @@ if ( is_search() ) {
 	
 	$cat = get_term_by( 'slug', 'indy-pro-2000', 'product_cat' );
 	
+} else if ( has_term( 'usf-2000', 'product_cat' ) ) {
+	
+	$cat = get_term_by( 'slug', 'usf-2000', 'product_cat' );
+	
 } else if ( has_term( 'rally', 'product_cat' ) ) {
 	
 	$cat = get_term_by( 'slug', 'rally', 'product_cat' );
