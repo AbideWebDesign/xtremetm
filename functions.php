@@ -2219,6 +2219,17 @@ function clear_event_session_order_complete( $order_id ) {
 	WC()->session->__unset( 'ship_rush' );
 	
 }
+
+/**
+ * Redirect WooCommerce Shop URL
+ */
+add_filter( 'woocommerce_return_to_shop_redirect', 'xtremetm_woocommerce_shop_url' );
+
+function xtremetm_woocommerce_shop_url(){
+
+	return site_url();
+
+}
 /**
   * Get state conversion
   */
