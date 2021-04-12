@@ -1488,20 +1488,10 @@ function xtremetm_add_fees( $cart ) {
 	
 	// Add California fee	
 	if ( WC()->customer->get_shipping_state() == 'CA' ) {
-		
-		$tirefee = 0;
-				
-		foreach ($cart->get_cart() as $cart_item ) {
-
-			if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
-			
-				$tirefee += $cart_item['quantity'] * 1.75;
-				
-			}
 						
-		}
+		$cafee = WC()->cart->cart_contents_count * 1.75;		
 		
-		WC()->cart->add_fee( 'Recycling Fee', $tirefee, false );
+		WC()->cart->add_fee( 'Recycling Fee', $cafee, false );
 		
 	} else {
 		
