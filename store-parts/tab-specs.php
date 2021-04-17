@@ -92,7 +92,7 @@
 					
 					<tr>
 						
-						<th colspan='3'></th>
+						<th colspan='4'></th>
 						
 						<th><?php _e('psi'); ?></th> 
 						
