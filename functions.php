@@ -1485,7 +1485,7 @@ function xtremetm_add_fees( $cart ) {
 		
 			$tirefee += $cart_item['quantity'] * 3;
 			
-			if ( WC()->session->get( 'ship_to_event_name' ) != 'Chris Griffis (#2115) RTI' ) {
+			if ( WC()->session->get( 'ship_to_event_name' ) != 'Chris Griffis (#2115) RTI' && WC()->session->get( 'ship_to_event_name' ) != 'Georgia Warehouse Pickup' ) {
 				
 				$tirefitting += $cart_item['quantity'] * 30;
 
