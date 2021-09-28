@@ -1125,9 +1125,9 @@ function ship_to_event_field( $checkout ) {
 		$events[$event_name] = $event_name;
 	}
 
-	if ( WC()->session->get( 'ship_to_event') == 'true' ) {
+	if ( WC()->session->get( 'ship_to_event') == 'true' || has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 		
-		echo '<div id="ship-to-event" class="bg-light">';
+		echo '<div id="ship-to-event" class="bg-light pt-1">';
 		
 	} else {
 		
@@ -1360,7 +1360,7 @@ function check_for_event() {
 /**
  * Custom rush shipping field
  */
-add_action( 'woocommerce_after_order_notes', 'xtremetm_delivery_field', 10, 1 );
+//add_action( 'woocommerce_after_order_notes', 'xtremetm_delivery_field', 10, 1 );
 
 function xtremetm_delivery_field( $checkout ) {
 
@@ -1392,7 +1392,7 @@ function xtremetm_delivery_field( $checkout ) {
 /**
  * Rush shipping checkout validation notice
  */
-add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process');
+//add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process');
 
 function rush_shipping_checkout_field_process() {
 	
@@ -1406,6 +1406,23 @@ function rush_shipping_checkout_field_process() {
 		
 	}
         
+}
+
+/**
+ * Add event name to emails
+ */
+add_action( 'woocommerce_email_after_order_table', 'xtremetm_email_after_order_table', 10, 4 );
+
+function xtremetm_email_after_order_table( $order, $sent_to_admin, $plain_text, $email ) { 
+	
+	if ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000' ) || has_product_category_in_order( $order, 'usf-2000' ) ) {
+		
+		echo '<h2 style="margin-bottom:1em;">' . __( 'Event:' ) . '</h2>';
+		
+		echo '<p>' . esc_textarea( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) . '</p>';
+				
+	}
+
 }
 
 /**
@@ -1468,6 +1485,12 @@ function xtremetm_add_fees( $cart ) {
 		
 			$tirefee += $cart_item['quantity'] * 3;
 			
+			if ( WC()->session->get( 'ship_to_event_name' ) != 'Chris Griffis (#2115) RTI' ) {
+				
+				$tirefitting += $cart_item['quantity'] * 30;
+
+			}
+			
 		}
 		
 	}
@@ -1483,6 +1506,22 @@ function xtremetm_add_fees( $cart ) {
 			WC()->cart->add_fee( 'Tire Disposal', 0, false );
 			
 		}
+		
+	}
+	
+	// Add Tire Fitting Fee
+	if ( $tirefitting > 0 ) {
+		
+		WC()->cart->add_fee( 'Tire Fitting', $tirefitting, false );
+		
+	} else {
+
+		if ( WC()->session->get( 'Tire Fitting' ) ) {
+			
+			WC()->cart->add_fee( 'Tire Fitting', 0, false );
+			
+		}
+
 		
 	}
 	
@@ -1669,6 +1708,32 @@ function has_product_category_in_cart( $product_category ) {
     return false;
 }
 
+/* 
+ * Utility function that checks if order has items in product category
+ */
+function has_product_category_in_order( $order, $product_category ) {
+	
+	$items = $order->get_items(); 
+
+	foreach ( $items as $item ) {   
+		   
+		$product_id = $item->get_product_id();  
+		
+		if ( has_term( $product_category, 'product_cat', $product_id ) ) {
+		
+			return true;
+					
+			break;
+		
+		}
+	
+	}	
+	
+	return false;
+
+}
+ 
+
 /**
  * Customize all fields
  */
@@ -1730,6 +1795,15 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 			}
 		}
 		
+	} elseif ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) {
+		
+		unset( $checkout_fields['shipping']['shipping_company'] );
+		unset( $checkout_fields['shipping']['shipping_address_1'] );
+		unset( $checkout_fields['shipping']['shipping_address_2'] );
+		unset( $checkout_fields['shipping']['shipping_city'] );
+		unset( $checkout_fields['shipping']['shipping_state'] );
+		unset( $checkout_fields['shipping']['shipping_postcode'] );
+		
 	}
 	
 	return $checkout_fields;
@@ -1781,6 +1855,7 @@ function xtremetm_shipping_methods( $rates ) {
 
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() ) {		
 		
+		unset( $rates['free_shipping:10'] );
 		unset( $rates['free_shipping:9'] );
 		unset( $rates['odfl'] );
 		unset( $rates['fedex:8:FEDEX_GROUND'] );
@@ -1790,7 +1865,8 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 				
 	} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
-			
+		
+		unset( $rates['free_shipping:10'] );	
 		unset( $rates['flat_rate:4'] );
 		unset( $rates['odfl'] );
 		unset( $rates['fedex:8:FEDEX_GROUND'] );
@@ -1799,7 +1875,20 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
 		
-	} elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_cart_contents_count() >= 20 ) {
+	} elseif ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) {
+		
+		unset( $rates['odfl'] );
+		unset( $rates['flat_rate:4'] );
+		unset( $rates['free_shipping:9'] );
+		unset( $rates['fedex:8:FEDEX_GROUND'] );
+		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+		unset( $rates['fedex:8:FEDEX_2_DAY'] );
+		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
+		
+	}
+	/*
+elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_cart_contents_count() >= 20 ) {
 	
 		unset( $rates['free_shipping:9'] );
 		unset( $rates['odfl'] );
@@ -1809,11 +1898,13 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 		
-	} else {
+	}
+*/ else {
 
 		// Remove free shipping methods
 		unset( $rates['flat_rate:4'] );
 		unset( $rates['free_shipping:9'] );
+		unset( $rates['free_shipping:10'] );
 		
 		if ( WC()->cart->get_cart_contents_count() >= 8 ) {
 						

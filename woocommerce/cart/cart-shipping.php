@@ -23,6 +23,7 @@ $formatted_destination    = isset( $formatted_destination ) ? $formatted_destina
 $has_calculated_shipping  = ! empty( $has_calculated_shipping );
 $show_shipping_calculator = ! empty( $show_shipping_calculator );
 $calculator_text          = '';
+
 ?>
 <tr class="woocommerce-shipping-totals shipping">
 	<th><?php echo wp_kses_post( $package_name ); ?></th>
@@ -43,7 +44,7 @@ $calculator_text          = '';
 					</li>
 				<?php endforeach; ?>
 			</ul>
-			<?php if ( is_cart() ) : ?>
+			<?php if ( is_cart() && ! isset( $available_methods['free_shipping:10'] ) ) : ?>
 				<p class="woocommerce-shipping-destination">
 					<?php
 					if ( $formatted_destination ) {
@@ -76,7 +77,7 @@ $calculator_text          = '';
 			<?php echo '<p class="woocommerce-shipping-contents"><small>' . esc_html( $package_details ) . '</small></p>'; ?>
 		<?php endif; ?>
 
-		<?php if ( $show_shipping_calculator ) : ?>
+		<?php if ( $show_shipping_calculator && ! isset( $available_methods['free_shipping:10'] ) ) : ?>
 			<?php woocommerce_shipping_calculator( $calculator_text ); ?>
 		<?php endif; ?>
 	</td>

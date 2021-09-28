@@ -22,30 +22,55 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 ?>
 
 <section class="woocommerce-customer-details text-sm mb-0 row">
+	
 	<div class="col-6 col-lg-12">
+	
 		<h3 class="woocommerce-column__title mb-1"><?php esc_html_e( 'Billing Address', 'woocommerce' ); ?></h3>
 		
 		<address>
+	
 			<?php echo wp_kses_post( $order->get_formatted_billing_address( __( 'N/A', 'woocommerce' ) ) ); ?>
 		
 			<?php if ( $order->get_billing_phone() ) : ?>
+	
 				<p class="woocommerce-customer-details--phone"><?php echo esc_html( $order->get_billing_phone() ); ?></p>
+	
 			<?php endif; ?>
 		
 			<?php if ( $order->get_billing_email() ) : ?>
+	
 				<p class="woocommerce-customer-details--email"><?php echo esc_html( $order->get_billing_email() ); ?></p>
+	
 			<?php endif; ?>
+	
 		</address>
+	
 	</div>
 
 	<?php if ( $show_shipping ) : ?>	
+	
 		<div class="col-6 col-lg-12">
+	
 			<div class="woocommerce-column woocommerce-column--shipping-address mt-1">
+	
 				<h3 class="woocommerce-column__title mb-1"><?php esc_html_e( 'Shipping Address', 'woocommerce' ); ?></h3>
+	
 				<address>
-					<?php echo wp_kses_post( $order->get_formatted_shipping_address( __( 'N/A', 'woocommerce' ) ) ); ?>
+	
+					<?php if ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000') || has_product_category_in_order( $order, 'usf-2000' ) ): ?>
+					
+						<strong><?php _e('Event: '); ?></strong><?php echo get_post_meta( $order->get_id(), 'Ship to Event', true ); ?>
+						
+					<?php else: ?>
+										
+						<?php echo wp_kses_post( $order->get_formatted_shipping_address( __( 'N/A', 'woocommerce' ) ) ); ?>
+						
+					<?php endif; ?>
+	
 				</address>
+	
 			</div>
+	
 		</div>
 
 	<?php endif; ?>
@@ -53,4 +78,3 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 	<?php do_action( 'woocommerce_order_details_after_customer_details', $order ); ?>
 
 </section>
-
