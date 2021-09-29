@@ -1478,6 +1478,10 @@ function xtremetm_add_fees( $cart ) {
 	
 	$tirefee = 0;
 	
+	$tirefitting = 0;
+	
+	$tirefittingexcluded = array( 'MidO (#2114) RTI', 'Sebring (#2106W) WRL', 'Georgia Warehouse Pickup', 'Chris Griffis (#2115) RTI' );
+	
 	// Add tire fee if applicable
 	foreach ( $cart->get_cart() as $cart_item ) {
 	
@@ -1485,7 +1489,7 @@ function xtremetm_add_fees( $cart ) {
 		
 			$tirefee += $cart_item['quantity'] * 3;
 			
-			if ( WC()->session->get( 'ship_to_event_name' ) != 'Chris Griffis (#2115) RTI' && WC()->session->get( 'ship_to_event_name' ) != 'Georgia Warehouse Pickup' ) {
+			if ( ! in_array( WC()->session->get( 'ship_to_event_name' ), $tirefittingexcluded ) ) {
 				
 				$tirefitting += $cart_item['quantity'] * 30;
 
