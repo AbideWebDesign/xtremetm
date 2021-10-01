@@ -476,6 +476,7 @@ function xtremetm_add_custom_fields_woocommerce() {
 			} else {
 			
 				$id = $field_args['id'];
+				
 				woocommerce_form_field( $key, $field_args, $userMeta[$id][0] );
 
 			}
@@ -759,13 +760,17 @@ function acf_wc_product_type_rule_values( $choices ) {
 	  'taxonomy' => 'product_cat',
 	  'hide_empty' => false
 	);
+	
 	$terms = get_terms( $args );
 	
 	foreach ( $terms as $term ) {
+	
 		$choices[$term->term_id] = $term->name;
+	
 	}
 	
 	return $choices;
+
 }
 
 add_filter( 'acf/location/rule_match/product_cat_term', 'acf_wc_product_type_rule_match', 10, 3 );
@@ -786,6 +791,7 @@ function acf_wc_product_type_rule_match( $match, $rule, $options ) {
 	} else {
 	
 	  $match = !( $rule['value'] == $_GET['tag_ID'] );
+	
 	}
 	
 	return $match;
@@ -1747,6 +1753,7 @@ function xtremetm_override_fields( $field, $key, $args, $value ) {
 	
 	// Remove optional label
 	$optional = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'woocommerce' ) . ')</span>';
+	
 	$field = str_replace( $optional, '', $field );
     
     return $field;
@@ -1801,12 +1808,11 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 		
 	} elseif ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) {
 		
-		unset( $checkout_fields['shipping']['shipping_company'] );
-		unset( $checkout_fields['shipping']['shipping_address_1'] );
-		unset( $checkout_fields['shipping']['shipping_address_2'] );
-		unset( $checkout_fields['shipping']['shipping_city'] );
-		unset( $checkout_fields['shipping']['shipping_state'] );
-		unset( $checkout_fields['shipping']['shipping_postcode'] );
+		$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
+		$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
 		
 	}
 	
