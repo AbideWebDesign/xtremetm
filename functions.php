@@ -2240,33 +2240,49 @@ add_action( 'clear_inventory_hook', 'clear_inventory', 10, 0 );
 
 function clear_inventory() {
 	
-	$query = new WP_Query( array(
-	    'post_type'       	=> 'product_variation',
-	    'post_status'     	=> 'publish',
-	    'posts_per_page' 	=> -1,
-	    'numberposts'   	=> -1,
-	    'post_parent__not_in' 	=> array('554', '543', '532', '516', '513', '510', '487', '496', '493', '490')
+	$query = new WP_Query( array (
+	    'post_type'       		=> 'product',
+	    'post_status'			=> [ 'draft', 'publish' ],
+	    'posts_per_page' 		=> -1,
 	) );
 
 	while ( $query->have_posts() ) {
 		
 		$query->the_post();
-
-		the_title();
 		
-		$variation = new WC_Product_Variation( get_the_id() );
+		$product = wc_get_product( get_the_id() );
 		
-		$variation->set_stock_status('outofstock');
+		$terms = array( 'dotr', 'rally-contract', 'rallycross' );
 		
-		$variation->set_stock_quantity(0);
-		
-		$variation->save();
-		
-		echo "<br>SKU: " . $variation->get_sku() . "<br>";
+		if ( has_term( $terms, 'product_cat', $product->get_id() ) ) {
+			
+			the_title();
+			
+			echo '<br>';
+					
+			if ( $product->is_type( 'simple' ) ) {
 	
-		echo "Stock: " . $variation->get_stock_quantity() . "<br>";
+				update_post_meta( $product->get_id(), '_stock_status', 'outofstock');
+				
+				update_post_meta( $product->get_id(), '_stock', 0 );
+								
+			} else {
+				
+				foreach ( $product->get_children() as $variation_id ) {
+	
+					$variation = new WC_Product_Variation( $variation_id );
+	
+					$variation->set_stock_status( 'outofstock' );
+					
+					$variation->set_stock_quantity( 0 );
+					
+					$variation->save();
 		
-		echo "Stock Status: " . $variation->get_stock_status() . "<br><br>";	
+				}
+				
+			}
+			
+		}
 			
 	}
 	
