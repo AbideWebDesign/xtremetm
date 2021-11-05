@@ -1593,6 +1593,9 @@ body {
 			width: auto;
 		}
 	}
+	input[readonly][type="text"] {
+		background-color: #E9ECEF;
+	}
 }
 .woocommerce-account {
 	

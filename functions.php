@@ -14,7 +14,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'xtremetm'
 );
 
-if ( ! function_exists( 'xtremetm_setup' ) ) :
+if ( ! function_exists( 'xtremetm_setup' ) ) {
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
 	 *
@@ -94,7 +94,9 @@ if ( ! function_exists( 'xtremetm_setup' ) ) :
 		}
 		add_action( 'admin_bar_menu', 'remove_wp_nodes', 999 );
 	}
-endif;
+
+}
+
 add_action( 'after_setup_theme', 'xtremetm_setup' );
 
 /**
@@ -1863,8 +1865,8 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
 
-	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() ) {		
-		
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() && ! ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) ) {		
+
 		unset( $rates['free_shipping:10'] );
 		unset( $rates['free_shipping:9'] );
 		unset( $rates['odfl'] );
@@ -1953,7 +1955,7 @@ elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_car
 		}
 		
 	}
-	
+
 	return $rates;
 	
 }
@@ -2252,7 +2254,7 @@ function clear_inventory() {
 		
 		$product = wc_get_product( get_the_id() );
 		
-		$terms = array( 'dotr', 'rally-contract', 'rallycross' );
+		$terms = array( 'dot_race', 'rally', 'rallycross' );
 		
 		if ( has_term( $terms, 'product_cat', $product->get_id() ) ) {
 			
@@ -2262,7 +2264,7 @@ function clear_inventory() {
 					
 			if ( $product->is_type( 'simple' ) ) {
 	
-				update_post_meta( $product->get_id(), '_stock_status', 'outofstock');
+				update_post_meta( $product->get_id(), '_stock_status', 'outofstock' );
 				
 				update_post_meta( $product->get_id(), '_stock', 0 );
 								
