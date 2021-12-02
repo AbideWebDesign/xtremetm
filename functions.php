@@ -1299,6 +1299,7 @@ function get_event_address() {
 			$event['street'] = get_sub_field('event_address_street');
 			$event['city'] = get_sub_field('event_address_city');
 			$event['state'] = get_sub_field('event_address_state');
+			$event['state_name'] = convertState( $event['state'] );
 			$event['zip'] = get_sub_field('event_address_zip');
 			
 			WC()->session->set( 'ship_to_event_name', $event['event_name'] );	
@@ -2274,7 +2275,7 @@ function clear_inventory() {
 	
 					$variation = new WC_Product_Variation( $variation_id );
 	
-					$variation->set_stock_status( 'outofstock' );
+// 					$variation->set_stock_status( 'outofstock' );
 					
 					$variation->set_stock_quantity( 0 );
 					
