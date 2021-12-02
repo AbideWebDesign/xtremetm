@@ -1150,7 +1150,7 @@ function ship_to_event_field( $checkout ) {
 		'options' 		=> $events,
 		'required' 		=> true,
 		'input_class' 	=> array('form-check'),
- 		'default' 		=> WC()->session->get( 'ship_to_event_name')
+ 		'default' 		=> ''
 	), $checkout->get_value( 'ship_to_event_list' ) );
 	
 	echo '</div>';
