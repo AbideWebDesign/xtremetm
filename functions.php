@@ -1488,20 +1488,28 @@ function xtremetm_add_fees( $cart ) {
 	$tirefee = 0;
 	
 	$tirefitting = 0;
-	
-	$tirefittingexcluded = array( 'MidO (#2114) RTI', 'Sebring (#2106W) WRL', 'Georgia Warehouse Pickup', 'Chris Griffis (#2115) RTI' );
-	
+		
 	// Add tire fee if applicable
 	foreach ( $cart->get_cart() as $cart_item ) {
 	
 		if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
-		
+					
 			$tirefee += $cart_item['quantity'] * 3;
 			
-			if ( ! in_array( WC()->session->get( 'ship_to_event_name' ), $tirefittingexcluded ) ) {
+			while( have_rows('event_shipping', 'options') ) {
 				
-				$tirefitting += $cart_item['quantity'] * 30;
-
+				the_row();
+				
+				if ( get_sub_field('event_name') == WC()->session->get( 'ship_to_event_name' ) ) {
+					
+					if ( get_sub_field('include_tire_fitting_fee') ) {
+						
+						$tirefitting += $cart_item['quantity'] * 30;
+						
+					}
+					
+				}
+				
 			}
 			
 		}
