@@ -110,6 +110,8 @@ function xtremetm_scripts() {
 	
 	wp_register_script( 'jquery', 'https://code.jquery.com/jquery-3.0.0.min.js', false, null );
 	
+	wp_enqueue_script( 'jquery-migrate', 'https://code.jquery.com/jquery-migrate-1.4.1.min.js', array(), null, false );
+		
 	wp_enqueue_script( 'jquery' );
 	
 	wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.7.1/css/all.css' );
@@ -125,9 +127,7 @@ function xtremetm_scripts() {
 	wp_enqueue_script( 'popper.min', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '', true );
 	
 	wp_enqueue_script( 'bootstrap.min', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), '', true );
-	
-	wp_enqueue_script( 'product-filters', home_url() . '/wp-content/plugins/woocommerce-product-filters/assets/prod/styles/plugin.css', array(), '', true );
-	
+		
 }
 add_action( 'wp_enqueue_scripts', 'xtremetm_scripts' );
 
