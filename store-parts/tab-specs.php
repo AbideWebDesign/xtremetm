@@ -122,43 +122,47 @@
 			
 			<?php if ( $post->post_title == 'Cooper RS3-R' || $post->post_title == 'Cooper RS3-RS' ): ?>
 			
-				<tr>
+				<?php while ( have_rows( 'tires' ) ): the_row(); ?>
+				
+					<tr>
+							
+						<td><?php the_sub_field('tire_size'); ?></td>
 						
-					<td><?php the_sub_field('tire_size'); ?></td>
+						<td><?php the_sub_field('service_index'); ?></td>
+						
+						<td><?php the_sub_field('utqg_treadwear'); ?></td>
+						
+						<td><?php the_sub_field('utqg_traction'); ?></td>
+	
+						<td><?php the_sub_field('utqg_temperature'); ?></td>
+						
+						<td><?php the_sub_field('rim_choice'); ?></td>
+						
+						<td><?php the_sub_field('rim_used'); ?></td>
+	
+						<td><?php the_sub_field('measured_at_psi'); ?></td>
+	
+						<td><?php the_sub_field('measured_at_bar'); ?></td>
+	
+						<td><?php the_sub_field('diameter_ins'); ?></td>
+	
+						<td><?php the_sub_field('diameter_mm'); ?></td>
+	
+						<td><?php the_sub_field('section_ins'); ?></td>
+	
+						<td><?php the_sub_field('section_mm'); ?></td>
+	
+						<td><?php the_sub_field('tread_ins'); ?></td>
+	
+						<td><?php the_sub_field('tread_mm'); ?></td>
+	
+						<td><?php the_sub_field('revolutions_miles'); ?></td>
+	
+						<td><?php the_sub_field('revolutions_km'); ?></td>
+						
+					</tr>
 					
-					<td><?php the_sub_field('service_index'); ?></td>
-					
-					<td><?php the_sub_field('utqg_treadwear'); ?></td>
-					
-					<td><?php the_sub_field('utqg_traction'); ?></td>
-
-					<td><?php the_sub_field('utqg_temperature'); ?></td>
-					
-					<td><?php the_sub_field('rim_choice'); ?></td>
-					
-					<td><?php the_sub_field('rim_used'); ?></td>
-
-					<td><?php the_sub_field('measured_at_psi'); ?></td>
-
-					<td><?php the_sub_field('measured_at_bar'); ?></td>
-
-					<td><?php the_sub_field('diameter_ins'); ?></td>
-
-					<td><?php the_sub_field('diameter_mm'); ?></td>
-
-					<td><?php the_sub_field('section_ins'); ?></td>
-
-					<td><?php the_sub_field('section_mm'); ?></td>
-
-					<td><?php the_sub_field('tread_ins'); ?></td>
-
-					<td><?php the_sub_field('tread_mm'); ?></td>
-
-					<td><?php the_sub_field('revolutions_miles'); ?></td>
-
-					<td><?php the_sub_field('revolutions_km'); ?></td>
-					
-				</tr>
+				<?php endwhile; ?>
 			
 			<?php else: ?>
 	
