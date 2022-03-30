@@ -1120,40 +1120,44 @@ add_action( 'woocommerce_after_order_notes', 'ship_to_event_field' );
 
 function ship_to_event_field( $checkout ) {
 	
-	$events = array();
+	if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
+		
+		$events = array();
+		
+		$events[''] = 'Select Event or Warehouse';
+		
+		while ( have_rows( 'event_shipping', 'options' ) ) {
+			
+			the_row();
+			
+			$event_name = get_sub_field('event_name');
+			
+			$events[$event_name] = $event_name;
+		}
 	
-	$events[''] = 'Select Event or Warehouse';
-	
-	while ( have_rows( 'event_shipping', 'options' ) ) {
+		if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() ) {
+			
+			echo '<div id="ship-to-event" class="bg-light pt-1">';
+			
+		} else {
+			
+			echo '<div id="ship-to-event" class="bg-light" style="display: none;">';
+			
+		}
 		
-		the_row();
+		woocommerce_form_field( 'ship_to_event_list', array(
+			'type' 			=> 'select',
+			'label' 		=> __( 'Event' ),
+			'placeholder' 	=> __('Select Event or Warehouse'),
+			'options' 		=> $events,
+			'required' 		=> true,
+			'input_class' 	=> array('form-check'),
+	 		'default' 		=> ''
+		), $checkout->get_value( 'ship_to_event_list' ) );
 		
-		$event_name = get_sub_field('event_name');
+		echo '</div>';
 		
-		$events[$event_name] = $event_name;
 	}
-
-	if ( WC()->session->get( 'ship_to_event') == 'true' || has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
-		
-		echo '<div id="ship-to-event" class="bg-light pt-1">';
-		
-	} else {
-		
-		echo '<div id="ship-to-event" class="bg-light" style="display: none;">';
-		
-	}
-	
-	woocommerce_form_field( 'ship_to_event_list', array(
-		'type' 			=> 'select',
-		'label' 		=> __( 'Event' ),
-		'placeholder' 	=> __('Select Event or Warehouse'),
-		'options' 		=> $events,
-		'required' 		=> true,
-		'input_class' 	=> array('form-check'),
- 		'default' 		=> ''
-	), $checkout->get_value( 'ship_to_event_list' ) );
-	
-	echo '</div>';
 
 }
 
@@ -1374,7 +1378,7 @@ function check_for_event() {
 function xtremetm_delivery_field( $checkout ) {
 
 	// Rush Delivery
-	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	if ( rti_in_cart() ) {
 	
 		date_default_timezone_set( 'America/Los_Angeles' );
 		
@@ -1405,7 +1409,7 @@ function xtremetm_delivery_field( $checkout ) {
 
 function rush_shipping_checkout_field_process() {
 	
-	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'usf-2000' ) ) {
+	if ( rti_in_cart() ) {
 		
 		if ( ! $_POST['delivery_date'] ) {
 		    
@@ -1817,13 +1821,17 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 			}
 		}
 		
-	} elseif ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) {
+	} elseif ( rti_in_cart() ) {
 		
-		$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
-		$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
-		$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
-		$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
-		$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
+		if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
+			
+			$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
+			$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
+			$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
+			$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
+			$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
+			
+		}
 		
 	}
 	
@@ -1874,7 +1882,7 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
 
-	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() && ! ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) ) {		
+	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() && ! rti_in_cart() ) {		
 
 		unset( $rates['free_shipping:10'] );
 		unset( $rates['free_shipping:9'] );
@@ -1896,17 +1904,27 @@ function xtremetm_shipping_methods( $rates ) {
 		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
 		
-	} elseif ( has_product_category_in_cart( 'usf-2000' ) || has_product_category_in_cart( 'indy-pro-2000' ) || has_product_category_in_cart( 'indy-lights' ) ) {
+	} elseif ( rti_in_cart() ) {
 		
-		unset( $rates['odfl'] );
-		unset( $rates['flat_rate:4'] );
-		unset( $rates['free_shipping:9'] );
-		unset( $rates['fedex:8:FEDEX_GROUND'] );
-		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-		unset( $rates['fedex:8:FEDEX_2_DAY'] );
-		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
+		if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
+
+			unset( $rates['odfl'] );
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
+			
+		} else {
+			
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['free_shipping:10'] );
 		
+		}
+	
 	}
 	/*
 elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_cart_contents_count() >= 20 ) {
@@ -1939,7 +1957,7 @@ elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_car
 
 			unset( $rates['odfl'] );
 			
-			if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+			if ( rti_in_cart() ) {
 			
 				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
 				unset( $rates['fedex:8:FEDEX_2_DAY'] );
@@ -2129,7 +2147,7 @@ function xtremetm_redirect_functions() {
 				$variation_obj = new WC_Product_Variation( $variation_id );
 				$attributes = $variation_obj->get_variation_attributes();
 				
-				if ( !empty( $attributes ) ) {
+				if ( ! empty( $attributes ) ) {
 
 					$permalink = add_query_arg( $attributes, get_permalink( $wp_query->posts['0']->ID ) );
 					
@@ -2321,6 +2339,73 @@ function xtremetm_cart_refresh_update_qty() {
         </script> 
         
         <?php 
+	        
+    } elseif ( is_checkout() ) { ?>
+	    
+        <script type="text/javascript"> 
+           
+			( function( $ ) {
+					
+				$( document.body ).on( 'applied_coupon_in_checkout', function( event, coupon ) {	
+					
+					const codes = [];
+					
+					for ( var x = 1; x < 31; x++ ) {
+						
+						codes[x] = 'shipto' + x;
+						
+					}
+									    
+				    if ( $.inArray( coupon, codes ) != -1 ) {
+
+				        $( '#ship-to-event' ).hide();
+				        $( '#ship_to_event_list_field').removeClass( 'validate-required' );
+						$( '#ship-to-event_list' ).val( 0 );
+						$( '#ship_to_event_list' ).attr( 'placeholder', 'Select Event or Warehouse' );
+						$( '#shipping_company_field label' ).text( 'Company Name' );
+						$( '#shipping_company' ).val(''); 
+						$( '#shipping_address_1' ).val('');
+						$( '#shipping_address_2' ).val('');
+						$( '#shipping_city' ).val('');
+						$( '#shipping_state' ).val('');
+						$( '#shipping_postcode' ).val('');
+						$( '#shipping_company' ).removeAttr( 'readonly' );
+						$( '#shipping_address_1' ).removeAttr( 'readonly' );
+						$( '#shipping_address_2' ).removeAttr( 'readonly' );
+						$( '#shipping_city' ).removeAttr( 'readonly' );
+						$( '#shipping_state' ).removeAttr( 'readonly' );
+						$( '#shipping_postcode' ).removeAttr( 'readonly' );
+				        
+				    }
+				    
+				} );
+				
+				$( document.body ).on( 'removed_coupon_in_checkout', function( event, coupon ) {
+					
+					$( '#ship-to-event').show();
+					$( '#ship_to_event_list_field').addClass( 'validate-required' );
+					$( '#shipping_company_field label' ).text( 'Event/Warehouse' );
+					$( '#shipping_company' ).val(''); 
+					$( '#shipping_address_1' ).val('');
+					$( '#shipping_address_2' ).val('');
+					$( '#shipping_city' ).val('');
+					$( '#shipping_state' ).val('');
+					$( '#shipping_postcode' ).val('');
+					$( '#shipping_company' ).attr( 'readonly','readonly' );
+					$( '#shipping_address_1' ).attr( 'readonly','readonly' );
+					$( '#shipping_address_2' ).attr( 'readonly','readonly' );
+					$( '#shipping_city' ).attr( 'readonly','readonly' );
+					$( '#shipping_state' ).attr( 'readonly','readonly' );
+					$( '#shipping_postcode' ).attr( 'readonly','readonly' );
+					
+				} );
+					
+			} )( jQuery );
+            
+        </script> 
+	    
+	    <?php
+	    
     }
      
 }
@@ -2526,7 +2611,7 @@ function disable_checkout_button_on_cart() {
 
 function redirect_checkout_to_cart() {
 	
-	if ( !is_admin() && is_checkout() ) {
+	if ( ! is_admin() && is_checkout() ) {
 	
 		wp_redirect( wc_get_cart_url() );
 		
@@ -2541,5 +2626,33 @@ function redirect_checkout_to_cart() {
 function add_closed_message_to_cart() {
 	
 	echo '<div class="bg-primary p-2 mb-2 text-light"><i class="fa fa-tree"></i> Hi there! Xtreme TM is closed December 22nd through January 3rd – we will not be accepting any orders during this time. You’ll be able to place orders again starting Monday, January 4th. We hope you have a nice holiday season and a happy new year!</div>';
+	
+}
+
+/**
+ * Helper Functions
+ */
+
+function rti_in_cart() {
+	
+	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	
+		return true;
+		
+	}
+	
+	return false;	
+	
+}
+
+function get_shiptos() {
+	
+	for ( $x = 1; $x <= 30; $x++ ) {
+		
+		$shiptos[] = 'shipto' . $x;	
+		
+	}
+	
+	return $shiptos;
 	
 }

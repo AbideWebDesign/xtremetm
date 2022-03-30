@@ -155,6 +155,5 @@
 		$( 'body' ).trigger( 'update_checkout' );
 	
 	} );
-	
-				
+			
 } )( jQuery );
