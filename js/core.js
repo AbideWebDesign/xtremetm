@@ -155,5 +155,21 @@
 		$( 'body' ).trigger( 'update_checkout' );
 	
 	} );
+	
+	function populateStates() {
+        
+        var obj = ({"Data":{"Alabama":"AL","Alaska":"AK","Arizona":"AZ","Arkansas":"AR","California":"CA","Colorado":"CO","Connecticutt":"CT","Delaware":"DE","Florida":"FL","Georgia":"GA","Hawaii":"HI","Idaho":"ID","Illinois":"IL","Indiana":"IN","Iowa":"IA","Kansas":"KS","Kentucky":"KY","Louisiana":"LA","Maine":"ME","Massachusetts":"MA","Michigan":"MI"}});
+        
+        var s = document.getElementById('shipping_state');
+        
+        var i = 0;
+        
+        for ( var propertyName in obj.Data ) {
+	        
+        	sel.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
+    	
+    	}
+    
+    }
 			
 } )( jQuery );

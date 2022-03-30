@@ -86,9 +86,9 @@ $( '#ship_to_event_list' ).change( function() {
 		data: data,
 		success: function( response ) {
 			
-			var $shipping_state = $('#shipping_state');
-            var $shipping_state_option = $('#shipping_state option[value="' + response.data.address.state + '"]');
-            var $shipping_state_option_no = $('#shipping_state option[value!="' + response.data.address.state + '"]');
+			var $shipping_state = $( '#shipping_state' );
+            var $shipping_state_option = $( '#shipping_state option[value="' + response.data.address.state + '"]' );
+            var $shipping_state_option_no = $( '#shipping_state option[value!="' + response.data.address.state + '"]' );
             $shipping_state_option_no.remove();
             
             if ( $shipping_state_option.length != 0 ) {
@@ -104,7 +104,7 @@ $( '#ship_to_event_list' ).change( function() {
 	            
             }
 
-			$( '#shipping_company_field label' ).text('Event/Warehouse');
+			$( '#shipping_company_field label' ).text( 'Event/Warehouse' );
 			$( '#shipping_company' ) .val( response.data.address.event_name );
 			$( '#shipping_address_1' ).val( response.data.address.street );
 			$( '#shipping_city' ).val( response.data.address.city );

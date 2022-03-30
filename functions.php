@@ -637,7 +637,7 @@ function xtremetm_save_extra_register_fields( $customer_id ) {
 		
 	}
 	
-	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' && !current_user_can('reseller') ) {
+	if ( isset( $_POST['0'] ) && $_POST['0'] == 'yes' && ! current_user_can('reseller') ) {
 
 		// Create reseller account
 		
@@ -1112,46 +1112,42 @@ function filter_woocommerce_reset_variations_link( $link ) {
 add_action( 'woocommerce_after_order_notes', 'ship_to_event_field' );
 
 function ship_to_event_field( $checkout ) {
+		
+	$events = array();
 	
-	if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
-		
-		$events = array();
-		
-		$events[''] = 'Select Event or Warehouse';
-		
-		while ( have_rows( 'event_shipping', 'options' ) ) {
-			
-			the_row();
-			
-			$event_name = get_sub_field('event_name');
-			
-			$events[$event_name] = $event_name;
-		}
+	$events[''] = 'Select Event or Warehouse';
 	
-		if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() ) {
-			
-			echo '<div id="ship-to-event" class="bg-light pt-1">';
-			
-		} else {
-			
-			echo '<div id="ship-to-event" class="bg-light" style="display: none;">';
-			
-		}
+	while ( have_rows( 'event_shipping', 'options' ) ) {
 		
-		woocommerce_form_field( 'ship_to_event_list', array(
-			'type' 			=> 'select',
-			'label' 		=> __( 'Event' ),
-			'placeholder' 	=> __('Select Event or Warehouse'),
-			'options' 		=> $events,
-			'required' 		=> true,
-			'input_class' 	=> array('form-check'),
-	 		'default' 		=> ''
-		), $checkout->get_value( 'ship_to_event_list' ) );
+		the_row();
 		
-		echo '</div>';
+		$event_name = get_sub_field('event_name');
 		
+		$events[$event_name] = $event_name;
 	}
 
+	if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() && ! check_shiptos() ) {
+		
+		echo '<div id="ship-to-event" class="bg-light pt-1">';
+		
+	} else {
+		
+		echo '<div id="ship-to-event" class="bg-light" style="display: none;">';
+		
+	}
+	
+	woocommerce_form_field( 'ship_to_event_list', array(
+		'type' 			=> 'select',
+		'label' 		=> __( 'Event' ),
+		'placeholder' 	=> __( 'Select Event or Warehouse' ),
+		'options' 		=> $events,
+		'required' 		=> true,
+		'input_class' 	=> array( 'form-check' ),
+ 		'default' 		=> ''
+	), $checkout->get_value( 'ship_to_event_list' ) );
+	
+	echo '</div>';
+		
 }
 
 /**
@@ -1816,7 +1812,7 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 		
 	} elseif ( rti_in_cart() ) {
 		
-		if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
+		if ( ! check_shiptos() ) {
 			
 			$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
 			$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
@@ -1899,7 +1895,7 @@ function xtremetm_shipping_methods( $rates ) {
 		
 	} elseif ( rti_in_cart() ) {
 		
-		if ( ! in_array( get_shiptos(), WC()->cart->applied_coupons ) ) {
+		if ( ! check_shiptos() ) {
 
 			unset( $rates['odfl'] );
 			unset( $rates['flat_rate:4'] );
@@ -2310,6 +2306,18 @@ function clear_inventory() {
 	
 }
 
+add_action( 'woocommerce_applied_coupon', 'action_woocommerce_applied_coupon', 10, 1 ); 
+
+function action_woocommerce_applied_coupon( $coupon ) { 
+   
+   if ( check_shiptos() ) {
+	   
+	   clear_event_sessions();
+	   
+   }
+
+}
+
 /*
  * Refresh cart on quantity change
 */ 
@@ -2368,6 +2376,8 @@ function xtremetm_cart_refresh_update_qty() {
 						$( '#shipping_city' ).removeAttr( 'readonly' );
 						$( '#shipping_state' ).removeAttr( 'readonly' );
 						$( '#shipping_postcode' ).removeAttr( 'readonly' );
+						
+						populateStates();
 				        
 				    }
 				    
@@ -2391,6 +2401,7 @@ function xtremetm_cart_refresh_update_qty() {
 					$( '#shipping_state' ).attr( 'readonly','readonly' );
 					$( '#shipping_postcode' ).attr( 'readonly','readonly' );
 					
+					
 				} );
 					
 			} )( jQuery );
@@ -2406,9 +2417,9 @@ function xtremetm_cart_refresh_update_qty() {
 /*
  * Clear event session on order complete
 */ 
-add_action( 'woocommerce_thankyou', 'clear_event_session_order_complete' );
+add_action( 'woocommerce_thankyou', 'clear_event_sessions' );
 
-function clear_event_session_order_complete( $order_id ) {
+function clear_event_sessions() {
 	
 	WC()->session->__unset( 'ship_to_event_name' );
 	WC()->session->__unset( 'ship_to_event' );
@@ -2638,7 +2649,7 @@ function rti_in_cart() {
 	
 }
 
-function get_shiptos() {
+function check_shiptos() {
 	
 	for ( $x = 1; $x <= 30; $x++ ) {
 		
@@ -2646,6 +2657,16 @@ function get_shiptos() {
 		
 	}
 	
-	return $shiptos;
+	foreach(  WC()->cart->applied_coupons as $coupon ) {
+		
+		if ( in_array($coupon, $shiptos) ) {
+			
+			return true;
+			
+		}
+		
+	}
+	
+	return false;
 	
 }
