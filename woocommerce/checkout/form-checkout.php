@@ -47,7 +47,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 				<h3 class=""><?php _e('Shipping Details'); ?></h3>
 				
-				<?php if ( $shipping_method[0] != 'free_shipping:10' && ! check_shiptos() ): ?>
+				<?php if ( $shipping_method[0] != 'free_shipping:10' && ! check_shipto_coupon() ): ?>
 				
 					<div id="ship-option" class="mt-1 bg-light">
 			

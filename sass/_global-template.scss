@@ -314,6 +314,12 @@ p.alt {
 	#header-global {
 		border: none;
 	}
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover, 
+	input:-webkit-autofill:focus, 
+	input:-webkit-autofill:active{
+	    -webkit-box-shadow: 0 0 0 30px white inset !important;
+	}
 }
 #header-nav {
 	background-color: $primary;
@@ -1578,9 +1584,6 @@ body {
 			display: none;
 		}
 	}
-	#ship-to-event {
-		padding-top: 0;
-	}
 	#ship-date-wrap {
 		background-color: #4F555A;
 		margin-bottom: 10px;
@@ -1593,7 +1596,7 @@ body {
 			width: auto;
 		}
 	}
-	input[readonly][type="text"] {
+	input[readonly][type="text"]:not(#datepicker) {
 		background-color: #E9ECEF;
 	}
 }

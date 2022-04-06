@@ -1126,7 +1126,7 @@ function ship_to_event_field( $checkout ) {
 		$events[$event_name] = $event_name;
 	}
 
-	if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() && ! check_shiptos() ) {
+	if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() && ! check_shipto_coupon() ) {
 		
 		echo '<div id="ship-to-event" class="bg-light pt-1">';
 		
@@ -1322,7 +1322,9 @@ function check_for_event() {
 	}	
 
 	$events = array();
+	
 	$count = 0;
+	
 	$provided_zip = sanitize_text_field( $_POST['zip'] );
 	
 	while ( have_rows('event_shipping', 'options') ) {
@@ -1362,7 +1364,7 @@ function check_for_event() {
 /**
  * Custom rush shipping field
  */
-//add_action( 'woocommerce_after_order_notes', 'xtremetm_delivery_field', 10, 1 );
+add_action( 'woocommerce_after_order_notes', 'xtremetm_delivery_field', 10, 1 );
 
 function xtremetm_delivery_field( $checkout ) {
 
@@ -1373,7 +1375,7 @@ function xtremetm_delivery_field( $checkout ) {
 		
 		$dateoptions = array( '' => __( 'Select Delivery Date', 'woocommerce' ) );
 		
-		echo '<div class="mt-1">';
+		echo ( check_shipto_coupon() ? '<div id="delivery_date" class="mt-1">' : '<div id="delivery_date" class="mt-1 d-none">' );
 		
 		woocommerce_form_field( 'delivery_date', array(
 			'type'          	=> 'text',
@@ -1394,11 +1396,11 @@ function xtremetm_delivery_field( $checkout ) {
 /**
  * Rush shipping checkout validation notice
  */
-//add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process');
+add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process');
 
 function rush_shipping_checkout_field_process() {
 	
-	if ( rti_in_cart() ) {
+	if ( rti_in_cart() && check_shipto_coupon() ) {
 		
 		if ( ! $_POST['delivery_date'] ) {
 		    
@@ -1417,7 +1419,7 @@ add_action( 'woocommerce_email_after_order_table', 'xtremetm_email_after_order_t
 
 function xtremetm_email_after_order_table( $order, $sent_to_admin, $plain_text, $email ) { 
 	
-	if ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000' ) || has_product_category_in_order( $order, 'usf-2000' ) ) {
+	if ( ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000') || has_product_category_in_order( $order, 'usf-2000' ) ) && ! check_order_shipto_coupon( $order) ) {
 		
 		echo '<h2 style="margin-bottom:1em;">' . __( 'Event:' ) . '</h2>';
 		
@@ -1665,7 +1667,6 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 	// Check rush delivery
 	if ( ! empty( get_post_meta( $order->get_id(), 'rush_delivery', true ) ) ) {
 		
-		
 		echo '<strong>' . __('Rush Delivery', 'xtremetm') . ':</strong> Yes <br />';
 	
 	}
@@ -1812,7 +1813,7 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 		
 	} elseif ( rti_in_cart() ) {
 		
-		if ( ! check_shiptos() ) {
+		if ( ! check_shipto_coupon() ) {
 			
 			$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
 			$checkout_fields['shipping']['shipping_address_2']['custom_attributes'] = array('readonly'=>'readonly');
@@ -1871,87 +1872,96 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
 
-	if ( WC()->session->get( 'ship_to_event' ) == 'true' || is_cart_weight_free() && ! rti_in_cart() ) {		
+	if ( rti_in_cart() ) {
 
-		unset( $rates['free_shipping:10'] );
-		unset( $rates['free_shipping:9'] );
-		unset( $rates['odfl'] );
-		unset( $rates['fedex:8:FEDEX_GROUND'] );
-		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-		unset( $rates['fedex:8:FEDEX_2_DAY'] );
-		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+		if ( check_shipto_coupon() ) {
+			
+			if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
+			
+				unset( $rates['free_shipping:10'] );	
+				unset( $rates['flat_rate:4'] );
+				unset( $rates['odfl'] );
+				unset( $rates['fedex:8:FEDEX_GROUND'] );
+				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+				unset( $rates['fedex:8:FEDEX_2_DAY'] );
+				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
 				
-	} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
+			} elseif ( WC()->cart->get_cart_contents_count() < 8 ) {
+					
+				unset( $rates['flat_rate:4'] );
+				unset( $rates['free_shipping:9'] );
+				unset( $rates['free_shipping:10'] );
+				unset( $rates['odfl'] );
+			
+			} elseif ( WC()->cart->get_cart_contents_count() >=  8 ) {
 		
-		unset( $rates['free_shipping:10'] );	
-		unset( $rates['flat_rate:4'] );
-		unset( $rates['odfl'] );
-		unset( $rates['fedex:8:FEDEX_GROUND'] );
-		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-		unset( $rates['fedex:8:FEDEX_2_DAY'] );
-		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
-		
-	} elseif ( rti_in_cart() ) {
-		
-		if ( ! check_shiptos() ) {
-
-			unset( $rates['odfl'] );
-			unset( $rates['flat_rate:4'] );
-			unset( $rates['free_shipping:9'] );
-			unset( $rates['fedex:8:FEDEX_GROUND'] );
-			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-			unset( $rates['fedex:8:FEDEX_2_DAY'] );
-			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
+				unset( $rates['flat_rate:4'] );
+				unset( $rates['free_shipping:9'] );
+				unset( $rates['free_shipping:10'] );
+				unset( $rates['fedex:8:FEDEX_GROUND'] );
+				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+				unset( $rates['fedex:8:FEDEX_2_DAY'] );
+				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
+				
+			}
 			
 		} else {
 			
 			unset( $rates['flat_rate:4'] );
 			unset( $rates['free_shipping:9'] );
-			unset( $rates['free_shipping:10'] );
-		
-		}
-	
-	}
-	/*
-elseif ( has_product_category_in_cart( 'rally-contract' ) && WC()->cart->get_cart_contents_count() >= 20 ) {
-	
-		unset( $rates['free_shipping:9'] );
-		unset( $rates['odfl'] );
-		unset( $rates['fedex:8:FEDEX_GROUND'] );
-		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-		unset( $rates['fedex:8:FEDEX_2_DAY'] );
-		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
-		
-	}
-*/ else {
-
-		// Remove free shipping methods
-		unset( $rates['flat_rate:4'] );
-		unset( $rates['free_shipping:9'] );
-		unset( $rates['free_shipping:10'] );
-		
-		if ( WC()->cart->get_cart_contents_count() >= 8 ) {
-						
+			unset( $rates['odfl'] );
 			unset( $rates['fedex:8:FEDEX_GROUND'] );
 			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
 			unset( $rates['fedex:8:FEDEX_2_DAY'] );
 			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
 			
+		}
+			
+	} else {
+
+		if ( is_cart_weight_free() ) {
+
+			unset( $rates['free_shipping:10'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['odfl'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+			
+		} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
+			
+			unset( $rates['free_shipping:10'] );	
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['odfl'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
+			
 		} else {
 
-			unset( $rates['odfl'] );
+			// Remove free shipping methods
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['free_shipping:10'] );
 			
-			if ( rti_in_cart() ) {
-			
+			if ( WC()->cart->get_cart_contents_count() >= 8 ) {
+							
+				unset( $rates['fedex:8:FEDEX_GROUND'] );
 				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
 				unset( $rates['fedex:8:FEDEX_2_DAY'] );
 				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
+				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+				
+			} else {
+	
+				unset( $rates['odfl'] );
 				
 			}
 			
@@ -2310,7 +2320,7 @@ add_action( 'woocommerce_applied_coupon', 'action_woocommerce_applied_coupon', 1
 
 function action_woocommerce_applied_coupon( $coupon ) { 
    
-   if ( check_shiptos() ) {
+   if ( check_shipto_coupon() ) {
 	   
 	   clear_event_sessions();
 	   
@@ -2341,7 +2351,7 @@ function xtremetm_cart_refresh_update_qty() {
         
         <?php 
 	        
-    } elseif ( is_checkout() ) { ?>
+    } elseif ( is_checkout() && rti_in_cart() ) { ?>
 	    
         <script type="text/javascript"> 
            
@@ -2358,7 +2368,8 @@ function xtremetm_cart_refresh_update_qty() {
 					}
 									    
 				    if ( $.inArray( coupon, codes ) != -1 ) {
-
+						
+						$( '#delivery_date' ).removeClass( 'd-none' );
 				        $( '#ship-to-event' ).hide();
 				        $( '#ship_to_event_list_field').removeClass( 'validate-required' );
 						$( '#ship-to-event_list' ).val( 0 );
@@ -2385,6 +2396,7 @@ function xtremetm_cart_refresh_update_qty() {
 				
 				$( document.body ).on( 'removed_coupon_in_checkout', function( event, coupon ) {
 					
+					$( '#delivery_date' ).addClass( 'd-none' );
 					$( '#ship-to-event').show();
 					$( '#ship_to_event_list_field').addClass( 'validate-required' );
 					$( '#shipping_company_field label' ).text( 'Event/Warehouse' );
@@ -2640,7 +2652,7 @@ function add_closed_message_to_cart() {
 function rti_in_cart() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
-	
+
 		return true;
 		
 	}
@@ -2649,7 +2661,7 @@ function rti_in_cart() {
 	
 }
 
-function check_shiptos() {
+function check_shipto_coupon() {
 	
 	for ( $x = 1; $x <= 30; $x++ ) {
 		
@@ -2665,6 +2677,32 @@ function check_shiptos() {
 			
 		}
 		
+	}
+	
+	return false;
+	
+}
+
+function check_order_shipto_coupon( $order ) {
+
+	for ( $x = 1; $x <= 30; $x++ ) {
+		
+		$shiptos[] = 'shipto' . $x;	
+		
+	}
+	
+	if ( sizeof( $order->get_used_coupons() ) > 0 ) {
+		
+		foreach( $order->get_used_coupons() as $coupon ) {
+	        
+			if ( in_array($coupon, $shiptos) ) {
+				
+				return true;
+				
+			}
+
+	    }
+	    
 	}
 	
 	return false;
