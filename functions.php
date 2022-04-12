@@ -2507,7 +2507,8 @@ function convertState( $name ) {
       array('name'=>'Wyoming', 'abbr'=>'WY'),
       array('name'=>'Virgin Islands', 'abbr'=>'V.I.'),
       array('name'=>'Guam', 'abbr'=>'GU'),
-      array('name'=>'Puerto Rico', 'abbr'=>'PR')
+      array('name'=>'Puerto Rico', 'abbr'=>'PR'),
+      array('name'=>'Ontario', 'abbr'=>'ON'),
    );
 
    $return = false;   
