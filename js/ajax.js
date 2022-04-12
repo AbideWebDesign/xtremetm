@@ -116,7 +116,7 @@ $( '#ship_to_event_list' ).change( function() {
 			$( '#shipping_state' ).attr( 'readonly','readonly' );
 			$( '#shipping_postcode' ).attr( 'readonly','readonly' );
 			$( document.body ).trigger( 'update_checkout' );
-          
+
 		},
 		fail: function( response ) {
           

@@ -2237,11 +2237,11 @@ function valid_reseller() {
 		
 		$tz = new DateTimeZone('America/Los_Angeles');
 		
-		$resale_date = new DateTime(get_user_meta($current_user->ID, 'resale_date', true));	
-		$resale_date->setTimeZone($tz);
+		$resale_date = new DateTime( get_user_meta( $current_user->ID, 'resale_date', true ) );	
+		$resale_date->setTimeZone( $tz );
 
 		$date_now = new DateTime();
-		$date_now->setTimeZone($tz);
+		$date_now->setTimeZone( $tz );
 
 		if ( $date_now >= $resale_date ) {
 
@@ -2653,7 +2653,13 @@ function add_closed_message_to_cart() {
 function rti_in_cart() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
-
+		
+		if ( ! WC()->session->get( 'ship_to_event' ) ) {
+			
+			WC()->session->set( 'ship_to_event', 'true' );
+			
+		}
+		
 		return true;
 		
 	}
@@ -2672,7 +2678,7 @@ function check_shipto_coupon() {
 	
 	foreach(  WC()->cart->applied_coupons as $coupon ) {
 		
-		if ( in_array($coupon, $shiptos) ) {
+		if ( in_array( $coupon, $shiptos ) ) {
 			
 			return true;
 			
@@ -2696,7 +2702,7 @@ function check_order_shipto_coupon( $order ) {
 		
 		foreach( $order->get_used_coupons() as $coupon ) {
 	        
-			if ( in_array($coupon, $shiptos) ) {
+			if ( in_array( $coupon, $shiptos ) ) {
 				
 				return true;
 				
