@@ -383,7 +383,7 @@ function dequeue_stylesandscripts() {
 
 	}
 	
-	if ( !is_checkout() ) {
+	if ( ! is_checkout() ) {
 		
 		// Remove payment gateway scripts/styles
 		wp_dequeue_style( 'sv-wc-payment-gateway-payment-form' );
