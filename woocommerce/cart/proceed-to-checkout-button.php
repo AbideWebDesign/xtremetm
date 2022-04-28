@@ -22,14 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<div class="row justify-content-between">
+<div class="row justify-content-center justify-content-md-end">
 	
-	<div class="col-6 text-left">
+	<div class="col-auto text-left mb-1 mb-md-0 text-center">
 		<a href="<?php echo site_url(); ?>" class="btn btn-primary">
 			<span><i class="fas fa-chevron-left"></i> <?php esc_html_e( 'Return to Shop', 'woocommerce' ); ?> </span>
 		</a>
 	</div>
-	<div class="col-6">
+	<div class="col-auto">
 		<div class="text-center text-sm-left text-lg-right">
 			<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="btn btn-primary">
 				<span><?php esc_html_e( 'Checkout', 'woocommerce' ); ?> <i class="fas fa-chevron-right"></i></span>

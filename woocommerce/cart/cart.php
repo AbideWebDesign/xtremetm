@@ -139,12 +139,12 @@ do_action( 'woocommerce_before_cart' ); ?>
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
 <div class="row justify-content-between">
-	<div class="col-12 col-sm-6 col-lg-6 order-2 order-lg-1 align-self-start">
+	<div class="col-12 col-sm-4 col-lg-4 col-xl-6 align-self-start mb-2 mb-md-0 order-2 order-md-1">
 		<div class="cart-help p-1 bg-light text-center">
 			<p class="mb-0"><strong>Need Help? Call <span class="color-brand"><?php the_field('global_phone', 'options'); ?></span></strong></p>
 		</div>
 	</div>
-	<div class="col-sm-6 col-lg-6 order-1 order-lg-2">
+	<div class="col-sm-8 col-lg-8 col-xl-6 order-1 order-md-2">
 		<div class="cart-collaterals">
 			<?php
 				/**
