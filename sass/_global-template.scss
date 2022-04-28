@@ -1394,6 +1394,15 @@ body {
 				font-weight: normal;
 				font-size: $font-size-sm;
 			}
+			@include media-breakpoint-down(sm) {
+				text-align: left !important;
+				.link {
+					display: block;
+				}
+				&::before {
+					display: none;
+				}
+			}
 		}
 		tr:not(.cart_item) {
 			display: none !important;
