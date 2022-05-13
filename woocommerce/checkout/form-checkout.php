@@ -47,10 +47,9 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 				<h3 class=""><?php _e('Shipping Details'); ?></h3>
 				
-<!--
-				<?php if ( rti_in_cart() && ! check_shipto_coupon() ): ?>
+				<?php if ( dotr_in_cart() ): ?>
 				
-					<div id="ship-option" class="mt-1 bg-light">
+					<div id="ship-option" class="my-1 bg-light">
 			
 						<p class="form-row m-0 p-0" id="ship-event-wrap">
 			
@@ -71,7 +70,6 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 					</div>
 					
 				<?php endif; ?>
--->
 				
 				<?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
 				

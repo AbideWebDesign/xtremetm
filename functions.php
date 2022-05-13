@@ -1413,23 +1413,6 @@ function rush_shipping_checkout_field_process() {
 }
 
 /**
- * Add event name to emails
- */
-add_action( 'woocommerce_email_after_order_table', 'xtremetm_email_after_order_table', 10, 4 );
-
-function xtremetm_email_after_order_table( $order, $sent_to_admin, $plain_text, $email ) { 
-	
-	if ( ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000') || has_product_category_in_order( $order, 'usf-2000' ) ) && ! check_order_shipto_coupon( $order) ) {
-		
-		echo '<h2 style="margin-bottom:1em;">' . __( 'Event:' ) . '</h2>';
-		
-		echo '<p>' . esc_textarea( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) . '</p>';
-				
-	}
-
-}
-
-/**
  * Ajax function to set rush session
  */ 
 add_action( 'wp_ajax_set_rush_session', 'set_rush_session' );
@@ -1612,8 +1595,8 @@ add_action( 'woocommerce_checkout_update_order_meta', 'xtremetm_checkout_field_u
 
 function xtremetm_checkout_field_update_order_meta( $order_id ) {
 
-	if ( ! empty( $_POST['ship_to_event_list'] ) && $_POST['ship_to_event_list'] != 'blank' ) {
-	
+	if ( ! empty( $_POST['ship_to_event_list'] ) ) {
+
 		update_post_meta( $order_id, 'Ship to Event', sanitize_text_field( $_POST['ship_to_event_list'] ) );
 	
 	}
@@ -1633,7 +1616,7 @@ function xtremetm_checkout_field_update_order_meta( $order_id ) {
 	// Calculate order weight
 	$total_weight = get_order_weight( $order_id );
 	
-	add_post_meta( $order->id, 'order_weight', $total_weight, false );
+	update_post_meta( $order_id, 'order_weight', $total_weight, false );
 	
 }
 
@@ -1681,22 +1664,39 @@ function xtremetm_rush_checkout_field_display_admin_order_meta( $order ) {
 	
 }
 
+/**
+ * Add event name to emails
+ */
+add_action( 'woocommerce_email_after_order_table', 'xtremetm_email_after_order_table', 10, 4 );
+
+function xtremetm_email_after_order_table( $order, $sent_to_admin, $plain_text, $email ) { 
+	
+	if ( ! empty( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) ) {
+		
+		echo '<h2 style="margin-bottom:1em;">' . __( 'Event:' ) . '</h2>';
+		
+		echo '<p>' . esc_textarea( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) . '</p>';
+				
+	}
+
+}
+
 /*
- * Add rush delivery field to emails
+ * Add rush delivery to emails
  */
 add_action( 'woocommerce_email_order_meta', 'xtremetm_email_order_meta_fields', 10, 3 );
 
-function xtremetm_email_order_meta_fields( $order_obj, $sent_to_admin, $plain_text ) {
+function xtremetm_email_order_meta_fields( $order, $sent_to_admin, $plain_text ) {
  	
-	if ( ! empty( get_post_meta( $order_obj->get_order_number(), 'rush_delivery', true ) ) ) {
+	if ( ! empty( get_post_meta( $order->get_id(), 'rush_delivery', true ) ) ) {
 			
 		echo '<h2>Rush Delivery</h2><strong>Yes</strong><br>';
 		
 	}
 	
-	if ( ! empty( get_post_meta( $order_obj->get_order_number(), 'delivery_date', true ) ) ) {
+	if ( ! empty( get_post_meta( $order->get_order_number(), 'delivery_date', true ) ) ) {
 	
-		echo '<h2>Delivery Date</h2><strong>' . get_post_meta( $order_obj->get_order_number(), 'delivery_date', true ). '</strong><br><br>';
+		echo '<h2>Delivery Date</h2><strong>' . get_post_meta( $order->get_id(), 'delivery_date', true ). '</strong><br><br>';
 		
 	}
 
@@ -1795,7 +1795,10 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 		$checkout_fields['shipping']['shipping_city']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_state']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_postcode']['custom_attributes'] = array('readonly'=>'readonly');
-
+		
+		unset( $checkout_fields['shipping']['shipping_state']['validate'] );
+		unset( $checkout_fields['shipping']['shipping_postcode']['validate'] );
+		
 		while ( have_rows( 'event_shipping', 'options' ) ) {
 		
 			the_row();
@@ -1920,6 +1923,17 @@ function xtremetm_shipping_methods( $rates ) {
 			
 		}
 			
+	} elseif ( WC()->session->get( 'ship_to_event' ) == 'true' ) { 
+	
+		unset( $rates['flat_rate:4'] );
+		unset( $rates['free_shipping:9'] );
+		unset( $rates['odfl'] );
+		unset( $rates['fedex:8:FEDEX_GROUND'] );
+		unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+		unset( $rates['fedex:8:FEDEX_2_DAY'] );
+		unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+		unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+		
 	} else {
 
 		if ( is_cart_weight_free() ) {
@@ -2665,6 +2679,18 @@ function rti_in_cart() {
 	}
 	
 	return false;	
+	
+}
+
+function dotr_in_cart() {
+	
+	if ( has_product_category_in_cart( 'dot_race' ) ) {
+				
+		return true;
+		
+	}
+	
+	return false;
 	
 }
 

@@ -57,7 +57,7 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 	
 				<address>
 	
-					<?php if ( ( has_product_category_in_order( $order, 'indy-lights') || has_product_category_in_order( $order, 'indy-pro-2000') || has_product_category_in_order( $order, 'usf-2000' ) ) && ! check_order_shipto_coupon( $order) ): ?>
+					<?php if ( ! empty( get_post_meta( $order->get_id(), 'Ship to Event', true ) ) ): ?>
 					
 						<strong><?php _e('Event: '); ?></strong><?php echo get_post_meta( $order->get_id(), 'Ship to Event', true ); ?>
 						
