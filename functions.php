@@ -1787,7 +1787,7 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 	$checkout_fields['billing']['billing_email']['class'] = array('form-row-last');
 	
 	if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
-		
+
 		$checkout_fields['shipping']['shipping_company']['label'] = 'Event Name';
 		$checkout_fields['shipping']['shipping_company']['custom_attributes'] = array('readonly'=>'readonly');
 		$checkout_fields['shipping']['shipping_address_1']['custom_attributes'] = array('readonly'=>'readonly');
@@ -2335,7 +2335,7 @@ add_action( 'woocommerce_applied_coupon', 'action_woocommerce_applied_coupon', 1
 function action_woocommerce_applied_coupon( $coupon ) { 
    
    if ( check_shipto_coupon() ) {
-	   
+
 	   clear_event_sessions();
 	   
    }
@@ -2668,7 +2668,7 @@ function rti_in_cart() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 		
-		if ( ! WC()->session->get( 'ship_to_event' ) ) {
+		if ( ! WC()->session->get( 'ship_to_event' ) && ! check_shipto_coupon() ) {
 			
 			WC()->session->set( 'ship_to_event', 'true' );
 			
