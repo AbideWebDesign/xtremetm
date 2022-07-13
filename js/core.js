@@ -166,7 +166,7 @@
         
         for ( var propertyName in obj.Data ) {
 	        
-        	sel.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
+        	s.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
     	
     	}
     

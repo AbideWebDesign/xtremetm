@@ -6,7 +6,6 @@
  *
  * @package xtremetm
  */
-
 if ( ! function_exists( 'xtremetm_setup' ) ) {
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
@@ -2372,7 +2371,7 @@ function xtremetm_cart_refresh_update_qty() {
 			( function( $ ) {
 					
 				$( document.body ).on( 'applied_coupon_in_checkout', function( event, coupon ) {	
-					
+
 					const codes = [];
 					
 					for ( var x = 1; x < 31; x++ ) {
@@ -2383,27 +2382,67 @@ function xtremetm_cart_refresh_update_qty() {
 									    
 				    if ( $.inArray( coupon, codes ) != -1 ) {
 						
-						$( '#delivery_date' ).removeClass( 'd-none' );
-				        $( '#ship-to-event' ).hide();
-				        $( '#ship_to_event_list_field').removeClass( 'validate-required' );
-						$( '#ship-to-event_list' ).val( 0 );
-						$( '#ship_to_event_list' ).attr( 'placeholder', 'Select Event or Warehouse' );
-						$( '#shipping_company_field label' ).text( 'Company Name' );
-						$( '#shipping_company' ).val(''); 
-						$( '#shipping_address_1' ).val('');
-						$( '#shipping_address_2' ).val('');
-						$( '#shipping_city' ).val('');
-						$( '#shipping_state' ).val('');
-						$( '#shipping_postcode' ).val('');
-						$( '#shipping_company' ).removeAttr( 'readonly' );
-						$( '#shipping_address_1' ).removeAttr( 'readonly' );
-						$( '#shipping_address_2' ).removeAttr( 'readonly' );
-						$( '#shipping_city' ).removeAttr( 'readonly' );
-						$( '#shipping_state' ).removeAttr( 'readonly' );
-						$( '#shipping_postcode' ).removeAttr( 'readonly' );
+						var data = {
+	
+							coupon_code: coupon,
+							action: 'is_coupon_valid',
+							security: ajax_object.ajax_nonce
 						
-						populateStates();
-				        
+						};
+						
+						$.ajax( {
+							
+							type: 'POST',
+							url: ajax_object.ajax_url,
+							data: data,
+							success: function( response ) {
+								
+								console.log(response.data.status);
+								
+								if ( response.data.status == 'valid' ) {
+
+									$( '#delivery_date' ).removeClass( 'd-none' );
+							        $( '#ship-to-event' ).hide();
+							        $( '#ship_to_event_list_field').removeClass( 'validate-required' );
+									$( '#ship-to-event_list' ).val( 0 );
+									$( '#ship_to_event_list' ).attr( 'placeholder', 'Select Event or Warehouse' );
+									$( '#shipping_company_field label' ).text( 'Company Name' );
+									$( '#shipping_company' ).val(''); 
+									$( '#shipping_address_1' ).val('');
+									$( '#shipping_address_2' ).val('');
+									$( '#shipping_city' ).val('');
+									$( '#shipping_state' ).val('');
+									$( '#shipping_postcode' ).val('');
+									$( '#shipping_company' ).removeAttr( 'readonly' );
+									$( '#shipping_address_1' ).removeAttr( 'readonly' );
+									$( '#shipping_address_2' ).removeAttr( 'readonly' );
+									$( '#shipping_city' ).removeAttr( 'readonly' );
+									$( '#shipping_state' ).removeAttr( 'readonly' );
+									$( '#shipping_postcode' ).removeAttr( 'readonly' );
+									        
+							        var obj = ({"Data":{"Alabama":"AL","Alaska":"AK","Arizona":"AZ","Arkansas":"AR","California":"CA","Colorado":"CO","Connecticutt":"CT","Delaware":"DE","Florida":"FL","Georgia":"GA","Hawaii":"HI","Idaho":"ID","Illinois":"IL","Indiana":"IN","Iowa":"IA","Kansas":"KS","Kentucky":"KY","Louisiana":"LA","Maine":"ME","Massachusetts":"MA","Michigan":"MI"}});
+							        
+							        var s = document.getElementById('shipping_state');
+							        
+							        var i = 0;
+							        
+							        for ( var propertyName in obj.Data ) {
+								        
+							        	s.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
+							    	
+							    	}
+							    
+							    }
+
+							},
+							fail: function( response ) {
+								
+								console.log( 'failure' );
+							
+							},
+
+						} );
+						
 				    }
 				    
 				} );
@@ -2438,6 +2477,47 @@ function xtremetm_cart_refresh_update_qty() {
 	    
     }
      
+}
+
+function coupon_error_message_change( $err, $err_code, $WC_Coupon ) {
+
+	switch ( $err_code ) {
+
+		case 115:
+			
+			$err = 'This coupon code has reached its limit and is no longer valid.';
+
+	}
+    
+	return $err;
+
+}
+
+add_filter( 'woocommerce_coupon_error','coupon_error_message_change',10,3 );
+
+add_action( 'wp_ajax_is_coupon_valid', 'is_coupon_valid' );
+add_action( 'wp_ajax_nopriv_is_coupon_valid', 'is_coupon_valid' );
+
+function is_coupon_valid() {
+
+	if ( ! wp_verify_nonce( $_POST['security'], 'ajax_nonce' ) ) {
+
+		wp_send_json_error( array( 'message' => 'Nonce is invalid.' ) );
+	
+	}
+	
+	$coupon = new WC_Coupon( $_POST['coupon_code'] );
+	
+	if ( $coupon->is_valid() ) {
+
+		wp_send_json_success( array( 'message' => 'success', 'status' => 'valid' ) );
+		
+	} else {
+		
+		wp_send_json_success( array( 'message' => 'success', 'status' => 'not_valid' ) );
+		
+	}
+		
 }
 
 /*
