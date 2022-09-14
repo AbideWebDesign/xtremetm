@@ -47,7 +47,6 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 				<h3 class=""><?php _e('Shipping Details'); ?></h3>
 				
-				<?php if ( dotr_in_cart() ): ?>
 				
 					<div id="ship-option" class="my-1 bg-light">
 			
@@ -57,7 +56,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 								<label for="ship-to-event-checkbox" class="checkbox">
 			
-									<input id="ship-to-event-checkbox" class="input-checkbox " type="checkbox" name="ship-to-event-checkbox" value="1" <?php echo ( WC()->session->get( 'ship_to_event') == 'true' ? 'checked': '' ); ?>>
+									<input id="ship-to-event-checkbox" class="input-checkbox " type="checkbox" name="ship-to-event-checkbox" value="0" <?php echo ( WC()->session->get( 'ship_to_event') == 'true' ? 'checked': '' ); ?>>
 			
 									<?php _e( 'Pickup at track or warehouse?', 'woocommerce' ); ?>
 			
@@ -69,7 +68,6 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			
 					</div>
 					
-				<?php endif; ?>
 				
 				<?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
 				

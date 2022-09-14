@@ -1125,7 +1125,7 @@ function ship_to_event_field( $checkout ) {
 		$events[$event_name] = $event_name;
 	}
 
-	if ( WC()->session->get( 'ship_to_event') == 'true' || rti_in_cart() && ! check_shipto_coupon() ) {
+	if ( WC()->session->get( 'ship_to_event') == 'true' /* || rti_in_cart() && ! check_shipto_coupon() */ ) {
 		
 		echo '<div id="ship-to-event" class="bg-light pt-1">';
 		
@@ -1244,11 +1244,13 @@ function set_event_session() {
 	
 	if ( $_POST['status'] ) {
 
+/*
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
 			WC()->session->set( 'ship_rush', 'false' );
 			
 		}
+*/
 		
 	}
 	
@@ -1374,7 +1376,7 @@ function xtremetm_delivery_field( $checkout ) {
 		
 		$dateoptions = array( '' => __( 'Select Delivery Date', 'woocommerce' ) );
 		
-		echo ( check_shipto_coupon() ? '<div id="delivery_date" class="mt-1">' : '<div id="delivery_date" class="mt-1 d-none">' );
+		echo /* ( check_shipto_coupon() ?  */'<div id="delivery_date" class="mt-1">' /* : '<div id="delivery_date" class="mt-1 d-none">' ) */;
 		
 		woocommerce_form_field( 'delivery_date', array(
 			'type'          	=> 'text',
@@ -1399,7 +1401,7 @@ add_action('woocommerce_checkout_process', 'rush_shipping_checkout_field_process
 
 function rush_shipping_checkout_field_process() {
 	
-	if ( rti_in_cart() && check_shipto_coupon() ) {
+	if ( rti_in_cart() /* && check_shipto_coupon()  */) {
 		
 		if ( ! $_POST['delivery_date'] ) {
 		    
@@ -1414,8 +1416,10 @@ function rush_shipping_checkout_field_process() {
 /**
  * Ajax function to set rush session
  */ 
+/*
 add_action( 'wp_ajax_set_rush_session', 'set_rush_session' );
 add_action( 'wp_ajax_nopriv_set_rush_session', 'set_rush_session' );
+*/
 
 function set_rush_session() {
 
@@ -1446,6 +1450,7 @@ function xtremetm_add_fees( $cart ) {
 		return;
 	   
 	// Add rush shipping fee if applicable
+/*
 	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
 		$rushfee = 750;
@@ -1461,6 +1466,7 @@ function xtremetm_add_fees( $cart ) {
 		}
 		
 	}
+*/
 	
 	$tirefee = 0;
 	
@@ -1582,7 +1588,7 @@ function is_cart_weight_free() {
 		$total_weight += floatval( $product_weight * $quantity );
 		
 	}
-	
+
 	return ( ( $total_weight >=  2000 ) ? true : false );
 	
 }
@@ -1604,11 +1610,13 @@ function xtremetm_checkout_field_update_order_meta( $order_id ) {
 				
 		update_post_meta( $order_id, 'delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
 		
+/*
 		if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 			
 			update_post_meta( $order_id, 'rush_delivery', true );
 			
 		}
+*/
 	
 	}
 
@@ -1813,7 +1821,8 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 			}
 		}
 		
-	} elseif ( rti_in_cart() ) {
+	} /*
+elseif ( rti_in_cart() ) {
 		
 		if ( ! check_shipto_coupon() ) {
 			
@@ -1826,6 +1835,7 @@ function xtremetm_override_checkout_fields( $checkout_fields ) {
 		}
 		
 	}
+*/
 	
 	return $checkout_fields;
      
@@ -1875,41 +1885,8 @@ add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 function xtremetm_shipping_methods( $rates ) {
 
 	if ( rti_in_cart() ) {
-
-		if ( check_shipto_coupon() ) {
 			
-			if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
-			
-				unset( $rates['free_shipping:10'] );	
-				unset( $rates['flat_rate:4'] );
-				unset( $rates['odfl'] );
-				unset( $rates['fedex:8:FEDEX_GROUND'] );
-				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-				unset( $rates['fedex:8:FEDEX_2_DAY'] );
-				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
-				
-			} elseif ( WC()->cart->get_cart_contents_count() < 8 ) {
-					
-				unset( $rates['flat_rate:4'] );
-				unset( $rates['free_shipping:9'] );
-				unset( $rates['free_shipping:10'] );
-				unset( $rates['odfl'] );
-			
-			} elseif ( WC()->cart->get_cart_contents_count() >=  8 ) {
-		
-				unset( $rates['flat_rate:4'] );
-				unset( $rates['free_shipping:9'] );
-				unset( $rates['free_shipping:10'] );
-				unset( $rates['fedex:8:FEDEX_GROUND'] );
-				unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-				unset( $rates['fedex:8:FEDEX_2_DAY'] );
-				unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-				unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
-				
-			}
-			
-		} else {
+		if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
 			
 			unset( $rates['flat_rate:4'] );
 			unset( $rates['free_shipping:9'] );
@@ -1919,7 +1896,47 @@ function xtremetm_shipping_methods( $rates ) {
 			unset( $rates['fedex:8:FEDEX_2_DAY'] );
 			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+		
+		} elseif ( is_cart_weight_free() ) {
+
+			unset( $rates['free_shipping:10'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['odfl'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+		
+		} elseif ( WC()->cart->get_cart_contents_count() < 8 ) {
+				
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['free_shipping:10'] );
+			unset( $rates['odfl'] );
+		
+		} elseif ( WC()->cart->get_cart_contents_count() >=  8 ) {
+
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['free_shipping:10'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );		
 			
+		} else {
+		
+			unset( $rates['flat_rate:4'] );
+			unset( $rates['free_shipping:9'] );
+			unset( $rates['odfl'] );
+			unset( $rates['fedex:8:FEDEX_GROUND'] );
+			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
+			unset( $rates['fedex:8:FEDEX_2_DAY'] );
+			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
+			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
+		
 		}
 			
 	} elseif ( WC()->session->get( 'ship_to_event' ) == 'true' ) { 
@@ -1945,17 +1962,6 @@ function xtremetm_shipping_methods( $rates ) {
 			unset( $rates['fedex:8:FEDEX_2_DAY'] );
 			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
 			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );
-			
-		} elseif ( WC()->session->get( 'ship_rush' ) == 'true' ) {
-			
-			unset( $rates['free_shipping:10'] );	
-			unset( $rates['flat_rate:4'] );
-			unset( $rates['odfl'] );
-			unset( $rates['fedex:8:FEDEX_GROUND'] );
-			unset( $rates['fedex:8:FEDEX_EXPRESS_SAVER'] );
-			unset( $rates['fedex:8:FEDEX_2_DAY'] );
-			unset( $rates['fedex:8:STANDARD_OVERNIGHT'] );
-			unset( $rates['fedex:8:PRIORITY_OVERNIGHT'] );	
 			
 		} else {
 
@@ -2329,7 +2335,7 @@ function clear_inventory() {
 	
 }
 
-add_action( 'woocommerce_applied_coupon', 'action_woocommerce_applied_coupon', 10, 1 ); 
+//add_action( 'woocommerce_applied_coupon', 'action_woocommerce_applied_coupon', 10, 1 ); 
 
 function action_woocommerce_applied_coupon( $coupon ) { 
    
@@ -2366,6 +2372,7 @@ function xtremetm_cart_refresh_update_qty() {
 	        
     } elseif ( is_checkout() && rti_in_cart() ) { ?>
 	    
+<!--
         <script type="text/javascript"> 
            
 			( function( $ ) {
@@ -2472,6 +2479,7 @@ function xtremetm_cart_refresh_update_qty() {
 			} )( jQuery );
             
         </script> 
+-->
 	    
 	    <?php
 	    
@@ -2748,11 +2756,13 @@ function rti_in_cart() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 		
+/*
 		if ( ! WC()->session->get( 'ship_to_event' ) && ! check_shipto_coupon() ) {
 			
 			WC()->session->set( 'ship_to_event', 'true' );
 			
 		}
+*/
 		
 		return true;
 		

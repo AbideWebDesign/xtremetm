@@ -93,7 +93,7 @@
 		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $750 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper\'s order fulfillment system. Yeah, we know it\'s A LOT and that sometimes "last minute" happens in racing. We\'re just letting you know that "last minute" costs a premium.</p></div>';
 		
 		// Format: 11-02-2020
-		var blackoutDays = [ todayBlackout[0], tomorrowBlackout[0], '11-26-2020', '12-25-2020', '01-01-2021', '01-18-2021', '02-15-2021', '05-31-2021', '07-05-2021', '09-06-2021', '11-11-2021', '11-25-2021', '12-24-2021', '12-31-2021'];
+		var blackoutDays = [ todayBlackout[0], tomorrowBlackout[0], '11-11-2022', '11-25-2022', '12-24-2022', '12-31-2022', '01-01-2023', '01-18-2023', '02-15-2023', '05-31-2023', '07-05-2023', '09-06-2023'];
 
 		// Setup Rush Dates
 		var rushDays = [ ( '1' + ( today.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + today.getDate() ).slice( -2 ) + '-' +  today.getFullYear() ];
@@ -104,12 +104,13 @@
 			
 			var newDate = ( '0' + ( d.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + d.getDate() ).slice( -2 ) + '-' +  d.getFullYear();
 
-			rushDays.push(newDate);
+			blackoutDays.push(newDate);
 			
 		}
 		
 		$( '#datepicker' ).datepicker( { 
 			
+/*
 			beforeShow: function() {	
 						
 				setTimeout( function() {
@@ -119,6 +120,7 @@
 				}, 10);
 			
 			},
+*/
 			
 			beforeShowDay: function( date ) {
 				
@@ -137,7 +139,7 @@
 	 				
  				} else {
 	 				
-	 				return [true, $.inArray(current, rushDays) >= 0 ? 'ui-datepicker-rushdate':''];
+	 				return [true, /* $.inArray(current, rushDays) >= 0 ? 'ui-datepicker-rushdate': */''];
  				
  				}
  	
@@ -156,20 +158,5 @@
 	
 	} );
 	
-	function populateStates() {
-        
-        var obj = ({"Data":{"Alabama":"AL","Alaska":"AK","Arizona":"AZ","Arkansas":"AR","California":"CA","Colorado":"CO","Connecticutt":"CT","Delaware":"DE","Florida":"FL","Georgia":"GA","Hawaii":"HI","Idaho":"ID","Illinois":"IL","Indiana":"IN","Iowa":"IA","Kansas":"KS","Kentucky":"KY","Louisiana":"LA","Maine":"ME","Massachusetts":"MA","Michigan":"MI"}});
-        
-        var s = document.getElementById('shipping_state');
-        
-        var i = 0;
-        
-        for ( var propertyName in obj.Data ) {
-	        
-        	s.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
-    	
-    	}
-    
-    }
 			
 } )( jQuery );
