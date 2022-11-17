@@ -14,7 +14,7 @@
 							
 							<li class="list-inline-item <?php echo ( is_product_category( 'indy-lights' ) || has_term( 'indy-lights', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/indy-lights/'); ?>"><?php _e('Indy Lights'); ?></a></span></li>
 							
-							<li class="list-inline-item <?php echo ( is_product_category( 'indy-pro-2000' ) || has_term( 'indy-pro-2000', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/indy-pro-2000/'); ?>"><?php _e('IP2K'); ?></a></span></li>
+							<li class="list-inline-item <?php echo ( is_product_category( 'usf-pro-2000' ) || has_term( 'usf-pro-2000', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/usf-pro-2000/'); ?>"><?php _e('USF Pro 2000'); ?></a></span></li>
 		
 							<li class="list-inline-item <?php echo ( is_product_category( 'usf-2000' ) || has_term( 'usf-2000', 'product_cat' ) && ! is_search() ? 'active' : '' ); ?>"><span><a class="d-flex align-items-center align-self-center" href="<?php echo home_url('/store/contract/usf-2000'); ?>"><?php _e('USF2000'); ?></a></span></li>
 
