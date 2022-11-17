@@ -12,9 +12,9 @@ if ( is_search() ) {
 	
 	$cat = get_term_by( 'slug', 'indy-lights', 'product_cat' );
 	
-} else if ( has_term( 'indy-pro-2000', 'product_cat' ) ) {
+} else if ( has_term( 'usf-pro-2000', 'product_cat' ) ) {
 	
-	$cat = get_term_by( 'slug', 'indy-pro-2000', 'product_cat' );
+	$cat = get_term_by( 'slug', 'usf-pro-2000', 'product_cat' );
 	
 } else if ( has_term( 'usf-2000', 'product_cat' ) ) {
 	
