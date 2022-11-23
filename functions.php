@@ -1475,7 +1475,7 @@ function xtremetm_add_fees( $cart ) {
 	// Add tire fee if applicable
 	foreach ( $cart->get_cart() as $cart_item ) {
 	
-		if ( has_term( array( 'indy-lights', 'indy-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
+		if ( has_term( array( 'indy-lights', 'usf-pro-2000', 'usf-2000' ), 'product_cat', $cart_item['product_id'] ) ) {
 					
 			$tirefee += $cart_item['quantity'] * 3;
 			
@@ -2754,7 +2754,7 @@ function add_closed_message_to_cart() {
 
 function rti_in_cart() {
 	
-	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'indy-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
+	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'usf-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 		
 /*
 		if ( ! WC()->session->get( 'ship_to_event' ) && ! check_shipto_coupon() ) {
