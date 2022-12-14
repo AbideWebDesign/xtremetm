@@ -129,7 +129,7 @@ $( '#ship_to_event_list' ).change( function() {
 
 } );
 
-/*
+
 $( '#datepicker' ).change( function() {
 	
 	$('#place_order').prop( 'disabled', true );
@@ -179,7 +179,6 @@ $( '#datepicker' ).change( function() {
 	} );		
 	
 } );
-*/
 
 $( '#shipping_postcode' ).change( function() {
 	

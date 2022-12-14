@@ -104,13 +104,12 @@
 			
 			var newDate = ( '0' + ( d.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + d.getDate() ).slice( -2 ) + '-' +  d.getFullYear();
 
-			blackoutDays.push(newDate);
+			rushDays.push(newDate);
 			
 		}
 		
 		$( '#datepicker' ).datepicker( { 
 			
-/*
 			beforeShow: function() {	
 						
 				setTimeout( function() {
@@ -120,7 +119,6 @@
 				}, 10);
 			
 			},
-*/
 			
 			beforeShowDay: function( date ) {
 				
@@ -139,7 +137,7 @@
 	 				
  				} else {
 	 				
-	 				return [true, /* $.inArray(current, rushDays) >= 0 ? 'ui-datepicker-rushdate': */''];
+	 				return [true, $.inArray(current, rushDays) >= 0 ? 'ui-datepicker-rushdate':''];
  				
  				}
  	

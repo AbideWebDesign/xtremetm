@@ -1244,13 +1244,11 @@ function set_event_session() {
 	
 	if ( $_POST['status'] ) {
 
-/*
 		if ( WC()->session->get( 'ship_rush' ) ) {
 			
 			WC()->session->set( 'ship_rush', 'false' );
 			
 		}
-*/
 		
 	}
 	
@@ -1416,10 +1414,8 @@ function rush_shipping_checkout_field_process() {
 /**
  * Ajax function to set rush session
  */ 
-/*
 add_action( 'wp_ajax_set_rush_session', 'set_rush_session' );
 add_action( 'wp_ajax_nopriv_set_rush_session', 'set_rush_session' );
-*/
 
 function set_rush_session() {
 
@@ -1450,7 +1446,6 @@ function xtremetm_add_fees( $cart ) {
 		return;
 	   
 	// Add rush shipping fee if applicable
-/*
 	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
 		$rushfee = 750;
@@ -1466,7 +1461,6 @@ function xtremetm_add_fees( $cart ) {
 		}
 		
 	}
-*/
 	
 	$tirefee = 0;
 	
@@ -1610,13 +1604,11 @@ function xtremetm_checkout_field_update_order_meta( $order_id ) {
 				
 		update_post_meta( $order_id, 'delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
 		
-/*
 		if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 			
 			update_post_meta( $order_id, 'rush_delivery', true );
 			
 		}
-*/
 	
 	}
 
@@ -2756,13 +2748,11 @@ function rti_in_cart() {
 	
 	if ( has_product_category_in_cart('indy-lights') || has_product_category_in_cart( 'usf-pro-2000') || has_product_category_in_cart( 'usf-2000' ) ) {
 		
-/*
-		if ( ! WC()->session->get( 'ship_to_event' ) && ! check_shipto_coupon() ) {
+		if ( ! WC()->session->get( 'ship_to_event' )/*  && ! check_shipto_coupon() */ ) {
 			
 			WC()->session->set( 'ship_to_event', 'true' );
 			
 		}
-*/
 		
 		return true;
 		
