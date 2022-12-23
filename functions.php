@@ -2270,7 +2270,7 @@ function valid_reseller() {
 		
 	}
 	
-}
+} 
 
 /**
  *  Function to clear inventory for import.
@@ -2820,4 +2820,109 @@ function check_order_shipto_coupon( $order ) {
 	
 	return false;
 	
+}
+
+function update_fields() {
+	
+	$query = new WP_Query( array (
+	    'post_type'       		=> 'product',
+	    'post_status'			=> [ 'draft', 'publish' ],
+	    'posts_per_page' 		=> -1,
+	) );
+	
+	while ( $query->have_posts() ) {
+		
+		$query->the_post();
+		
+		$product = wc_get_product( get_the_id() );
+
+		if ( $product->is_type( 'simple' ) ) {
+	
+			$new_sku_array = get_post_meta( get_the_id(), 'wpseo_variation_global_identifiers_values', true );
+				
+			if ( ! empty( $new_sku_array['gtin12'] ) ) {
+
+				update_post_meta( get_the_id(), 'product_identifier', esc_attr( $new_sku_array['gtin12'] ) );
+	
+			}					
+							
+		} else {
+			
+			foreach ( $product->get_children() as $variation_id ) {
+
+				$variation = new WC_Product_Variation( $variation_id );
+
+				$new_sku_array = get_post_meta( $variation_id, 'wpseo_variation_global_identifiers_values', true );
+
+				if ( ! empty( $new_sku_array['gtin12'] ) ) {
+	
+					update_post_meta( $variation_id, 'product_identifier', esc_attr( $new_sku_array['gtin12'] ) );
+		
+				}					
+	
+			}
+			
+		}		
+		
+	}
+		
+}
+add_action( 'woocommerce_product_options_inventory_product_data', 'xtremetm_add_custom_fields_simple_inventory' );
+
+function xtremetm_add_custom_fields_simple_inventory() {
+
+	woocommerce_wp_text_input( array(
+		'id' => 'product_identifier',
+		'class' => 'short',
+		'type'  => 'text', 
+		'label' => __( 'Product Identifier', 'woocommerce' ),
+		)
+	);	
+
+}
+
+add_action( 'woocommerce_variation_options', 'xtremetm_add_field_options', 50, 3 );
+ 
+function xtremetm_add_field_options( $loop, $variation_data, $variation ) {
+
+	woocommerce_wp_text_input( array(
+		'id' => 'product_identifier[' . $loop . ']',
+		'wrapper_class' => 'form-row',
+		'class' => 'short',
+		'type'  => 'text', 
+		'label' => __( 'Product Identifier', 'woocommerce' ),
+		'value' => get_post_meta( $variation->ID, 'product_identifier', true )
+		)
+	);	
+
+}
+
+add_action( 'woocommerce_process_product_meta', 'xtremetm_save_field_options', 10, 1 );
+
+function xtremetm_save_field_options( $product_id ) {
+	
+	$product_identifier = $_POST['product_identifier'];
+		
+	if ( isset( $product_identifier ) ) update_post_meta( $product_id, 'product_identifier', esc_attr( $product_identifier ) );
+	
+}
+
+add_action( 'woocommerce_save_product_variation', 'xtremetm_save_variation_field_options', 10, 2 );
+ 
+function xtremetm_save_variation_field_options( $variation_id, $i ) {
+	
+	$product_identifier = $_POST['product_identifier'][$i];
+
+	if ( isset( $product_identifier ) ) update_post_meta( $variation_id, 'product_identifier', esc_attr( $product_identifier ) );
+	
+}
+
+add_filter( 'woocommerce_available_variation', 'xtremetm_add_custom_field_variation_data' );
+ 
+function xtremetm_add_custom_field_variation_data( $variations ) {
+	
+	$variations['product_identifier'] = get_post_meta( $variations[ 'variation_id' ], 'product_identifier', true );
+	
+	return $variations;
+
 }
