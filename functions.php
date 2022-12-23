@@ -2838,7 +2838,7 @@ function update_fields() {
 
 		if ( $product->is_type( 'simple' ) ) {
 	
-			$new_sku_array = get_post_meta( get_the_id(), 'wpseo_variation_global_identifiers_values', true );
+			$new_sku_array = get_post_meta( get_the_id(), 'wpseo_global_identifier_values', true );
 				
 			if ( ! empty( $new_sku_array['gtin12'] ) ) {
 
