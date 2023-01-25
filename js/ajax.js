@@ -1,5 +1,7 @@
 $( '#ship-to-event-checkbox' ).click( function() {
 	
+	$( this ).attr( 'disabled', true );
+	
 	if ( $( this ).is( ':checked' ) ) {
 		
 		var checked = 'true';
@@ -49,6 +51,8 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		url: ajax_object.ajax_url,
 		data: data,
 		success: function( response ) {
+			
+			$( '#ship-to-event-checkbox' ).removeAttr('disabled', 'disabled');
 			
 			if ( response.data.status == 'false' ) { // Checkbox has been unchecked	
 	
