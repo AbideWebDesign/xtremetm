@@ -2708,6 +2708,17 @@ function xtremetm_hide_marketing_tab( $marketing_pages ) {
 }
 
 /**
+ * Woocommerce - remove downloads meta box
+ */
+add_action( 'add_meta_boxes', 'xtreme_remove_downloads_meta_box', 999 );
+
+function xtreme_remove_downloads_meta_box() {
+	
+	remove_meta_box( 'woocommerce-order-downloads', 'shop_order', 'normal' );
+
+}
+
+/**
  * Shop closed functions
  */
 //add_action( 'woocommerce_proceed_to_checkout', 'disable_checkout_button_on_cart', 1 );
