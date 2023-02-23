@@ -2106,10 +2106,10 @@ add_action('template_redirect', 'xtremetm_redirect_functions');
 
 function xtremetm_redirect_functions() {
 	
-	if ( ! is_checkout() ) {
-
-		WC()->session->__unset( 'ship_rush' );
+	if ( ! is_checkout() && WC()->session->get( 'ship_rush' ) ) {
 		
+		WC()->session->set( 'ship_rush', null );
+				
 	}
 	
 	if ( is_user_logged_in() && valid_reseller() ) { // check for the user role
@@ -2337,146 +2337,6 @@ function action_woocommerce_applied_coupon( $coupon ) {
 	   
    }
 
-}
-
-/*
- * Refresh cart on quantity change
-*/ 
-add_action( 'wp_footer', 'xtremetm_cart_refresh_update_qty' ); 
- 
-function xtremetm_cart_refresh_update_qty() { 
-    
-    if ( is_cart() ) {
-	     
-        ?> 
-        
-        <script type="text/javascript"> 
-           
-            jQuery( 'div.woocommerce' ).on( 'change', '.qty', function() {
-	             
-                jQuery( "[name='update_cart']" ).trigger( "click" ); 
-            
-            } ); 
-            
-        </script> 
-        
-        <?php 
-	        
-    } elseif ( is_checkout() && rti_in_cart() ) { ?>
-	    
-<!--
-        <script type="text/javascript"> 
-           
-			( function( $ ) {
-					
-				$( document.body ).on( 'applied_coupon_in_checkout', function( event, coupon ) {	
-
-					const codes = [];
-					
-					for ( var x = 1; x < 31; x++ ) {
-						
-						codes[x] = 'shipto' + x;
-						
-					}
-									    
-				    if ( $.inArray( coupon, codes ) != -1 ) {
-						
-						var data = {
-	
-							coupon_code: coupon,
-							action: 'is_coupon_valid',
-							security: ajax_object.ajax_nonce
-						
-						};
-						
-						$.ajax( {
-							
-							type: 'POST',
-							url: ajax_object.ajax_url,
-							data: data,
-							success: function( response ) {
-								
-								console.log(response.data.status);
-								
-								if ( response.data.status == 'valid' ) {
-
-									$( '#delivery_date' ).removeClass( 'd-none' );
-							        $( '#ship-to-event' ).hide();
-							        $( '#ship_to_event_list_field').removeClass( 'validate-required' );
-									$( '#ship-to-event_list' ).val( 0 );
-									$( '#ship_to_event_list' ).attr( 'placeholder', 'Select Event or Warehouse' );
-									$( '#shipping_company_field label' ).text( 'Company Name' );
-									$( '#shipping_company' ).val(''); 
-									$( '#shipping_address_1' ).val('');
-									$( '#shipping_address_2' ).val('');
-									$( '#shipping_city' ).val('');
-									$( '#shipping_state' ).val('');
-									$( '#shipping_postcode' ).val('');
-									$( '#shipping_company' ).removeAttr( 'readonly' );
-									$( '#shipping_address_1' ).removeAttr( 'readonly' );
-									$( '#shipping_address_2' ).removeAttr( 'readonly' );
-									$( '#shipping_city' ).removeAttr( 'readonly' );
-									$( '#shipping_state' ).removeAttr( 'readonly' );
-									$( '#shipping_postcode' ).removeAttr( 'readonly' );
-									        
-							        var obj = ({"Data":{"Alabama":"AL","Alaska":"AK","Arizona":"AZ","Arkansas":"AR","California":"CA","Colorado":"CO","Connecticutt":"CT","Delaware":"DE","Florida":"FL","Georgia":"GA","Hawaii":"HI","Idaho":"ID","Illinois":"IL","Indiana":"IN","Iowa":"IA","Kansas":"KS","Kentucky":"KY","Louisiana":"LA","Maine":"ME","Massachusetts":"MA","Michigan":"MI"}});
-							        
-							        var s = document.getElementById('shipping_state');
-							        
-							        var i = 0;
-							        
-							        for ( var propertyName in obj.Data ) {
-								        
-							        	s.options[i++] = new Option( propertyName, obj.Data[propertyName], true, false );
-							    	
-							    	}
-							    
-							    }
-
-							},
-							fail: function( response ) {
-								
-								console.log( 'failure' );
-							
-							},
-
-						} );
-						
-				    }
-				    
-				} );
-				
-				$( document.body ).on( 'removed_coupon_in_checkout', function( event, coupon ) {
-					
-					$( '#delivery_date' ).addClass( 'd-none' );
-					$( '#ship-to-event').show();
-					$( '#ship_to_event_list_field').addClass( 'validate-required' );
-					$( '#shipping_company_field label' ).text( 'Event/Warehouse' );
-					$( '#shipping_company' ).val(''); 
-					$( '#shipping_address_1' ).val('');
-					$( '#shipping_address_2' ).val('');
-					$( '#shipping_city' ).val('');
-					$( '#shipping_state' ).val('');
-					$( '#shipping_postcode' ).val('');
-					$( '#shipping_company' ).attr( 'readonly','readonly' );
-					$( '#shipping_address_1' ).attr( 'readonly','readonly' );
-					$( '#shipping_address_2' ).attr( 'readonly','readonly' );
-					$( '#shipping_city' ).attr( 'readonly','readonly' );
-					$( '#shipping_state' ).attr( 'readonly','readonly' );
-					$( '#shipping_postcode' ).attr( 'readonly','readonly' );
-					
-					
-				} );
-					
-			} )( jQuery );
-            
-        </script> 
--->
-	    
-	    <?php
-	    
-    }
-     
 }
 
 function coupon_error_message_change( $err, $err_code, $WC_Coupon ) {

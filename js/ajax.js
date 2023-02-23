@@ -110,7 +110,7 @@ $( '#ship_to_event_list' ).change( function() {
             }
 
 			$( '#shipping_company_field label' ).text( 'Event/Warehouse' );
-			$( '#shipping_company' ) .val( response.data.address.event_name );
+			$( '#shipping_company' ).val( response.data.address.event_name );
 			$( '#shipping_address_1' ).val( response.data.address.street );
 			$( '#shipping_city' ).val( response.data.address.city );
 			$( '#shipping_postcode' ).val( response.data.address.zip );

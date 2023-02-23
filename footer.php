@@ -96,6 +96,21 @@
 
 		</div>
 
+
+		<?php if ( is_cart() ): // Refresh cart quantity ?>
+			
+			<script type="text/javascript"> 
+			
+			    jQuery( 'div.woocommerce' ).on( 'change', '.qty', function() {
+			         
+			        jQuery( "[name='update_cart']" ).trigger( "click" ); 
+			    
+			    } ); 
+			    
+			</script> 
+		
+		<?php endif; ?>
+		
 		<?php wp_footer(); ?>
 
 	</body>
