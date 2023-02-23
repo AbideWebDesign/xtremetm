@@ -8,7 +8,7 @@ $( '#ship-to-event-checkbox' ).click( function() {
 		
 		var event = $( 'select#ship_to_event_list' ).val();
 		
-		$( '#datepicker' ).val('');
+		$( '#datepicker' ).val( '' );
 
 	} else {
 		
