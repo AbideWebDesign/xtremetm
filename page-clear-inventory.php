@@ -13,7 +13,7 @@ wp_head();
 	
 	<?php clear_inventory(); ?>
 
-<?php else: ?>
+<?php elseif ( is_user_logged_in() ): ?>
 
 	<div class="d-flex h-100 align-items-center">
 		
