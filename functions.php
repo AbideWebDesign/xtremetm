@@ -1448,7 +1448,7 @@ function xtremetm_add_fees( $cart ) {
 	// Add rush shipping fee if applicable
 	if ( WC()->session->get( 'ship_rush' ) == 'true' ) {
 		
-		$rushfee = 750;
+		$rushfee = 850;
 		
 		WC()->cart->add_fee( 'Rush', $rushfee, false );
 		
@@ -1875,7 +1875,7 @@ function change_default_checkout_country( $country ) {
 add_filter( 'woocommerce_package_rates', 'xtremetm_shipping_methods', 100 );
 
 function xtremetm_shipping_methods( $rates ) {
-
+write_log($rates);
 	if ( rti_in_cart() ) {
 			
 		if ( WC()->session->get( 'ship_to_event' ) == 'true' ) {
