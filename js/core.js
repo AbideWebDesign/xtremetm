@@ -90,7 +90,7 @@
 
 		var tomorrowBlackout = [ ( '0' + ( tomorrow.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + tomorrow.getDate() ).slice( -2 ) + '-' +  tomorrow.getFullYear() ];
 
-		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $750 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper\'s order fulfillment system. Yeah, we know it\'s A LOT and that sometimes "last minute" happens in racing. We\'re just letting you know that "last minute" costs a premium.</p></div>';
+		var shipping_msg = '<div id="ui-datepicker-note" class="mt-1"><strong>Rush Shipping</strong><p class="mb-0">A Rush Order charge of $850 will now be applied to this order in addition to an expedited freight charge (freight charge will be invoiced separately after shipment), since shipments which need to arrive within 10 days of order put a lot of stress on Cooper\'s order fulfillment system. Yeah, we know it\'s A LOT and that sometimes "last minute" happens in racing. We\'re just letting you know that "last minute" costs a premium.</p></div>';
 		
 		// Format: 11-02-2020
 		var blackoutDays = [ todayBlackout[0], tomorrowBlackout[0], '11-11-2022', '11-25-2022', '12-24-2022', '12-31-2022', '01-01-2023', '01-18-2023', '02-15-2023', '05-31-2023', '07-05-2023', '09-06-2023'];
